@@ -1,6 +1,6 @@
 import { Link, Head } from '@inertiajs/react';
 
-export default function Welcome(props) {
+export default function achivement(props) {
     return (
         <>
             <Head title="Welcome" />
