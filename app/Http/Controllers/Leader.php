@@ -1,13 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Leader;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Product;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
-class LeaderController extends Controller
+class Leader extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,10 +13,7 @@ class LeaderController extends Controller
      */
     public function index()
     {
-        $products= Product::get();
-        return Inertia::render('Leader/Cetakdata/detail',[
-            'products'=>$products
-        ]);
+        //
     }
 
     /**
@@ -29,10 +23,7 @@ class LeaderController extends Controller
      */
     public function create()
     {
-        $products= Product::get();
-        return Inertia::render('Admin/Products/Create',[
-            'products'=>$products
-        ]);
+        //
     }
 
     /**
@@ -41,7 +32,6 @@ class LeaderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    
     public function store(Request $request)
     {
         //
@@ -66,10 +56,7 @@ class LeaderController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::findOrFail($id);
-        return Inertia::render('Admin/Products/Edit',[
-            'product' => $product
-        ]);
+        //
     }
 
     /**
@@ -82,14 +69,6 @@ class LeaderController extends Controller
     public function update(Request $request, $id)
     {
         //
-    }
-
-    public function delete(Request $request, $id)
-    {
-        $product = Product::findOrFail($id);
-        return Inertia::render('Admin/Products/Delete',[
-            'product' => $product
-        ]);
     }
 
     /**

@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Leader;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Achievement;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class LeaderController extends Controller
+class AdminLeaderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +17,9 @@ class LeaderController extends Controller
      */
     public function index()
     {
-        $products= Product::get();
-        return Inertia::render('Leader/Cetakdata/detail',[
-            'products'=>$products
+        $achievements= Achievement::get();
+        return Inertia::render('Admin/Leader/Index',[
+            'achievements'=>$achievements
         ]);
     }
 
@@ -30,7 +31,7 @@ class LeaderController extends Controller
     public function create()
     {
         $products= Product::get();
-        return Inertia::render('Admin/Products/Create',[
+        return Inertia::render('Admin/Employee/Create',[
             'products'=>$products
         ]);
     }
@@ -67,11 +68,17 @@ class LeaderController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-        return Inertia::render('Admin/Products/Edit',[
+        return Inertia::render('Admin/Achievement/Edit',[
             'product' => $product
         ]);
     }
-
+    public function delete($id)
+    {
+        $product = Product::findOrFail($id);
+        return Inertia::render('Admin/Achievement/Delete',[
+            'product' => $product
+        ]);
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -82,14 +89,6 @@ class LeaderController extends Controller
     public function update(Request $request, $id)
     {
         //
-    }
-
-    public function delete(Request $request, $id)
-    {
-        $product = Product::findOrFail($id);
-        return Inertia::render('Admin/Products/Delete',[
-            'product' => $product
-        ]);
     }
 
     /**

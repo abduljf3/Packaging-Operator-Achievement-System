@@ -8,14 +8,14 @@ export default function index({products,auth}) {
         
         <Nav roles={auth.roles}/>
 
-        <ul>ADMIN PRODUCT CREATE</ul>
+        <ul>ADMIN EMPOYEE EDIT</ul>
         {products.map((operator) => (
             <li key={operator.id} className="flex gap-3">
 
-<p>{operator.id}</p>
+                <p>{operator.id}</p>
                 <p>{operator.date}</p>
-               
                 <p>{operator.shift}</p>
+
                 <Link href={route('products.edit',operator.id)}>Edit</Link>
             </li>
         ))}

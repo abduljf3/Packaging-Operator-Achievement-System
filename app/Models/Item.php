@@ -9,5 +9,5 @@ class Item extends Model
 {
     use HasFactory;
     
-    
+  
 }

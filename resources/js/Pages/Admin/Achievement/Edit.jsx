@@ -1,14 +1,14 @@
 import Nav from "@/Components/Nav";
 import { Link } from "@inertiajs/react";
 
-export default function index({products,auth}) {
+export default function index({achievement,auth}) {
     console.log(auth);
     return(
         <>
         
         <Nav roles={auth.roles}/>
 
-        <ul>ADMIN PRODUCT CREATE</ul>
+        <ul>ADMIN ACHIEVEMENT EDIT</ul>
         {products.map((operator) => (
             <li key={operator.id} className="flex gap-3">
 
