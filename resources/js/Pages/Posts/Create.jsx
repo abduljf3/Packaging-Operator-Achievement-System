@@ -1,6 +1,23 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
+import React from 'react';
+import Authenticated from '@/Layouts/Authenticated';
+import { Head, useForm, Link, usePage } from '@inertiajs/inertia-react';
+  
+export default function Dashboard(props) {
+  
+    const { message } = usePage().props
+  
+    const { data, setData, errors, post } = useForm({
+        title: "",
+        description: "",
+    });
+  
+    function handleSubmit(e) {
+        e.preventDefault();
+        post(route("posts.store"));
+  
+        data.title = "";
+        data.body = "";
+    }
   
     return (
         <Authenticated

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Item;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -29,10 +30,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $products= Product::get();
-        return Inertia::render('Admin/Products/Create',[
-            'products'=>$products
-        ]);
+    
+        return Inertia::render('Admin/Products/Create');
     }
 
     /**
@@ -68,7 +67,7 @@ class ProductController extends Controller
     {
         $items = item::findOrFail($id);
         return Inertia::render('Admin/Products/Edit',[
-            'item' => $items
+            'items' => $items
         ]);
     }
 
@@ -81,12 +80,15 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+     $item = Item::findOrfail($id);
+     $item -> update();
+     return redirect()->route('producs.index');
     }
 
     public function delete(Request $request, $id)
     {
         $product = Product::findOrFail($id);
+        $product->delete();
         return Inertia::render('Admin/Products/Delete',[
             'product' => $product
         ]);

@@ -14,7 +14,7 @@ export default function index({items,auth}) {
                 <p>{item.drw_no}</p>
                 <p>{item.product_name}</p>
                 <p>{item.id_type}</p>
-                <Link href={route('Edit.edit',item.id)}>Edit</Link>
+                <Link href={route('products.edit',item.id)}>Edit</Link>
                   </li>
                   
         ))}

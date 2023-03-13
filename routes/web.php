@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\LeaderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AdminLeader;
 
+use App\Http\Controllers\ArchivemenyyController;
+use App\Http\Controllers\ArchivmenController;
 use App\Http\Controllers\ControllerLeader;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\ItemController;
@@ -25,6 +27,7 @@ use App\Http\Controllers\Pimpinan\Test;
 use App\Http\Controllers\PimpinanController;
 use App\Http\Controllers\PimpinanController1;
 use App\Http\Controllers\PimpinanControllerx;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Models\achivement;
@@ -42,6 +45,12 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+  
+use App\Http\Controllers\CompanyController;
+
+Route::resource('archivmenyss', ArchivemenyyController::class);
+Route::resource('companies', CompanyController::class);
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -54,7 +63,7 @@ Route::get('/', function () {
 
 Route::get('/home',[UserController::class,'index'])->name('home');
 Route::get('/dashboard',[UserController::class,'index'])->name('home');
-
+Route::get('/posts/create',[PostController::class,'index'])->name('home');
 
 Route::prefix('leader')->middleware(['auth'])->group(function () { 
     Route::resource('',\App\Http\Controllers\Leader\ControllerLeader::class);
