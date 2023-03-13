@@ -7,7 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class LeaderController extends Controller
+class ControllerLeader extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class LeaderController extends Controller
     public function index()
     {
         $products= Product::get();
-        return Inertia::render('Leader/Cetakdata/detail',[
+        return Inertia::render('Leader/Cetakdata/Index',[
             'products'=>$products
         ]);
     }

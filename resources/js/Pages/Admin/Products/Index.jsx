@@ -1,7 +1,7 @@
 import Nav from "@/Components/Nav";
 import { Link } from "@inertiajs/react";
 
-export default function index({products,auth}) {
+export default function index({items,auth}) {
     console.log(auth);
     return(
         <>
@@ -9,12 +9,14 @@ export default function index({products,auth}) {
         <Nav roles={auth.roles}/>
 
         <ul>List Product</ul>
-        {products.map((product) => (
-            <li key={product.id} className="flex gap-3">
-                <p>{product.drw_no}</p>
-                <p>{product.product_name}</p>
-                <Link href={route('products.edit',product.id)}>Edit</Link>
-            </li>
+        {items.map((item) => (
+            <li key={item.id} className="flex gap-3">
+                <p>{item.drw_no}</p>
+                <p>{item.product_name}</p>
+                <p>{item.id_type}</p>
+                <Link href={route('Edit.edit',item.id)}>Edit</Link>
+                  </li>
+                  
         ))}
         </>
     )

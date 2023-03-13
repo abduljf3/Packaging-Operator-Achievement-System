@@ -2,10 +2,23 @@
 
 use App\Http\Controllers\achivementcontroller;
 use App\Http\Controllers\addproduct;
+use App\Http\Controllers\Admin\AchievementControler;
+use App\Http\Controllers\Admin\AchievementController;
+use App\Http\Controllers\Admin\AdminEmployeeController;
+use App\Http\Controllers\Admin\admininputproduct;
+use App\Http\Controllers\Admin\AdminLeaderController;
+use App\Http\Controllers\Admin\AdminLeaders;
+use App\Http\Controllers\Admin\AdminProduct;
+use App\Http\Controllers\Admin\LeaderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\AdminLeader;
+
+use App\Http\Controllers\ControllerLeader;
+use App\Http\Controllers\FormController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\Leader\DetailLeader;
 use App\Http\Controllers\leader\index;
-use App\Http\Controllers\leader\LeaderController;
+
 use App\Http\Controllers\Operator\ControllerPimpinan;
 use App\Http\Controllers\Operator\OperatorController;
 use App\Http\Controllers\Pimpinan\Test;
@@ -40,26 +53,29 @@ Route::get('/', function () {
 });
 
 Route::get('/home',[UserController::class,'index'])->name('home');
+Route::get('/dashboard',[UserController::class,'index'])->name('home');
 
-Route::prefix('pimpinan')->middleware(['auth'])->group(function () { 
-    Route::resource('index',LeaderController::class);
+
+Route::prefix('leader')->middleware(['auth'])->group(function () { 
+    Route::resource('',\App\Http\Controllers\Leader\ControllerLeader::class);
+    Route::resource('detail',\App\Http\Controllers\Leader\LeaderController::class);
    
-  
 });
+
 Route::prefix('operator')->middleware(['auth'])->group(function () { 
-    Route::resource('index',OperatorController::class);
-    Route::resource('Edit',OperatorController::class);
-  
+    Route::resource('products',OperatorController::class);
+    Route::resource('Edit',OperatorController::class);  
 });
+
 Route::prefix('admin')->middleware(['auth'])->group(function () { 
     Route::resource('products',ProductController::class);
-    Route::resource('achievements', achivementcontroller::class);
+    Route::resource('Achievement',AchievementController::class);
+    Route::resource('Employee',AdminEmployeeController::class);
+    Route::resource('Leader',AdminLeaderController::class);
+ 
 });
 
-
-
 Route::get('/welcome',[ItemController::class,'welcome'])->name('welcome');
-Route::get('/achivement',[achivementcontroller::class,'achivement'])->name('achivement');
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -70,5 +86,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
 });
-
 require __DIR__.'/auth.php';

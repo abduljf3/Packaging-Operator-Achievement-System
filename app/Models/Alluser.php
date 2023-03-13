@@ -5,7 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OperatorController extends Model
+class Alluser extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'id',
+        'name',
+        'email',
+        'roles',
+    ];
 }
