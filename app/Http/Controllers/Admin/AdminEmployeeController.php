@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Leader;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use App\Models\Achievement;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class LeaderController extends Controller
+class AdminEmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +17,9 @@ class LeaderController extends Controller
      */
     public function index()
     {
-        $products= Product::get();
-        return Inertia::render('Leader/Cetakdata/detail',[
-            'products'=>$products
+        $users= User::get();
+        return Inertia::render('Admin/Employee/Index',[
+            'users'=>$users
         ]);
     }
 
@@ -30,7 +31,7 @@ class LeaderController extends Controller
     public function create()
     {
         $products= Product::get();
-        return Inertia::render('Admin/Products/Create',[
+        return Inertia::render('Admin/Employee/Create',[
             'products'=>$products
         ]);
     }
@@ -66,12 +67,18 @@ class LeaderController extends Controller
      */
     public function edit($id)
     {
+        $users = user::findOrFail($id);
+        return Inertia::render('Admin/Employee/Edit',[
+            'users' => $users
+        ]);
+    }
+    public function delete($id)
+    {
         $product = Product::findOrFail($id);
-        return Inertia::render('Admin/Products/Edit',[
+        return Inertia::render('Admin/Achievement/Delete',[
             'product' => $product
         ]);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -84,15 +91,7 @@ class LeaderController extends Controller
         //
     }
 
-    public function delete(Request $request, $id)
-    {
-        $product = Product::findOrFail($id);
-        return Inertia::render('Admin/Products/Delete',[
-            'product' => $product
-        ]);
-    }
-
-    /**
+      /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -100,6 +99,8 @@ class LeaderController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
+        $users = User::where('id', $id)->firstorfail()->delete();
+        echo ("User Record deleted successfully.");
+        return redirect()->route('employee.index');
+     }
 }

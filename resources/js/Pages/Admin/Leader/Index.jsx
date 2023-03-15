@@ -8,13 +8,13 @@ import { useState } from 'react';
 //import inertia adapter
 import { Inertia } from '@inertiajs/inertia';
 
-export default function index({items,auth}) {
+export default function index({users,auth}) {
     console.log(auth);
     const [deleting, setDeleting] = useState(false);
     // handle delete action
     const handleDelete = async (id) => {
       setDeleting(true);
-      await Inertia.delete(`/admin/products/${id}`);
+      await Inertia.delete(`/admin/leader/${id}`);
       setDeleting(false);
     };
     return(
@@ -22,19 +22,17 @@ export default function index({items,auth}) {
         
         <Nav roles={auth.roles}/>
 
-        <ul>List Product</ul>
-        {items.map((item) => (
-            <li key={item.id} className="flex gap-3">
-                <p>{item.drw_no}</p>
-                <p>{item.product_name}</p>
-                <p>{item.id_type}</p>
-                <Link href={route('products.edit',item.id)}>Edit</Link>
+        <ul>ADMIN LEADER INDEX</ul>
+        {users.map((user) => (
+            <li key={user.id} className="flex gap-3">
+                <p>{user.name}</p>
+                <p>{user.email}</p>
+                <Link href={route('leader.edit',user.id)}>Edit</Link>
               
-                <button disabled={deleting} onClick={() => handleDelete(item.id)}>
+                <button disabled={deleting} onClick={() => handleDelete(user.id)}>
             {deleting ? 'Deleting...' : 'Delete'}
-          </button>   
-                  </li>
-                  
+          </button> 
+              </li>
         ))}
         </>
     )

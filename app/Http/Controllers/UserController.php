@@ -12,7 +12,7 @@ class UserController extends Controller
                                                                                         
     {                                                                                   
         $users = User::where('name','Abdul Jabar')->get();                              
-        return Inertia::render('Home',[                                                 
+        return Inertia::render('namafolder/Home',[                                                 
             'users' => $users                                                           
         ]);                                                                             
     }                                                                                   

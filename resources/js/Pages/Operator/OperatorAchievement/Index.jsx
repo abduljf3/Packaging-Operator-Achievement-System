@@ -1,14 +1,29 @@
 import Nav from "@/Components/Nav";
 import { Link } from "@inertiajs/react";
+import Destroy from './Destroy';
+//import React
+import React from 'react';
+
+import { useState } from 'react';
+//import inertia adapter
+import { Inertia } from '@inertiajs/inertia';
 
 export default function index({products,auth}) {
     console.log(auth);
+    const [deleting, setDeleting] = useState(false);
+  // handle delete action
+  const handleDelete = async (id) => {
+    setDeleting(true);
+    await Inertia.delete(`/operator/operatorachievement/${id}`);
+    setDeleting(false);
+  };
     return(
         <>
         
         <Nav roles={auth.roles}/>
 
-         <ul>List Product</ul>
+         <ul>OPERATOR PRODUCTS INDEX</ul>
+         
             {products.map((operator) => (
             <li key={operator.id} className="flex gap-3">
 
@@ -24,9 +39,14 @@ export default function index({products,auth}) {
                 <p>{operator.total_lot}</p>
                 <p>{operator.qty}</p>
                 <p>{operator.remarks}</p>
-                <Link href={route('products.edit',operator.id)}>Edit</Link>
-                <Link href={route('products.edit',operator.id)}>Delete</Link>
-              </li>
+
+                <button disabled={deleting} onClick={() => handleDelete(operator.id)}>
+            {deleting ? 'Deleting...' : 'Delete'}
+          </button>                 
+                <Link href={route('operatorachievement.edit',operator.id)}>Edit</Link>
+               
+                
+                </li>
         ))}
         </>
     )

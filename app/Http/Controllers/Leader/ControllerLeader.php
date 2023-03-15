@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Leader;
 
-use App\Models\LeaderController;
+use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
-class LeaderControllerController extends Controller
+class ControllerLeader extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +16,10 @@ class LeaderControllerController extends Controller
      */
     public function index()
     {
-        //
+        $products= Product::get();
+        return Inertia::render('Leader/Cetakdata/Index',[
+            'products'=>$products
+        ]);
     }
 
     /**
@@ -24,7 +29,10 @@ class LeaderControllerController extends Controller
      */
     public function create()
     {
-        //
+        $products= Product::get();
+        return Inertia::render('Admin/Products/Create',[
+            'products'=>$products
+        ]);
     }
 
     /**
@@ -33,6 +41,7 @@ class LeaderControllerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
     public function store(Request $request)
     {
         //
@@ -41,10 +50,10 @@ class LeaderControllerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\LeaderController  $leaderController
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(LeaderController $leaderController)
+    public function show($id)
     {
         //
     }
@@ -52,33 +61,44 @@ class LeaderControllerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\LeaderController  $leaderController
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(LeaderController $leaderController)
+    public function edit($id)
     {
-        //
+        $product = Product::findOrFail($id);
+        return Inertia::render('Admin/Products/Edit',[
+            'product' => $product
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\LeaderController  $leaderController
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LeaderController $leaderController)
+    public function update(Request $request, $id)
     {
         //
+    }
+
+    public function delete(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+        return Inertia::render('Admin/Products/Delete',[
+            'product' => $product
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\LeaderController  $leaderController
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LeaderController $leaderController)
+    public function destroy($id)
     {
         //
     }

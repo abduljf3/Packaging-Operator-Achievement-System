@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Item;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,9 +17,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products= Product::get();
+        $items= Item::get();
         return Inertia::render('Admin/Products/Index',[
-            'products'=>$products
+            'items'=>$items
         ]);
     }
 
@@ -29,6 +30,7 @@ class ProductController extends Controller
      */
     public function create()
     {
+    
         return Inertia::render('Admin/Products/Create');
     }
 
@@ -38,6 +40,7 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
     public function store(Request $request)
     {
         //
@@ -62,9 +65,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::findOrFail($id);
+        $items = item::findOrFail($id);
         return Inertia::render('Admin/Products/Edit',[
-            'product' => $product
+            'items' => $items
         ]);
     }
 
@@ -77,7 +80,19 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+     $item = Item::findOrfail($id);
+     $item -> update();
+     return redirect()->route('producs.index');
+    }
+
+    public function delete(Request $request, $id)
+    {
+        $item = Item::findOrFail($id);
+        $item->delete();
+        return Inertia::render('Admin/Products/Edi',[
+            'item' => $item
+        ]);
+        
     }
 
     /**
@@ -88,6 +103,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
+        $items = item::where('id', $id)->firstorfail()->delete();
+        echo ("User Record deleted successfully.");
+        return redirect()->route('products.index');
+     }
 }

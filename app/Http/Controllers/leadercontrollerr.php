@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Operator;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Operator;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\User;                                                                                                                             
-use Inertia\Inertia;   
+use Inertia\Inertia; 
 
-class OperatorController extends Controller
+class leadercontrollerr extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +16,9 @@ class OperatorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {                   
+    {
         $products= Operator::get();
-        return Inertia::render('Operator/OperatorAchievement/Index',[
+        return Inertia::render('Leader/Index',[
             'products'=>$products
         ]);
     }
@@ -42,17 +41,7 @@ class OperatorController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the form data
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|unique:users',
-        ]);
-    
-        // Create a new record in the database
-        $user = User::create($validatedData);
-    
-        // Redirect the user to a success page
-        return redirect()->route('success');
+        //
     }
 
     /**
@@ -74,10 +63,7 @@ class OperatorController extends Controller
      */
     public function edit($id)
     {
-        $operators = Operator::findOrFail($id);
-        return Inertia::render('Operator/OperatorAchievement/Edit',[
-            'operators' => $operators
-        ]);
+        //
     }
 
     /**
@@ -91,11 +77,15 @@ class OperatorController extends Controller
     {
         //
     }
-    public function destroy($id) 
-       {
-          $products = Operator::where('id', $id)->firstorfail()->delete();
-          echo ("User Record deleted successfully.");
-          return redirect()->route('operatorachievement.index');
-       }
-    } 
- 
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+}

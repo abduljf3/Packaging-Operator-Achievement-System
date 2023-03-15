@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\User;                                                                                                                             
 use Inertia\Inertia;   
 
-class OperatorController extends Controller
+class OperatorCreate extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +19,7 @@ class OperatorController extends Controller
     public function index()
     {                   
         $products= Operator::get();
-        return Inertia::render('Operator/OperatorAchievement/Index',[
+        return Inertia::render('Operator/OperatorAchievement/Creates',[
             'products'=>$products
         ]);
     }
