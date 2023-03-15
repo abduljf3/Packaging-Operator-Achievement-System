@@ -6,7 +6,7 @@ import Dropdown from "@/Components/Dropdown";
 export default function Navbar({ roles, props, auth, header }) {
     if (roles === "operator") {
         return (
-            <div class="py-2 border bg-white-600 border-t-neutral-400">
+            <div class="py-3 border bg-white border-t-neutral-400">
                 <nav class="container flex items-center justify-between mx-auto">
                     <div class="flex items-center">
                         <img
@@ -15,7 +15,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             className="h-14"
                         />
                         <h1 class="text-xl font-bold text-black">
-                            Packaging Operator Achievement System
+                            Packaging Operator<br></br>Achievement System
                         </h1>
                     </div>
                     <div class="flex gap-5">
@@ -55,7 +55,7 @@ export default function Navbar({ roles, props, auth, header }) {
         );
     } else if (roles == "admin") {
         return (
-            <div class="py-2 border bg-white-600 border-t-neutral-400">
+            <div class="py-3 border bg-white border-t-neutral-400">
                 <nav class="container flex items-center justify-between mx-auto">
                     <div class="flex items-center">
                         <img
@@ -64,7 +64,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             className="h-14"
                         />
                         <h1 class="text-xl font-bold text-black">
-                            Packaging Operator Achievement System
+                            Packaging Operator<br></br>Achievement System
                         </h1>
                     </div>
                     <div class="flex gap-5">
@@ -137,7 +137,7 @@ export default function Navbar({ roles, props, auth, header }) {
         );
     } else if (roles == "login") {
         return (
-            <div class="py-2 border bg-white-600 border-t-neutral-400">
+            <div class="py-3 border bg-white border-t-neutral-400">
                 <nav class="container flex items-center justify-between mx-auto">
                     <div class="flex items-center">
                         <img
@@ -146,7 +146,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             className="h-14"
                         />
                         <h1 class="text-xl font-bold text-black">
-                            Packaging Operator Achievement System
+                            Packaging Operator<br></br>Achievement System
                         </h1>
                     </div>
                     <div class="flex gap-5">
@@ -164,7 +164,7 @@ export default function Navbar({ roles, props, auth, header }) {
         );
     } else {
         return (
-            <div class="py-2 border bg-white-600 border-t-neutral-400">
+            <div class="py-3 border bg-white border-t-neutral-400">
                 <nav class="container flex items-center justify-between mx-auto">
                     <div class="flex items-center">
                         <img
@@ -173,7 +173,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             className="h-14"
                         />
                         <h1 class="text-xl font-bold text-black">
-                            Packaging Operator Achievement System
+                            Packaging Operator<br></br>Achievement System
                         </h1>
                     </div>
                     <div class="flex gap-5">
