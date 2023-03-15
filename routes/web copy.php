@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\achivementcontroller;
 use App\Http\Controllers\addproduct;
 use App\Http\Controllers\Admin\AchievementControler;
@@ -12,7 +11,6 @@ use App\Http\Controllers\Admin\AdminProduct;
 use App\Http\Controllers\Admin\LeaderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AdminLeader;
-
 use App\Http\Controllers\ArchivemenyyController;
 use App\Http\Controllers\ArchivmenController;
 use App\Http\Controllers\ControllerLeader;
@@ -20,10 +18,8 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Leader\DetailLeader;
 use App\Http\Controllers\leader\index;
-
 use App\Http\Controllers\Operator\ControllerPimpinan;
 use App\Http\Controllers\Operator\OperatorController;
-use App\Http\Controllers\Operator\OperatorCreate;
 use App\Http\Controllers\Pimpinan\Test;
 use App\Http\Controllers\PimpinanController;
 use App\Http\Controllers\PimpinanController1;
@@ -35,6 +31,7 @@ use App\Models\achivement;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\CompanyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +44,7 @@ use Inertia\Inertia;
 |
 */
   
-use App\Http\Controllers\CompanyController;
+
 
 Route::resource('archivmenyss', ArchivemenyyController::class);
 Route::resource('companies', CompanyController::class);
@@ -61,6 +58,7 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
 Route::get('/home',[UserController::class,'index'])->name('home');
 Route::get('/dashboard',[UserController::class,'index'])->name('home');
 Route::get('/posts/create',[PostController::class,'index'])->name('home');
@@ -73,7 +71,7 @@ Route::prefix('leader')->middleware(['auth'])->group(function () {
 
 Route::prefix('operator')->middleware(['auth'])->group(function () { 
     Route::resource('operatorachievement',OperatorController::class);
-    Route::resource('operatorachievement/create',OperatorCreate::class);
+ 
 });
 
 Route::prefix('admin')->middleware(['auth'])->group(function () { 

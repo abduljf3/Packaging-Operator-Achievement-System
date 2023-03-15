@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Operator;
 
 use App\Http\Controllers\Controller;
 use App\Models\Operator;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\User;                                                                                                                             
 use Inertia\Inertia;   
+
 class OperatorController extends Controller
 {
     /**
@@ -17,7 +19,7 @@ class OperatorController extends Controller
     public function index()
     {                   
         $products= Operator::get();
-        return Inertia::render('Operator/Products/Index',[
+        return Inertia::render('Operator/OperatorAchievement/Index',[
             'products'=>$products
         ]);
     }
@@ -40,7 +42,17 @@ class OperatorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the form data
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:users',
+        ]);
+    
+        // Create a new record in the database
+        $user = User::create($validatedData);
+    
+        // Redirect the user to a success page
+        return redirect()->route('success');
     }
 
     /**
@@ -62,9 +74,9 @@ class OperatorController extends Controller
      */
     public function edit($id)
     {
-        $products = Operator::findOrFail($id);
-        return Inertia::render('Operator/Products/Edit',[
-            'products' => $products
+        $operators = Operator::findOrFail($id);
+        return Inertia::render('Operator/OperatorAchievement/Edit',[
+            'operators' => $operators
         ]);
     }
 
@@ -79,15 +91,11 @@ class OperatorController extends Controller
     {
         //
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-}
+    public function destroy($id) 
+       {
+          $products = Operator::where('id', $id)->firstorfail()->delete();
+          echo ("User Record deleted successfully.");
+          return redirect()->route('operatorachievement.index');
+       }
+    } 
+ 

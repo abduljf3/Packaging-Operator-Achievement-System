@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Achievement;
+use App\Models\User;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,9 +17,9 @@ class AdminLeaderController extends Controller
      */
     public function index()
     {
-        $achievements= Achievement::get();
+        $users= User::get();
         return Inertia::render('Admin/Leader/Index',[
-            'achievements'=>$achievements
+            'users'=>$users
         ]);
     }
 
@@ -67,9 +67,9 @@ class AdminLeaderController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::findOrFail($id);
-        return Inertia::render('Admin/Achievement/Edit',[
-            'product' => $product
+        $users = user::findOrFail($id);
+        return Inertia::render('Admin/Leader/Edit',[
+            'users' => $users
         ]);
     }
     public function delete($id)
@@ -91,7 +91,8 @@ class AdminLeaderController extends Controller
         //
     }
 
-    /**
+ 
+      /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -99,6 +100,8 @@ class AdminLeaderController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
+        $users = User::where('id', $id)->firstorfail()->delete();
+        echo ("User Record deleted successfully.");
+        return redirect()->route('leader.index');
+     }
 }

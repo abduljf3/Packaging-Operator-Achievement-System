@@ -8,23 +8,25 @@ import { useState } from 'react';
 //import inertia adapter
 import { Inertia } from '@inertiajs/inertia';
 
-export default function index({operators,auth}) {
+export default function index({products,auth}) {
     console.log(auth);
     const [deleting, setDeleting] = useState(false);
-    // handle delete action
-    const handleDelete = async (id) => {
-      setDeleting(true);
-      await Inertia.delete(`/admin/achievement/${id}`);
-      setDeleting(false);
-    };
+  // handle delete action
+  const handleDelete = async (id) => {
+    setDeleting(true);
+    await Inertia.delete(`/operator/operatorachievement/${id}`);
+    setDeleting(false);
+  };
     return(
         <>
         
         <Nav roles={auth.roles}/>
-        <ul>Admin Achievement Index</ul>
-        <ul>List Achievement</ul>
-        {operators.map((operator) => (
+
+         <ul>OPERATOR PRODUCTS INDEX</ul>
+            {products.map((operator) => (
             <li key={operator.id} className="flex gap-3">
+
+                <p>{operator.id}</p>
                 <p>{operator.date}</p>
                 <p>{operator.shift}</p>
                 <p>{operator.group}</p>
@@ -36,13 +38,15 @@ export default function index({operators,auth}) {
                 <p>{operator.total_lot}</p>
                 <p>{operator.qty}</p>
                 <p>{operator.remarks}</p>
-                <Link href={route('achievement.edit',operator.id)}>Edit</Link>
 
                 <button disabled={deleting} onClick={() => handleDelete(operator.id)}>
             {deleting ? 'Deleting...' : 'Delete'}
-          </button>   
-
-                     </li>
+          </button>                 
+                <Link href={route('operatorachievement.edit',operator.id)}>Edit</Link>
+                    <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                        <Destroy className="max-w-xl" />
+                    </div>
+                </li>
         ))}
         </>
     )

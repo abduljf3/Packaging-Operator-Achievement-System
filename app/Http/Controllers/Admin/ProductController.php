@@ -87,11 +87,12 @@ class ProductController extends Controller
 
     public function delete(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
-        $product->delete();
-        return Inertia::render('Admin/Products/Delete',[
-            'product' => $product
+        $item = Item::findOrFail($id);
+        $item->delete();
+        return Inertia::render('Admin/Products/Edi',[
+            'item' => $item
         ]);
+        
     }
 
     /**
@@ -102,6 +103,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
+        $items = item::where('id', $id)->firstorfail()->delete();
+        echo ("User Record deleted successfully.");
+        return redirect()->route('products.index');
+     }
 }

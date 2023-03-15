@@ -15,8 +15,6 @@ export default function index({items,auth}) {
                 <p>{item.product_name}</p>
                 <p>{item.id_type}</p>
                 <Link href={route('products.edit',item.id)}>Edit</Link>
-                <Link href={route('products.destroy',item.id)}>Delete</Link>
-            
                   </li>
                   
         ))}

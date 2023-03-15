@@ -1,15 +1,15 @@
 import Nav from "@/Components/Nav";
 import { Link } from "@inertiajs/react";
 
-export default function index({users,auth}) {
-    console.log(users);
+export default function index({operators,auth}) {
+    console.log(operators);
     return(
         <>
         
         <Nav roles={auth.roles}/>
 
-        <ul>Edit Product</ul>
-      {users.name}
+        <ul>Input Achievement Operator</ul>
+      {operators.date}
         </>
     )
 }

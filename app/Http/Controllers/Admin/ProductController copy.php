@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Operator;
+use App\Models\Item;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class AchievementController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +17,9 @@ class AchievementController extends Controller
      */
     public function index()
     {
-        $operators= Operator::get();
-        return Inertia::render('Admin/Achievement/Index',[
-            'operators'=>$operators
+        $items= Item::get();
+        return Inertia::render('Admin/Products/Index',[
+            'items'=>$items
         ]);
     }
 
@@ -30,10 +30,8 @@ class AchievementController extends Controller
      */
     public function create()
     {
-        $operators= Operator::get();
-        return Inertia::render('Admin/Achievement/Index',[
-            'operators'=>$operators
-        ]);
+    
+        return Inertia::render('Admin/Products/Create');
     }
 
     /**
@@ -67,18 +65,12 @@ class AchievementController extends Controller
      */
     public function edit($id)
     {
-        $operators = Operator::findOrFail($id);
-        return Inertia::render('Admin/Achievement/Edit',[
-            'operators' => $operators
+        $items = item::findOrFail($id);
+        return Inertia::render('Admin/Products/Edit',[
+            'items' => $items
         ]);
     }
-    public function delete($id)
-    {
-        $product = Product::findOrFail($id);
-        return Inertia::render('Admin/Achievement/Delete',[
-            'product' => $product
-        ]);
-    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -88,10 +80,21 @@ class AchievementController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+     $item = Item::findOrfail($id);
+     $item -> update();
+     return redirect()->route('producs.index');
     }
 
-      /**
+    public function delete(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+        $product->delete();
+        return Inertia::render('Admin/Products/Delete',[
+            'product' => $product
+        ]);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -99,8 +102,6 @@ class AchievementController extends Controller
      */
     public function destroy($id)
     {
-        $operators = operator::where('id', $id)->firstorfail()->delete();
-        echo ("User Record deleted successfully.");
-        return redirect()->route('achievement.index');
-     }
+        //
+    }
 }

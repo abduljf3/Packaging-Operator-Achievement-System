@@ -67,9 +67,9 @@ class AdminEmployeeController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::findOrFail($id);
-        return Inertia::render('Admin/Achievement/Edit',[
-            'product' => $product
+        $users = user::findOrFail($id);
+        return Inertia::render('Admin/Employee/Edit',[
+            'users' => $users
         ]);
     }
     public function delete($id)
@@ -91,7 +91,7 @@ class AdminEmployeeController extends Controller
         //
     }
 
-    /**
+      /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -99,6 +99,8 @@ class AdminEmployeeController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
+        $users = User::where('id', $id)->firstorfail()->delete();
+        echo ("User Record deleted successfully.");
+        return redirect()->route('employee.index');
+     }
 }

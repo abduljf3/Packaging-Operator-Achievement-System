@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Operator;
+use App\Models\Achievement;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class AchievementController extends Controller
+class AdminLeaderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +17,9 @@ class AchievementController extends Controller
      */
     public function index()
     {
-        $operators= Operator::get();
-        return Inertia::render('Admin/Achievement/Index',[
-            'operators'=>$operators
+        $achievements= Achievement::get();
+        return Inertia::render('Admin/Leader/Index',[
+            'achievements'=>$achievements
         ]);
     }
 
@@ -30,9 +30,9 @@ class AchievementController extends Controller
      */
     public function create()
     {
-        $operators= Operator::get();
-        return Inertia::render('Admin/Achievement/Index',[
-            'operators'=>$operators
+        $products= Product::get();
+        return Inertia::render('Admin/Employee/Create',[
+            'products'=>$products
         ]);
     }
 
@@ -67,9 +67,9 @@ class AchievementController extends Controller
      */
     public function edit($id)
     {
-        $operators = Operator::findOrFail($id);
+        $product = Product::findOrFail($id);
         return Inertia::render('Admin/Achievement/Edit',[
-            'operators' => $operators
+            'product' => $product
         ]);
     }
     public function delete($id)
@@ -91,7 +91,7 @@ class AchievementController extends Controller
         //
     }
 
-      /**
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -99,8 +99,6 @@ class AchievementController extends Controller
      */
     public function destroy($id)
     {
-        $operators = operator::where('id', $id)->firstorfail()->delete();
-        echo ("User Record deleted successfully.");
-        return redirect()->route('achievement.index');
-     }
+        //
+    }
 }

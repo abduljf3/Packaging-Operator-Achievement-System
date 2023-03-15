@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Operator;
 
 use App\Http\Controllers\Controller;
 use App\Models\Operator;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
+use App\Models\User;                                                                                                                             
+use Inertia\Inertia;   
 
-class AchievementController extends Controller
+class OperatorCreate extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,10 +17,10 @@ class AchievementController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $operators= Operator::get();
-        return Inertia::render('Admin/Achievement/Index',[
-            'operators'=>$operators
+    {                   
+        $products= Operator::get();
+        return Inertia::render('Operator/OperatorAchievement/Creates',[
+            'products'=>$products
         ]);
     }
 
@@ -30,10 +31,7 @@ class AchievementController extends Controller
      */
     public function create()
     {
-        $operators= Operator::get();
-        return Inertia::render('Admin/Achievement/Index',[
-            'operators'=>$operators
-        ]);
+        //
     }
 
     /**
@@ -42,10 +40,19 @@ class AchievementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    
     public function store(Request $request)
     {
-        //
+        // Validate the form data
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:users',
+        ]);
+    
+        // Create a new record in the database
+        $user = User::create($validatedData);
+    
+        // Redirect the user to a success page
+        return redirect()->route('success');
     }
 
     /**
@@ -68,17 +75,11 @@ class AchievementController extends Controller
     public function edit($id)
     {
         $operators = Operator::findOrFail($id);
-        return Inertia::render('Admin/Achievement/Edit',[
+        return Inertia::render('Operator/OperatorAchievement/Edit',[
             'operators' => $operators
         ]);
     }
-    public function delete($id)
-    {
-        $product = Product::findOrFail($id);
-        return Inertia::render('Admin/Achievement/Delete',[
-            'product' => $product
-        ]);
-    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -90,17 +91,11 @@ class AchievementController extends Controller
     {
         //
     }
-
-      /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $operators = operator::where('id', $id)->firstorfail()->delete();
-        echo ("User Record deleted successfully.");
-        return redirect()->route('achievement.index');
-     }
-}
+    public function destroy($id) 
+       {
+          $products = Operator::where('id', $id)->firstorfail()->delete();
+          echo ("User Record deleted successfully.");
+          return redirect()->route('operatorachievement.index');
+       }
+    } 
+ 

@@ -1,22 +1,8 @@
 import Nav from "@/Components/Nav";
 import { Link } from "@inertiajs/react";
-import Destroy from './Destroy';
-//import React
-import React from 'react';
-
-import { useState } from 'react';
-//import inertia adapter
-import { Inertia } from '@inertiajs/inertia';
 
 export default function index({operators,auth}) {
     console.log(auth);
-    const [deleting, setDeleting] = useState(false);
-    // handle delete action
-    const handleDelete = async (id) => {
-      setDeleting(true);
-      await Inertia.delete(`/admin/achievement/${id}`);
-      setDeleting(false);
-    };
     return(
         <>
         
@@ -38,9 +24,6 @@ export default function index({operators,auth}) {
                 <p>{operator.remarks}</p>
                 <Link href={route('achievement.edit',operator.id)}>Edit</Link>
 
-                <button disabled={deleting} onClick={() => handleDelete(operator.id)}>
-            {deleting ? 'Deleting...' : 'Delete'}
-          </button>   
 
                      </li>
         ))}

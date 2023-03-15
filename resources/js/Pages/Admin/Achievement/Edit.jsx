@@ -1,24 +1,15 @@
 import Nav from "@/Components/Nav";
 import { Link } from "@inertiajs/react";
 
-export default function index({achievement,auth}) {
-    console.log(auth);
+export default function index({operators,auth}) {
+    console.log(operators);
     return(
         <>
         
         <Nav roles={auth.roles}/>
 
-        <ul>ADMIN ACHIEVEMENT EDIT</ul>
-        {products.map((operator) => (
-            <li key={operator.id} className="flex gap-3">
-
-<p>{operator.id}</p>
-                <p>{operator.date}</p>
-               
-                <p>{operator.shift}</p>
-                <Link href={route('products.edit',operator.id)}>Edit</Link>
-            </li>
-        ))}
+        <ul>Edit Achievement Admin</ul>
+      {operators.date}
         </>
     )
 }
