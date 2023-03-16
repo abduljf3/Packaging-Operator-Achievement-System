@@ -1,55 +1,195 @@
 import Nav from "@/Components/Nav";
-import { Link } from "@inertiajs/react";
-import Destroy from './Destroy';
-//import React
-import React from 'react';
+import { Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
 
-import { useState } from 'react';
-//import inertia adapter
-import { Inertia } from '@inertiajs/inertia';
+export default function Create({auth}) {
+  const { data, setData, post, errors } = useForm({
+ 
+   
+    shift: "",
+    group: "",
+    proses: "",
+    user_id: "",
+    user_product: "",
+    spring_lot: "",
+    product_lot: "",
+    total_lot: "",
+    qty: "",
+    remarks: "",
 
-export default function index({products,auth}) {
-    console.log(auth);
-    const [deleting, setDeleting] = useState(false);
-  // handle delete action
-  const handleDelete = async (id) => {
-    setDeleting(true);
-    await Inertia.delete(`/operator/operatorachievement/${id}`);
-    setDeleting(false);
+   
+  });
+
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleChange = (e) => {
+    const key = e.target.name;
+    const value = e.target.value;
+    setData((data) => ({ ...data, [key]: value }));
   };
-    return(
-        <>
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    await post("/operator/operatorachievement", {
+      data,
+      preserveScroll: true,
+    });
+    setSubmitting(false);
+  };
+
+  return (
+    <>
+      <Nav roles={auth.roles} />
+
+      <form onSubmit={handleSubmit}>
+     
+     <div>
+       <label htmlFor="shift">Shift</label>
+       <input
+         type="text"
+         name="shift"
+         value={data.shift}
+         onChange={handleChange}
+         className={errors.shift ? "border-red-500" : ""}
+       />
+       {errors.shift && (
+         <div className="text-red-500">{errors.shift}</div>
+       )}
+     </div>
+     
+     
+     <div>
+          <label htmlFor="group">Group</label>
+          <input
+            type="text"
+            name="group"
+            value={data.group}
+            onChange={handleChange}
+            className={errors.group ? "border-red-500" : ""}
+          />
+          {errors.group && (
+            <div className="text-red-500">{errors.group}</div>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="proses">Proses</label>
+          <input
+            type="text"
+            name="proses"
+            value={data.proses}
+            onChange={handleChange}
+            className={errors.proses ? "border-red-500" : ""}
+          />
+          {errors.proses && (
+            <div className="text-red-500">{errors.proses}</div>
+          )}
+        </div>
+       
+        <div>
+          <label htmlFor="user_id">User Id</label>
+          <input
+            type="text"
+            name="user_id"
+            value={data.user_id}
+            onChange={handleChange}
+            className={errors.user_id ? "border-red-500" : ""}
+          />
+          {errors.user_id && (
+            <div className="text-red-500">{errors.user_id}</div>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="user_product">User_Product</label>
+          <input
+            type="text"
+            name="user_product"
+            value={data.user_product}
+            onChange={handleChange}
+            className={errors.user_product ? "border-red-500" : ""}
+          />
+          {errors.user_product && (
+            <div className="text-red-500">{errors.user_product}</div>
+          )}
+        </div>
         
-        <Nav roles={auth.roles}/>
-
-         <ul>OPERATOR PRODUCTS INDEX</ul>
-         
-            {products.map((operator) => (
-            <li key={operator.id} className="flex gap-3">
-
-                <p>{operator.id}</p>
-                <p>{operator.date}</p>
-                <p>{operator.shift}</p>
-                <p>{operator.group}</p>
-                <p>{operator.proses}</p>
-                <p>{operator.user_id}</p>
-                <p>{operator.user_product}</p>
-                <p>{operator.spring_lot}</p>
-                <p>{operator.product_lot}</p>
-                <p>{operator.total_lot}</p>
-                <p>{operator.qty}</p>
-                <p>{operator.remarks}</p>
-
-                <button disabled={deleting} onClick={() => handleDelete(operator.id)}>
-            {deleting ? 'Deleting...' : 'Delete'}
-          </button>                 
-                <Link href={route('operatorachievement.edit',operator.id)}>Edit</Link>
-               
-                    <div className="p-4 sm:p-8 bg-black shadow sm:rounded-lg">
-                        <Destroy className="max-w-xl" />
-                    </div>
-                </li>
-        ))}
-        </>
-    )
+        <div>
+          <label htmlFor="spring_lot">Spring Lot</label>
+          <input
+            type="text"
+            name="spring_lot"
+            value={data.spring_lot}
+            onChange={handleChange}
+            className={errors.spring_lot ? "border-red-500" : ""}
+          />
+          {errors.spring_lot && (
+            <div className="text-red-500">{errors.spring_lot}</div>
+          )}
+        </div>
+        
+        <div>
+          <label htmlFor="product_lot">Product Lot</label>
+          <input
+            type="text"
+            name="product_lot"
+            value={data.product_lot}
+            onChange={handleChange}
+            className={errors.product_lot ? "border-red-500" : ""}
+          />
+          {errors.product_lot && (
+            <div className="text-red-500">{errors.product_lot}</div>
+          )}
+        </div>
+        
+        <div>
+          <label htmlFor="total_lot">Total Lot</label>
+          <input
+            type="text"
+            name="total_lot"
+            value={data.total_lot}
+            onChange={handleChange}
+            className={errors.total_lot ? "border-red-500" : ""}
+          />
+          {errors.total_lot && (
+            <div className="text-red-500">{errors.total_lot}</div>
+          )}
+        </div>
+        
+        <div>
+          <label htmlFor="qty">QTY</label>
+          <input
+            type="text"
+            name="qty"
+            value={data.qty}
+            onChange={handleChange}
+            className={errors.qty ? "border-red-500" : ""}
+          />
+          {errors.qty && (
+            <div className="text-red-500">{errors.qty}</div>
+          )}
+        </div>
+        
+        <div>
+          <label htmlFor="remarks">Remarks</label>
+          <input
+            type="text"
+            name="remarks"
+            value={data.remarks}
+            onChange={handleChange}
+            className={errors.remarks ? "border-red-500" : ""}
+          />
+          {errors.remarks && (
+            <div className="text-red-500">{errors.remarks}</div>
+          )}
+        </div>
+        <div>
+          <button type="submit" disabled={submitting}>
+            {submitting ? "Creating..." : "Create"}
+          </button>
+        </div>
+      </form>
+    </>
+  );
 }

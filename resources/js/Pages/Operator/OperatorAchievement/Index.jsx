@@ -8,7 +8,7 @@ import { useState } from 'react';
 //import inertia adapter
 import { Inertia } from '@inertiajs/inertia';
 
-export default function index({products,auth}) {
+export default function index({operators,auth}) {
     console.log(auth);
     const [deleting, setDeleting] = useState(false);
   // handle delete action
@@ -22,9 +22,9 @@ export default function index({products,auth}) {
         
         <Nav roles={auth.roles}/>
 
-         <ul>OPERATOR PRODUCTS INDEX</ul>
+         <ul>OPERATOR operators INDEX</ul>
          
-            {products.map((operator) => (
+            {operators.map((operator) => (
             <li key={operator.id} className="flex gap-3">
 
                 <p>{operator.id}</p>
@@ -39,7 +39,9 @@ export default function index({products,auth}) {
                 <p>{operator.total_lot}</p>
                 <p>{operator.qty}</p>
                 <p>{operator.remarks}</p>
+            
 
+    <Link href={route('operatorachievement.create')}>Create New Product</Link>
                 <button disabled={deleting} onClick={() => handleDelete(operator.id)}>
             {deleting ? 'Deleting...' : 'Delete'}
           </button>                 

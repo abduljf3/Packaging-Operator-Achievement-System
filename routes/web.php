@@ -2,8 +2,7 @@
 
 use App\Http\Controllers\achivementcontroller;
 use App\Http\Controllers\addproduct;
-use App\Http\Controllers\Admin\AchievementControler;
-use App\Http\Controllers\Admin\AchievementController;
+use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\Admin\AdminEmployeeController;
 use App\Http\Controllers\Admin\admininputproduct;
 use App\Http\Controllers\Admin\AdminLeaderController;
@@ -21,9 +20,9 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Leader\DetailLeader;
 use App\Http\Controllers\leader\index;
 
-use App\Http\Controllers\Operator\ControllerPimpinan;
+
 use App\Http\Controllers\Operator\OperatorController;
-use App\Http\Controllers\Operator\OperatorCreate;
+
 use App\Http\Controllers\Pimpinan\Test;
 use App\Http\Controllers\PimpinanController;
 use App\Http\Controllers\PimpinanController1;
@@ -62,23 +61,27 @@ Route::get('/', function () {
     ]);
 });
 Route::get('/home',[UserController::class,'index'])->name('home');
+Route::get('/achievement',[AchievementController::class,'create'])->name('AchievementCreate');
+Route::get('/achievements', 'AchievementController@store');
+
 Route::get('/dashboard',[UserController::class,'index'])->name('home');
 Route::get('/posts/create',[PostController::class,'index'])->name('home');
 
 Route::prefix('leader')->middleware(['auth'])->group(function () { 
     Route::resource('',\App\Http\Controllers\Leader\ControllerLeader::class);
-    Route::resource('detail',\App\Http\Controllers\Leader\LeaderController::class);
+    Route::resource('cetakdata/indexss',\App\Http\Controllers\Leader\ControllerLeader::class);
    
 });
 
 Route::prefix('operator')->middleware(['auth'])->group(function () { 
     Route::resource('operatorachievement',OperatorController::class);
-    Route::resource('operatorachievement/create',OperatorCreate::class);
+   
+
 });
 
 Route::prefix('admin')->middleware(['auth'])->group(function () { 
     Route::resource('products',ProductController::class);
-    Route::resource('achievement',AchievementController::class);
+    Route::resource('achievement',\App\Http\Controllers\Admin\AchievementController::class);
     Route::resource('employee',AdminEmployeeController::class);
     Route::resource('leader',AdminLeaderController::class);
  

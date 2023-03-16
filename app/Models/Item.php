@@ -9,5 +9,10 @@ class Item extends Model
 {
     use HasFactory;
     
-  
+    protected $fillable = [
+        'id',
+        'drw_no',
+        'product_name',
+        'product_type',
+    ];
 }

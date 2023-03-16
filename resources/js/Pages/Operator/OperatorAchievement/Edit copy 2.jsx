@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import Nav from '@/Components/Nav';
+import DatePicker from 'react-datepicker';
 import { format } from 'date-fns';
+
+import 'react-datepicker/dist/react-datepicker.css';
 export default function Edit({ operator, auth }) {
   const [state, setState] = useState({
     id: operator.id,
@@ -26,17 +29,14 @@ export default function Edit({ operator, auth }) {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
   };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    Inertia.put(`/operator/operatorachievement/${state.id}`, state)
-      .then(() => {
-        // Redirect to the operator list
-        Inertia.visit('/operator/operatorachievement');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    setSubmitting(true);
+    await post("/operator/operatorachievement", {
+      data,
+      preserveScroll: true,
+    });
+    setSubmitting(false);
   };
 
   return (
@@ -46,16 +46,17 @@ export default function Edit({ operator, auth }) {
       <h1>Edit Product</h1>
 
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="date">Date:</label>
-          <input
-            type="date"
-            id="date"
-            name="date"
-            value={state.date}
-            onChange={handleChange}
-          />
-        </div>
+      <div>
+  <label htmlFor="date">Date:</label>
+  <DatePicker
+    id="date"
+    name="date"
+    selected={state.date ? new Date(state.date) : null}
+    onChange={(date) =>
+      setState({ ...state, date: format(date, 'yyyy-MM-dd') })
+    }
+  />
+</div>
 
         <div>
           <label htmlFor="shift">Shift:</label>

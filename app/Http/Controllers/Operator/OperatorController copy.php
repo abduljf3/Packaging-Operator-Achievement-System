@@ -62,11 +62,10 @@ class OperatorController extends Controller
     {
         $operator = Operator::findOrFail($id);
 
-        return Inertia::render('Operator/OperatorAchievement/Edit', [
+        return Inertia::render('Admin/Products/Edit', [
             'operator' => $operator,
         ]);
     }
-
     public function update(Request $request)
     {
         $validatedData = $request->validate([
@@ -82,8 +81,8 @@ class OperatorController extends Controller
             'remarks' => 'required',
         ]);
     
-        $operators = Operator::findOrFail($request->id); // find the operator by id
-        $operators->update($validatedData); // update the operator instance
+        $operator = Operator::findOrFail($request->id); // find the operator by id
+        $operator->update($validatedData); // update the operator instance
     
         return redirect()->route('operatorachievement.index');
     }

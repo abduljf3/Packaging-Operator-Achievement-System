@@ -19,6 +19,7 @@ export default function index({items,auth}) {
     };
     return(
         <>
+     
         
         <Nav roles={auth.roles}/>
 
@@ -32,7 +33,9 @@ export default function index({items,auth}) {
               
                 <button disabled={deleting} onClick={() => handleDelete(item.id)}>
             {deleting ? 'Deleting...' : 'Delete'}
-          </button>   
+          </button>  
+          <Link href={route('products.create')}>Create New Product</Link>
+ 
                   </li>
                   
         ))}
