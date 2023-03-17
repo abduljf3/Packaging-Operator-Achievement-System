@@ -60,7 +60,7 @@ export default function achievement(props) {
                                     <TextInput className="mb-5 block w-full" />
                                 </div>
                             </div>
-                            <div className="flex justify-end gap-4 mx-5 my-2">
+                            <div className="flex justify-end gap-4 mx-10 my-2">
                                 <ButtonRed>Cancel</ButtonRed>
                                 <ButtonGreen>Save</ButtonGreen>
                             </div>
