@@ -35,7 +35,7 @@ export default function Navbar({ roles, props, auth, header }) {
                                     href="#pablo"
                                 >
                                     {" "}
-                                    Achivement{" "}
+                                    Achievement{" "}
                                 </a>
                             </li>
 
@@ -84,7 +84,7 @@ export default function Navbar({ roles, props, auth, header }) {
                                     href="#pablo"
                                 >
                                     {" "}
-                                    Achivement{" "}
+                                    Achievement{" "}
                                 </a>
                             </li>
 
@@ -193,7 +193,7 @@ export default function Navbar({ roles, props, auth, header }) {
                                     href="#pablo"
                                 >
                                     {" "}
-                                    Achivement{" "}
+                                    Achievement{" "}
                                 </a>
                             </li>
 
