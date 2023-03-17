@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AchievementsController;
 use App\Http\Controllers\achivementcontroller;
 use App\Http\Controllers\addproduct;
 use App\Http\Controllers\Admin\AchievementControler;
@@ -52,7 +53,12 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/achivement', function () {
+    return Inertia::render('achivement');
+});
+
 Route::get('/home',[UserController::class,'index'])->name('home');
+Route::get('/dashboard',[UserController::class,'index'])->name('home');
 Route::get('/dashboard',[UserController::class,'index'])->name('home');
 
 

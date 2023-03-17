@@ -181,7 +181,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href={route("dashboard")}
+                                    href={route("welcome")}
                                 >
                                     {" "}
                                     Dashboard{" "}
@@ -190,7 +190,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href="#pablo"
+                                    href={route("achivement")}
                                 >
                                     {" "}
                                     Achivement{" "}

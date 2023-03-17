@@ -1,8 +1,11 @@
-import Navbar from '@/Components/Navbar';
-import { Link, Head } from '@inertiajs/react';
+import Navbar from "@/Components/Navbar";
+import { Link, Head } from "@inertiajs/react";
 
-export default function Home({users}) {
+export default function Home({ users }) {
     return (
-       <Navbar props = {users} />
+        <>
+            <Navbar props={users} />
+            <h1>testtt</h1>
+        </>
     );
 }
