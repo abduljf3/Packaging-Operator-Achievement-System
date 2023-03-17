@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import Nav from '@/Components/Nav';
-import { format } from 'date-fns';
+
 export default function Edit({ operator, auth }) {
   const [state, setState] = useState({
     id: operator.id,
@@ -49,7 +49,7 @@ export default function Edit({ operator, auth }) {
         <div>
           <label htmlFor="date">Date:</label>
           <input
-            type="date"
+            type="text"
             id="date"
             name="date"
             value={state.date}

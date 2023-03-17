@@ -9,10 +9,9 @@ class Operator extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id',
         'date',
         'shift',
-        'gruop',
+        'group',
         'proses',
         'user_id',
         'user_product',
@@ -21,8 +20,7 @@ class Operator extends Model
         'total_lot',
         'qty',
         'remarks',
-        'created_at',
-        'updated_at',
+ 
       
     ];
 }

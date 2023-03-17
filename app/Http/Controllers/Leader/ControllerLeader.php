@@ -21,7 +21,13 @@ class ControllerLeader extends Controller
             'products'=>$products
         ]);
     }
-
+    public function indexss()
+    {
+        $products= Product::get();
+        return Inertia::render('Leader/Cetakdata/Index',[
+            'products'=>$products
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      *

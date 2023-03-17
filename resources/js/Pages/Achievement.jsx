@@ -21,7 +21,7 @@ export default function Create({auth}) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    await post("/admin/products", {
+    await post("/Operator/OperatorAchievement", {
       data,
       preserveScroll: true,
     });

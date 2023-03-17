@@ -41,10 +41,20 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-    public function store(Request $request)
-    {
-        //
-    }
+     public function store(Request $request)
+     {
+         $validatedData = $request->validate([
+          
+             'drw_no' => 'required',
+             'product_name' => 'required',
+             'product_type' => 'required',
+
+         ]);
+     
+         $products = Product::create($validatedData);
+     
+         return redirect()->route('products.index');
+     }
 
     /**
      * Display the specified resource.
