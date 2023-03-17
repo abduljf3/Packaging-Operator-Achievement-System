@@ -48,14 +48,9 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'achivement'=> Route::has('achivement'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
-
-Route::get('/achivement', function () {
-    return Inertia::render('achivement');
 });
 
 Route::get('/home',[UserController::class,'index'])->name('home');
