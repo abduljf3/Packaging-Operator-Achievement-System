@@ -43,7 +43,20 @@ export default function Create({auth}) {
       <Nav roles={auth.roles} />
 
       <form onSubmit={handleSubmit}>
-     
+      <div>
+       <label htmlFor="date">Date</label>
+       <input
+         type="date"
+         name="date"
+         value={data.date}
+         onChange={handleChange}
+         className={errors.date ? "border-red-500" : ""}  
+       />
+       {errors.date && (
+         <div className="text-red-500">{errors.date}</div>
+       )}
+     </div>
+
      <div>
        <label htmlFor="shift">Shift</label>
        <input
