@@ -8,7 +8,7 @@ export default function index({products,auth}) {
         
         <Nav roles={auth.roles}/>
 
-        <ul>ADMIN PRODUCT CREATE</ul>
+        <ul>OPERATOR PRODUCT EDIT</ul>
         {products.map((operator) => (
             <li key={operator.id} className="flex gap-3">
 
