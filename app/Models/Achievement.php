@@ -9,20 +9,22 @@ class achievement extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id',
         'date',
         'shift',
-        'gruop',
+        'group',
         'proses',
         'user_id',
-        'user_product',
+        'product_id',
         'spring_lot',
         'product_lot',
         'total_lot',
         'qty',
         'remarks',
-        'created_at',
-        'updated_at',
+ 
       
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

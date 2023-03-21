@@ -21,7 +21,6 @@ class LeaderController extends Controller
             'products'=>$products
         ]);
     }
-
     /**
      * Show the form for creating a new resource.
      *

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Operator;
+use App\Models\achievement;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,9 +17,9 @@ class AchievementController extends Controller
      */
     public function index()
     {
-        $operators= Operator::get();
+        $achievements= achievement::get();
         return Inertia::render('Admin/Achievement/Index',[
-            'operators'=>$operators
+            'achievements'=>$achievements
         ]);
     }
 
@@ -30,9 +30,9 @@ class AchievementController extends Controller
      */
     public function create()
     {
-        $operators= Operator::get();
+        $achievements= achievement::get();
         return Inertia::render('Admin/Achievement/Index',[
-            'operators'=>$operators
+            'achievements'=>$achievements
         ]);
     }
 
@@ -67,9 +67,9 @@ class AchievementController extends Controller
      */
     public function edit($id)
     {
-        $operators = Operator::findOrFail($id);
+        $achievements = achievement::findOrFail($id);
         return Inertia::render('Admin/Achievement/Edit',[
-            'operators' => $operators
+            'achievements' => $achievements
         ]);
     }
     public function delete($id)
@@ -99,7 +99,7 @@ class AchievementController extends Controller
      */
     public function destroy($id)
     {
-        $operators = operator::where('id', $id)->firstorfail()->delete();
+        $achievements = achievement::where('id', $id)->firstorfail()->delete();
         echo ("User Record deleted successfully.");
         return redirect()->route('achievement.index');
      }

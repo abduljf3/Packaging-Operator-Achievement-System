@@ -10,7 +10,7 @@ export default function Create({auth}) {
     group: "",
     proses: "",
     user_id: "",
-    user_product: "",
+    product_id: "",
     spring_lot: "",
     product_lot: "",
     total_lot: "",
@@ -115,16 +115,16 @@ export default function Create({auth}) {
         </div>
 
         <div>
-          <label htmlFor="user_product">User_Product</label>
+          <label htmlFor="product_id">product_id</label>
           <input
             type="text"
-            name="user_product"
-            value={data.user_product}
+            name="product_id"
+            value={data.product_id}
             onChange={handleChange}
-            className={errors.user_product ? "border-red-500" : ""}
+            className={errors.product_id ? "border-red-500" : ""}
           />
-          {errors.user_product && (
-            <div className="text-red-500">{errors.user_product}</div>
+          {errors.product_id && (
+            <div className="text-red-500">{errors.product_id}</div>
           )}
         </div>
         
