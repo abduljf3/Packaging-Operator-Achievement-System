@@ -17,8 +17,15 @@ export default function index({achievements,auth}) {
     await Inertia.delete(`/operator/operatorachievement/${id}`);
     setDeleting(false);
   };
+  
+  function handleExport() {
+    exportToExcel(data, 'users');
+  }
     return(
         <>
+         <div>
+      <button onClick={handleExport}>Export to Excel</button>
+    </div>
         <Nav roles={auth.roles}/>
 
          <ul>OPERATOR achievements INDEX</ul>

@@ -69,8 +69,8 @@ Route::get('/posts/create',[PostController::class,'index'])->name('home');
 
 Route::prefix('leader')->middleware(['auth'])->group(function () { 
     Route::resource('',\App\Http\Controllers\Leader\ControllerLeader::class);
-    Route::resource('cetakdata/indexss',\App\Http\Controllers\Leader\ControllerLeader::class);
-   
+    Route::resource('cetakdata/rekapitulasi',\App\Http\Controllers\Leader\LeaderRekapitulasi::class);
+    Route::resource('cetakdata/detail',\App\Http\Controllers\Leader\LeaderController::class);
 });
 
 Route::prefix('operator')->middleware(['auth'])->group(function () { 
