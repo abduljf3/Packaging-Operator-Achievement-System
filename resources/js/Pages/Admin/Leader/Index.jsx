@@ -1,22 +1,8 @@
 import Nav from "@/Components/Nav";
 import { Link } from "@inertiajs/react";
-import Destroy from './Destroy';
-//import React
-import React from 'react';
 
-import { useState } from 'react';
-//import inertia adapter
-import { Inertia } from '@inertiajs/inertia';
-
-export default function index({users,auth}) {
+export default function index({achievements,auth}) {
     console.log(auth);
-    const [deleting, setDeleting] = useState(false);
-    // handle delete action
-    const handleDelete = async (id) => {
-      setDeleting(true);
-      await Inertia.delete(`/admin/leader/${id}`);
-      setDeleting(false);
-    };
     return(
         <>
      
