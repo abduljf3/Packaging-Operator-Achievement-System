@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import Nav from '@/Components/Nav';
-import { format } from 'date-fns';
-export default function Edit({ operator, auth }) {
+
+export default function Edit({ achievements, auth }) {
   const [state, setState] = useState({
-    id: operator.id,
-    date: operator.date,
-    shift: operator.shift,
-    group: operator.group,
-    proses: operator.proses,
-    user_id: operator.user_id,
-    user_product: operator.user_product,
-    spring_lot: operator.spring_lot,
-    product_lot: operator.product_lot,
-    total_lot: operator.total_lot,
-    qty: operator.qty,
-    remarks: operator.remarks,
+    id: achievements.id,
+    date: achievements.date,
+    shift: achievements.shift,
+    group: achievements.group,
+    proses: achievements.proses,
+    user_id: achievements.user_id,
+    product_id: achievements.product_id,
+    spring_lot: achievements.spring_lot,
+    product_lot: achievements.product_lot,
+    total_lot: achievements.total_lot,
+    qty: achievements.qty,
+    remarks: achievements.remarks,
   });
 
   useEffect(() => {
-    setState(operator);
-  }, [operator]);
+    setState(achievements);
+  }, [achievements]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -102,12 +102,12 @@ export default function Edit({ operator, auth }) {
         </div>
 
         <div>
-          <label htmlFor="user_product">User Product:</label>
+          <label htmlFor="product_id">User Product:</label>
           <input
             type="text"
-            id="user_product"
-            name="user_product"
-            value={state.user_product}
+            id="product_id"
+            name="product_id"
+            value={state.product_id}
             onChange={handleChange}
           />
         </div>

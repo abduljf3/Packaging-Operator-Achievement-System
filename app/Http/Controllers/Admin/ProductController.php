@@ -17,9 +17,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $items= Item::get();
+        $products= Product::get();
         return Inertia::render('Admin/Products/Index',[
-            'items'=>$items
+            'products'=>$products
         ]);
     }
 
@@ -45,9 +45,11 @@ class ProductController extends Controller
      {
          $validatedData = $request->validate([
           
-             'drw_no' => 'required',
-             'product_name' => 'required',
+            'drw_no' => 'required', 
+            'product_name' => 'required',
              'product_type' => 'required',
+           
+        
 
          ]);
      
@@ -75,46 +77,38 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $items = item::findOrFail($id);
-        return Inertia::render('Admin/Products/Edit',[
-            'items' => $items
+        $products = Product::findOrFail($id);
+
+        return Inertia::render('Admin/Products/Edit', [
+            'products' => $products,
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-     $item = Item::findOrfail($id);
-     $item -> update();
-     return redirect()->route('producs.index');
+        $validatedData = $request->validate([
+            'drw_no' => 'required', 
+            'product_name' => 'required',
+             'product_type' => 'required',
+           
+        ]);
+    
+        $products = Product::findOrFail($request->id); // find the operator by id
+        $products->update($validatedData); // update the operator instance
+    
+        return redirect()->route('products.index');
     }
+
 
     public function delete(Request $request, $id)
     {
-        $item = Item::findOrFail($id);
-        $item->delete();
-        return Inertia::render('Admin/Products/Edi',[
-            'item' => $item
-        ]);
+      
         
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        $items = item::where('id', $id)->firstorfail()->delete();
-        echo ("User Record deleted successfully.");
-        return redirect()->route('products.index');
-     }
+        Product::findOrFail($id)->delete();
+
+        return redirect()->route('products.index')->with('message', 'Operator deleted successfully.');
+    }
 }

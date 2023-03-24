@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Operator;
 
 use App\Http\Controllers\Controller;
+use App\Models\achievement;
 use App\Models\Operator;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -11,10 +12,10 @@ class OperatorController extends Controller
 {
     public function index()
     {
-        $operators = Operator::all();
+        $achievements = achievement::all();
 
         return Inertia::render('Operator/OperatorAchievement/Index', [
-            'operators' => $operators,
+            'achievements' => $achievements,
         ]);
     }
   /**
@@ -39,11 +40,12 @@ class OperatorController extends Controller
      {
          $validatedData = $request->validate([
           
-             'shift' => 'required',
+            'date' => 'required', 
+            'shift' => 'required',
              'group' => 'required',
              'proses' => 'required',
              'user_id' => 'required',
-             'user_product' => 'required',
+             'product_id' => 'required',
              'spring_lot' => 'required',
              'product_lot' => 'required',
              'total_lot' => 'required',
@@ -54,27 +56,28 @@ class OperatorController extends Controller
 
          ]);
      
-         $operators = Operator::create($validatedData);
+         $achievements = achievement::create($validatedData);
      
          return redirect()->route('operatorachievement.index');
      }
     public function edit($id)
     {
-        $operator = Operator::findOrFail($id);
+        $achievements = achievement::findOrFail($id);
 
         return Inertia::render('Operator/OperatorAchievement/Edit', [
-            'operator' => $operator,
+            'achievements' => $achievements,
         ]);
     }
 
     public function update(Request $request)
     {
         $validatedData = $request->validate([
+            'date' => 'required',
             'shift' => 'required',
             'group' => 'required',
             'proses' => 'required',
             'user_id' => 'required',
-            'user_product' => 'required',
+            'product_id' => 'required',
             'spring_lot' => 'required',
             'product_lot' => 'required',
             'total_lot' => 'required',
@@ -82,15 +85,15 @@ class OperatorController extends Controller
             'remarks' => 'required',
         ]);
     
-        $operators = Operator::findOrFail($request->id); // find the operator by id
-        $operators->update($validatedData); // update the operator instance
+        $achievements = achievement::findOrFail($request->id); // find the operator by id
+        $achievements->update($validatedData); // update the operator instance
     
         return redirect()->route('operatorachievement.index');
     }
 
     public function destroy($id)
     {
-        Operator::findOrFail($id)->delete();
+        achievement::findOrFail($id)->delete();
 
         return redirect()->route('operatorachievement.index')->with('message', 'Operator deleted successfully.');
     }

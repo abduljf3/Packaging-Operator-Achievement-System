@@ -14,7 +14,7 @@ class Operator extends Model
         'group',
         'proses',
         'user_id',
-        'user_product',
+        'product_id',
         'spring_lot',
         'product_lot',
         'total_lot',

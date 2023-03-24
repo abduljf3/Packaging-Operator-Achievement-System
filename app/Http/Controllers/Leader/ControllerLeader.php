@@ -21,10 +21,10 @@ class ControllerLeader extends Controller
             'products'=>$products
         ]);
     }
-    public function indexss()
+    public function detail()
     {
         $products= Product::get();
-        return Inertia::render('Leader/Cetakdata/Index',[
+        return Inertia::render('Leader/Cetakdata/detail',[
             'products'=>$products
         ]);
     }

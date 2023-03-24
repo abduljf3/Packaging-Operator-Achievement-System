@@ -10,4 +10,9 @@ export default defineConfig({
         }),
         react(),
     ],
+    resolve: {
+        alias: {
+          exceljs: 'exceljs/dist/es5/exceljs.browser.js'
+        }
+      }
 });

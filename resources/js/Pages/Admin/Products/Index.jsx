@@ -1,20 +1,27 @@
 import Nav from "@/Components/Nav";
 import { Link } from "@inertiajs/react";
 
-export default function index({items,auth}) {
+export default function index({products,auth}) {
     console.log(auth);
     return(
+            
         <>
         
         <Nav roles={auth.roles}/>
-
+        <Link href={route('products.create')}>Create New Product</Link>
+ 
         <ul>List Product</ul>
-        {items.map((item) => (
-            <li key={item.id} className="flex gap-3">
-                <p>{item.drw_no}</p>
-                <p>{item.product_name}</p>
-                <p>{item.id_type}</p>
-                <Link href={route('Edit.edit',item.id)}>Edit</Link>
+        {products.map((product) => (
+            <li key={product.id} className="flex gap-3">
+                <p>{product.drw_no}</p>
+                <p>{product.product_name}</p>
+                <p>{product.id_type}</p>
+                <Link href={route('products.edit',product.id)}>Edit</Link>
+              
+                <button disabled={deleting} onClick={() => handleDelete(product.id)}>
+            {deleting ? 'Deleting...' : 'Delete'}
+          </button>  
+       
                   </li>
                   
         ))}
