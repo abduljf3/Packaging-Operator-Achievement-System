@@ -10,7 +10,7 @@ export default function Navbar({ roles, props, auth, header }) {
                 <nav class="container flex items-center justify-between mx-auto">
                     <div class="flex items-center">
                         <img
-                            src="perusahaan.png"
+                            src="/perusahaan.png"
                             alt="Image"
                             className="h-14"
                         />
@@ -55,11 +55,11 @@ export default function Navbar({ roles, props, auth, header }) {
         );
     } else if (roles == "admin") {
         return (
-            <div class="py-3 border bg-white border-t-neutral-400">
-                <nav class="container flex items-center justify-between mx-auto">
-                    <div class="flex items-center">
+            <div className="py-3 border bg-white border-t-neutral-400">
+                <nav className="container flex items-center justify-between mx-auto">
+                    <div className="flex items-center">
                         <img
-                            src="perusahaan.png"
+                            src="/perusahaan.png"
                             alt="Image"
                             className="h-14"
                         />
@@ -112,7 +112,7 @@ export default function Navbar({ roles, props, auth, header }) {
                                     <Dropdown.Trigger>
                                         <img
                                             className="w-10 hover:outline outline-red-500 rounded-full duration-100"
-                                            src="profil.png"
+                                            src="/profil.png"
                                         ></img>
                                     </Dropdown.Trigger>
                                     <Dropdown.Content>
@@ -141,7 +141,7 @@ export default function Navbar({ roles, props, auth, header }) {
                 <nav class="container flex items-center justify-between mx-auto">
                     <div class="flex items-center">
                         <img
-                            src="perusahaan.png"
+                            src="/perusahaan.png"
                             alt="Image"
                             className="h-14"
                         />
@@ -168,7 +168,7 @@ export default function Navbar({ roles, props, auth, header }) {
                 <nav class="container flex items-center justify-between mx-auto">
                     <div class="flex items-center">
                         <img
-                            src="perusahaan.png"
+                            src="/perusahaan.png"
                             alt="Image"
                             className="h-14"
                         />
@@ -190,13 +190,12 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href="#pablo"
+                                    href={route("operatorachievement.create")}
                                 >
                                     {" "}
                                     Achievement{" "}
                                 </a>
                             </li>
-
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
