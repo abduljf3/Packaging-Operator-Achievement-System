@@ -41,4 +41,5 @@ class LeaderController extends Controller
      
         return Inertia::render('Leader/Report');
     }
+    
 }
