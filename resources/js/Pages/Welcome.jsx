@@ -84,13 +84,35 @@ export default function Welcome(props) {
                 <div class="flex gap-5">
                     <div class="w-1/2">
                         <span class="text-base font-semibold">
-                            Grafik Harian
+                            Daily Chart
                             <img src="grafik1.jpeg" class="w-full" />
                         </span>
                     </div>
                     <div class="w-1/2">
                         <span class="text-base font-semibold">
-                            Grafik Mingguan
+                            Weekly Chart
+                            <img src="grafik1.jpeg" class="w-full" />
+                        </span>
+                    </div>
+                </div>
+                <div class="flex gap-10 py-10">
+                    <div class="w-1/2">
+                        <span class="text-base font-semibold">
+                            Monthly Chart
+                            <img src="grafik1.jpeg" class="w-full" />
+                        </span>
+                    </div>
+                    <div class="w-1/2">
+                        <span class="text-base font-semibold">
+                            Shift Chart
+                            <img src="grafik1.jpeg" class="w-full" />
+                        </span>
+                    </div>
+                </div>
+                <div class="flex gap-10 justify-center">
+                    <div class="w-1/2">
+                        <span class="text-base font-semibold">
+                            Person Chart
                             <img src="grafik1.jpeg" class="w-full" />
                         </span>
                     </div>
