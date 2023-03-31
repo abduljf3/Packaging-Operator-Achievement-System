@@ -1,8 +1,5 @@
 import Nav from "@/Components/Nav";
 import { Link } from "@inertiajs/react";
-import Destroy from './Destroy';
-//import React
-import React from 'react';
 
 import { useState } from 'react';
 //import inertia adapter
