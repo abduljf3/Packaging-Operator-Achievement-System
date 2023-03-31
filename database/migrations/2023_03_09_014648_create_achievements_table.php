@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('group');
             $table->integer('proses');
             $table->string('user_id');
-            $table->string('user_product');
+            $table->string('product_id');
             $table->string('spring_lot');
             $table->string('product_lot');
             $table->string('total_lot');

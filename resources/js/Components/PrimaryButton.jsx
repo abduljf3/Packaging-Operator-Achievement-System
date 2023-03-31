@@ -1,5 +1,7 @@
 export default function PrimaryButton({
-    className = "",
+    className,
+    href,
+    text,
     disabled,
     children,
     ...props
@@ -8,13 +10,13 @@ export default function PrimaryButton({
         <button
             {...props}
             className={
-                `inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-800 duration-500 ${
+                `inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:ring-2  focus:ring-offset-2 transition ease-in-out duration-500 ${
                     disabled && "opacity-25"
                 } ` + className
             }
             disabled={disabled}
         >
-            {children}
+            {text}
         </button>
     );
 }

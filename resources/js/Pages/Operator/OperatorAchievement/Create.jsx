@@ -35,12 +35,7 @@ export default function Create(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitting(true);
-        await post("/operator/operatorachievement", {
-            data,
-            preserveScroll: true,
-        });
-        setSubmitting(false);
+        post(route('"/operator/operatorachievement"'));
     };
 
     return (
@@ -65,6 +60,8 @@ export default function Create(props) {
                                         value={data.user_id}
                                         onChange={handleChange}
                                     />
+                                    <InputError message={errors.user_id} />
+
                                     <InputLabel value="Date" />
                                     <TextInput
                                         type="date"
@@ -72,6 +69,7 @@ export default function Create(props) {
                                         value={data.date}
                                         onChange={handleChange}
                                     />
+                                    <InputError message={errors.date} />
 
                                     <div class="flex gap-4">
                                         <div class="mb-5">
@@ -83,6 +81,9 @@ export default function Create(props) {
                                                 value={data.shift}
                                                 onChange={handleChange}
                                             />
+                                            <InputError
+                                                message={errors.shift}
+                                            />
                                         </div>
                                         <div class="mb-5">
                                             <InputLabel value="Group" />
@@ -92,6 +93,9 @@ export default function Create(props) {
                                                 name="group"
                                                 value={data.group}
                                                 onChange={handleChange}
+                                            />
+                                            <InputError
+                                                message={errors.group}
                                             />
                                         </div>
                                     </div>
@@ -107,6 +111,7 @@ export default function Create(props) {
                                         value={data.product_id}
                                         onChange={handleChange}
                                     />
+                                    <InputError message={errors.product_id} />
                                     <div class="flex gap-4">
                                         <div class="mb-5">
                                             <InputLabel value="Spring Lot No" />
@@ -117,6 +122,9 @@ export default function Create(props) {
                                                 value={data.spring_lot}
                                                 onChange={handleChange}
                                             />
+                                            <InputError
+                                                message={errors.spring_lot}
+                                            />
                                         </div>
                                         <div class="mb-5">
                                             <InputLabel value="Product Lot No" />
@@ -126,6 +134,9 @@ export default function Create(props) {
                                                 name="product_lot"
                                                 value={data.product_lot}
                                                 onChange={handleChange}
+                                            />
+                                            <InputError
+                                                message={errors.product_lot}
                                             />
                                         </div>
                                     </div>
@@ -139,6 +150,9 @@ export default function Create(props) {
                                                 value={data.total_lot}
                                                 onChange={handleChange}
                                             />
+                                            <InputError
+                                                message={errors.total_lot}
+                                            />
                                         </div>
                                         <div class="mb-5">
                                             <InputLabel value="Qty(pcs)" />
@@ -149,6 +163,7 @@ export default function Create(props) {
                                                 value={data.qty}
                                                 onChange={handleChange}
                                             />
+                                            <InputError message={errors.qty} />
                                         </div>
                                     </div>
                                     <InputLabel value="Remaks" />
@@ -159,17 +174,16 @@ export default function Create(props) {
                                         value={data.remarks}
                                         onChange={handleChange}
                                     />
+                                    <InputError message={errors.remarks} />
+
                                     <InputLabel value="Customer Id" />
                                     <TextInput className="mb-5 block" />
                                 </div>
                             </form>
                             <div className="flex justify-end gap-4 mx-10 my-2">
                                 <ButtonRed>Cancel</ButtonRed>
-                                <ButtonGreen
-                                    type="submit"
-                                    disabled={submitting}
-                                >
-                                    {submitting ? "Saving..." : "Save"}
+                                <ButtonGreen disabled={submitting}>
+                                    Save
                                 </ButtonGreen>
                             </div>
                         </div>
