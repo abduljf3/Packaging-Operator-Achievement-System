@@ -27,9 +27,18 @@ class LeaderController extends Controller
         }else{
             $achievements = null;   
         }
-        return Inertia::render('Leader/Cetakdata/Rekapitulasi',[
+        return Inertia::render('Leader/Rekapitulasi',[
             'achievements' => $achievements
         ]);
     }
-
+    public function detail()
+    {
+     
+        return Inertia::render('Leader/Detail');
+    }
+    public function report()
+    {
+     
+        return Inertia::render('Leader/Report');
+    }
 }
