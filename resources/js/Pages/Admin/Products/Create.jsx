@@ -4,7 +4,9 @@ import { useState } from "react";
 
 export default function Create({auth}) {
   const { data, setData, post, errors } = useForm({
- 
+    id: "",
+    customer_id: "",
+    customer_name: "",
     drw_no: "",
     product_name: "",
     product_type: "",
@@ -33,7 +35,34 @@ export default function Create({auth}) {
       <Nav roles={auth.roles} />
 
       <form onSubmit={handleSubmit}>
-     
+      <div>
+      
+      <label htmlFor="customer_name">CUstomer Name</label>
+      <input
+        type="text"
+        name="customer_id"
+        value={data.customer_id}
+        onChange={handleChange}
+        className={errors.customer_id ? "border-red-500" : ""}
+      />
+      {errors.customer_id && (
+        <div className="text-red-500">{errors.customer_id}</div>
+      )}
+    </div>
+      <div>
+      
+          <label htmlFor="customer_name">CUstomer Name</label>
+          <input
+            type="text"
+            name="customer_name"
+            value={data.customer_name}
+            onChange={handleChange}
+            className={errors.customer_name ? "border-red-500" : ""}
+          />
+          {errors.customer_name && (
+            <div className="text-red-500">{errors.customer_name}</div>
+          )}
+        </div>
         <div>
           <label htmlFor="drw_no">Drawing Number</label>
           <input

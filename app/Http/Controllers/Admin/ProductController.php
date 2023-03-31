@@ -44,7 +44,8 @@ class ProductController extends Controller
      public function store(Request $request)
      {
          $validatedData = $request->validate([
-          
+            'customer_id' => 'required', 
+            'customer_name' => 'required', 
             'drw_no' => 'required', 
             'product_name' => 'required',
              'product_type' => 'required',
@@ -87,6 +88,8 @@ class ProductController extends Controller
     public function update(Request $request)
     {
         $validatedData = $request->validate([
+            'customer_id' => 'required', 
+            'customer_name' => 'required', 
             'drw_no' => 'required', 
             'product_name' => 'required',
              'product_type' => 'required',

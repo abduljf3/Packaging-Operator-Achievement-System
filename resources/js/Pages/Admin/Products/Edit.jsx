@@ -5,6 +5,8 @@ import Nav from '@/Components/Nav';
 export default function Edit({ products, auth }) {
   const [state, setState] = useState({
     id: products.id,
+    customer_id: products.customer_id,
+    customer_name: products.customer_name,
     drw_no: products.drw_no,
     product_name: products.product_name,
     product_type: products.product_type,
@@ -39,6 +41,26 @@ export default function Edit({ products, auth }) {
       <h1>Edit Product</h1>
 
       <form onSubmit={handleSubmit}>
+      <div>
+          <label htmlFor="customer_id">customer_id:</label>
+          <input
+            type="text"
+            id="customer_id"
+            name="customer_id"
+            value={state.customer_id}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="customer_name">customer_name:</label>
+          <input
+            type="text"
+            id="customer_name"
+            name="customer_name"
+            value={state.customer_name}
+            onChange={handleChange}
+          />
+        </div>
 
         <div>
           <label htmlFor="drw_no">drw_no:</label>

@@ -9,8 +9,14 @@ class Product extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'customer_id',
+        'customer_name',
         'drw_no',
         'product_name',
         'product_type',
     ];
+    public function achievements()
+    {
+        return $this->hasMany(Achievement::class);
+    }
 }
