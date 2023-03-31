@@ -13,9 +13,11 @@ export default function index({products,auth}) {
         <ul>List Product</ul>
         {products.map((product) => (
             <li key={product.id} className="flex gap-3">
+                  <p>{product.customer_id}</p>
+                  <p>{product.customer_name}</p>
                 <p>{product.drw_no}</p>
                 <p>{product.product_name}</p>
-                <p>{product.id_type}</p>
+                <p>{product.product_type}</p>
                 <Link href={route('products.edit',product.id)}>Edit</Link>
               
                 <button disabled={deleting} onClick={() => handleDelete(product.id)}>

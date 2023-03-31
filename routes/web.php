@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AchievementCreateController;
 use App\Http\Controllers\achivementcontroller;
 use App\Http\Controllers\addproduct;
 use App\Http\Controllers\AchievementController;
@@ -11,18 +12,16 @@ use App\Http\Controllers\Admin\AdminProduct;
 use App\Http\Controllers\Admin\LeaderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AdminLeader;
-
 use App\Http\Controllers\ArchivemenyyController;
 use App\Http\Controllers\ArchivmenController;
 use App\Http\Controllers\ControllerLeader;
+use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Leader\DetailLeader;
 use App\Http\Controllers\leader\index;
-
-
+use App\Http\Controllers\Leader\LeaderRekapitulasi;
 use App\Http\Controllers\Operator\OperatorController;
-
 use App\Http\Controllers\Pimpinan\Test;
 use App\Http\Controllers\PimpinanController;
 use App\Http\Controllers\PimpinanController1;
@@ -34,23 +33,12 @@ use App\Models\achivement;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-  
 use App\Http\Controllers\CompanyController;
 
-Route::resource('archivmenyss', ArchivemenyyController::class);
-Route::resource('companies', CompanyController::class);
 
+Route::post('/import', [ExcelController::class, 'import']);
+Route::get('/export', [ExcelController::class, 'export']);
+Route::get('/home',[UserController::class,'index'])->name('home');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -60,37 +48,35 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-Route::get('/home',[UserController::class,'index'])->name('home');
-Route::get('/achievement',[AchievementController::class,'create'])->name('AchievementCreate');
-Route::get('/achievements', 'AchievementController@store');
 
-Route::get('/dashboard',[UserController::class,'index'])->name('home');
-Route::get('/posts/create',[PostController::class,'index'])->name('home');
+Route::get('/achievement/create',[AchievementCreateController::class,'create'])->name('achievementCreate');
+Route::post('/achievement/store',[AchievementCreateController::class,'store'])->name('achievementStore');
+
 
 Route::prefix('leader')->middleware(['auth'])->group(function () { 
-    Route::resource('',\App\Http\Controllers\Leader\ControllerLeader::class);
-    Route::resource('cetakdata/rekapitulasi',\App\Http\Controllers\Leader\LeaderRekapitulasi::class);
-    Route::resource('cetakdata/detail',\App\Http\Controllers\Leader\LeaderController::class);
+    Route::get('/',[\App\Http\Controllers\Leader\LeaderController::class,'index'])->name('leader.index');
+    Route::get('/rekapitulasi/{[dari,sampai]?}',[\App\Http\Controllers\Leader\LeaderController::class,'rekapitulasi'])->name('leader.rekapitulasi');
 });
 
-Route::prefix('operator')->middleware(['auth'])->group(function () { 
+
+Route::prefix('operator')->group(function () { 
     Route::resource('operatorachievement',OperatorController::class);
-   
-
 });
+
 
 Route::prefix('admin')->middleware(['auth'])->group(function () { 
     Route::resource('products',ProductController::class);
     Route::resource('achievement',\App\Http\Controllers\Admin\AchievementController::class);
     Route::resource('employee',AdminEmployeeController::class);
     Route::resource('leader',AdminLeaderController::class);
- 
 });
+
 
 Route::get('/welcome',[ItemController::class,'welcome'])->name('welcome');
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

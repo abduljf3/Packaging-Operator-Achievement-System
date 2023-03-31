@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class achievement extends Model
+class Achievement extends Model
 {
     use HasFactory;
     protected $fillable = [
@@ -14,6 +14,8 @@ class achievement extends Model
         'group',
         'proses',
         'user_id',
+        'drw_no',
+        'npk',
         'product_id',
         'spring_lot',
         'product_lot',
@@ -25,6 +27,11 @@ class achievement extends Model
     ];
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'npk','npk');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class,'product_id','id');
     }
 }

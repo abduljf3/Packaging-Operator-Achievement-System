@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Leader;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use App\Models\Summary;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,21 +16,21 @@ class LeaderRekapitulasi extends Controller
      */
     public function index()
     {
-        $products= Product::get();
+        $summarys= Summary::get();
         return Inertia::render('Leader/Cetakdata/Rekapitulasi',[
-            'products'=>$products
+            'summarys'=>$summarys
         ]);
     }
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resources.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        $products= Product::get();
-        return Inertia::render('Admin/Products/Create',[
-            'products'=>$products
+        $summarys= Summary::get();
+        return Inertia::render('Leader/Cetakdata/Create',[
+            'summarys'=>$summarys
         ]);
     }
 
@@ -65,9 +65,9 @@ class LeaderRekapitulasi extends Controller
      */
     public function edit($id)
     {
-        $product = Product::findOrFail($id);
-        return Inertia::render('Admin/Products/Edit',[
-            'product' => $product
+        $summarys = Summary::findOrFail($id);
+        return Inertia::render('Admin/summarys/Edit',[
+            'summarys' => $summarys
         ]);
     }
 
@@ -85,9 +85,9 @@ class LeaderRekapitulasi extends Controller
 
     public function delete(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
-        return Inertia::render('Admin/Products/Delete',[
-            'product' => $product
+        $summarys = Summary::findOrFail($id);
+        return Inertia::render('Leader/Cetakdata/Delete',[
+            'summarys' => $summarys
         ]);
     }
 
