@@ -72,7 +72,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href="dashboard"
+                                    href={route("welcome")}
                                 >
                                     {" "}
                                     Dashboard{" "}
@@ -81,7 +81,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href="operator/operatorachievement"
+                                    href="admin/achievement"
                                 >
                                     {" "}
                                     Achivement{" "}
@@ -112,7 +112,7 @@ export default function Navbar({ roles, props, auth, header }) {
                                     <Dropdown.Trigger>
                                         <img
                                             className="w-10 hover:outline outline-red-500 rounded-full duration-100"
-                                            src="profil.png"
+                                            src="/profil.png"
                                         ></img>
                                     </Dropdown.Trigger>
                                     <Dropdown.Content>
@@ -190,7 +190,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href="#pablo"
+                                    href={route("achievementCreate")}
                                 >
                                     {" "}
                                     Achivement{" "}
