@@ -17,7 +17,7 @@ class AchievementController extends Controller
      */
     public function index()
     {
-        $achievements= achievement::get();
+        $achievements= achievement::with('user')->get();
         return Inertia::render('Admin/Achievement/Index',[
             'achievements'=>$achievements
         ]);

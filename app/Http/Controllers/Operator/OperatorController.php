@@ -12,7 +12,7 @@ class OperatorController extends Controller
 {
     public function index()
     {
-        $achievements = achievement::all();
+
         $achievements = achievement::with('user')->get();
 
         return Inertia::render('Operator/OperatorAchievement/Index', [
