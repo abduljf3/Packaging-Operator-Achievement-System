@@ -14,22 +14,23 @@ class LeaderController extends Controller
         return Inertia::render('Leader/Index');
     }
 
-    public function rekapitulasi($dari,$sampai)
+    public function rekapitulasi()
     {
-        if($dari){
-            $achievements = achievement::where([
-                'date','>=',$dari,
-                'date','<=',$sampai
-            ])->DB::raw([
-                'SUM(total_lot) as lot',
-                'SUM(qty) as total_qty'
-            ])->groupBy('product_id')->get();
-        }else{
-            $achievements = null;   
-        }
-        return Inertia::render('Leader/Cetakdata/Rekapitulasi',[
-            'achievements' => $achievements
+     
+        $achievements= achievement::with('product')->get();
+        return Inertia::render('Leader/Rekapitulasi',[
+            'achievements'=>$achievements
         ]);
     }
-
+    public function detail()
+    {
+     
+        return Inertia::render('Leader/Detail');
+    }
+    public function report()
+    {
+     
+        return Inertia::render('Leader/Report');
+    }
+    
 }

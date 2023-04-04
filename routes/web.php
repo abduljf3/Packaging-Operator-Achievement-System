@@ -55,6 +55,9 @@ Route::post('/achievement/store',[AchievementCreateController::class,'store'])->
 
 Route::prefix('leader')->middleware(['auth'])->group(function () { 
     Route::get('/',[\App\Http\Controllers\Leader\LeaderController::class,'index'])->name('leader.index');
+    Route::get('/rekapitulasi',[\App\Http\Controllers\Leader\LeaderController::class,'rekapitulasi'])->name('leader.rekapitulasi');
+    Route::get('/detail',[\App\Http\Controllers\Leader\LeaderController::class,'detail'])->name('leader.detail');
+ 
     Route::get('/rekapitulasi/{[dari,sampai]?}',[\App\Http\Controllers\Leader\LeaderController::class,'rekapitulasi'])->name('leader.rekapitulasi');
 });
 
