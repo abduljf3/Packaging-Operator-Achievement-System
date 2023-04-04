@@ -17,12 +17,12 @@ export default function index({ achievements, auth }) {
     const columns = [
         {
             name: "ID",
-            selector: "id",
+            selector: (row) => row.id,
         },
 
         {
             name: "Date",
-            selector: "date",
+            selector: (row) => row.date,
         },
         {
             name: "Nama",
@@ -31,23 +31,23 @@ export default function index({ achievements, auth }) {
         },
         {
             name: "Group",
-            selector: "group",
+            selector: (row) => row.group,
         },
         {
             name: "NPK",
-            selector: "npk",
+            selector: (row) => row.npk,
         },
         {
             name: "Drawing Number",
-            selector: "drw_no",
+            selector: (row) => row.drw_no,
         },
         {
             name: "Total Lot",
-            selector: "total_lot",
+            selector: (row) => row.total_lot,
         },
         {
             name: "Qty (pcs)",
-            selector: "qty",
+            selector: (row) => row.qty,
         },
         {
             name: "Action",
