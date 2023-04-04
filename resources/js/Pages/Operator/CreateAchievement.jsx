@@ -6,7 +6,7 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import Dropdown from "@/Components/Dropdown";
 import OperatorLayout from "@/Layouts/OperatorLayout";
-import Modal from "@/Components/Modal";
+import Swal from "sweetalert2";
 import { useState } from "react";
 import { Link, Head, useForm } from "@inertiajs/react";
 
@@ -24,6 +24,15 @@ export default function CreateAchievement({ users, products }) {
         qty: "",
         remarks: "",
     });
+
+    const handleClick = () => {
+        Swal.fire({
+            icon: "success",
+            title: "Achievement berhasil ditambahkan",
+            showConfirmButton: false,
+            timer: 1500,
+        });
+    };
 
     const [submitting, setSubmitting] = useState(false);
     const [date, setDate] = useState();
@@ -70,13 +79,13 @@ export default function CreateAchievement({ users, products }) {
     return (
         <>
             <Head title="Achievement" />
-            <OperatorLayout>
+            <OperatorLayout className="bg-white">
                 <div className="flex container justify-start w-full px-10 mx-auto mb-5 bg-white py-3 font-bold">
                     <h1>Halaman Operator Create Achievement </h1>
                 </div>
                 <div className="py-5">
                     <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
-                        <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                        <div className="p-4 sm:p-8 bg-gray-100 shadow sm:rounded-lg">
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-between">
                                     <div className=" mx-10 my-2">
@@ -100,30 +109,6 @@ export default function CreateAchievement({ users, products }) {
                                                 </option>
                                             ))}
                                         </select>
-
-                                        {/* <Dropdown>
-                                        <Dropdown.Trigger>
-                                            <TextInput
-                                                className="w-full mb-5 block"
-                                                placeholder="Pilih Id NPK"
-                                                id="npk"
-                                                name="npk"
-                                                value={data.npk}
-                                                onChange={handleChange}
-                                                // disabled="false"
-                                            />
-                                        </Dropdown.Trigger>
-                                        <Dropdown.Content>
-                                            {users.map((user) => (
-                                                <Dropdown.Link
-                                                    key={user.id}
-                                                    value={user.npk}
-                                                >
-                                                    {user.npk}
-                                                </Dropdown.Link>
-                                            ))}
-                                        </Dropdown.Content>
-                                    </Dropdown> */}
 
                                         <InputLabel value="Name" />
                                         <TextInput
@@ -302,8 +287,14 @@ export default function CreateAchievement({ users, products }) {
                                 </div>
                                 <div className="flex justify-end gap-4 mx-10 my-2">
                                     <ButtonRed>Cancel</ButtonRed>
-                                    <ButtonGreen disabled={submitting}>
-                                        {submitting ? "Saving..." : "Save"}
+                                    {/* <ButtonGreen
+                                        // disabled={submitting}
+                                        onclick="handleClick"
+                                    >
+                                        save
+                                    </ButtonGreen> */}
+                                    <ButtonGreen onClick={handleClick}>
+                                        save
                                     </ButtonGreen>
                                 </div>
                             </form>

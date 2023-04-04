@@ -17,43 +17,44 @@ export default function index({ achievements, auth }) {
     const columns = [
         {
             name: "ID",
-            selector: "id",
+            selector: (row) => row.id,
         },
 
         {
             name: "Date",
-            selector: "date",
+            selector: (row) => row.date,
         },
         {
             name: "Nama",
             selector: (row) => row.user.fullname,
+            sortable: true,
         },
         {
             name: "Group",
-            selector: "group",
+            selector: (row) => row.group,
         },
         {
             name: "NPK",
-            selector: "npk",
+            selector: (row) => row.npk,
         },
         {
             name: "Drawing Number",
-            selector: "drw_no",
+            selector: (row) => row.drw_no,
         },
         {
             name: "Total Lot",
-            selector: "total_lot",
+            selector: (row) => row.total_lot,
         },
         {
             name: "Qty (pcs)",
-            selector: "qty",
+            selector: (row) => row.qty,
         },
         {
             name: "Action",
             cell: (row) => (
                 <>
                     <a
-                        href={route("operatorachievement.edit", row.id)}
+                        href={route("achievement.edit", row.id)}
                         class="text-green-500 hover:text-green-900 duration-500 mr-5"
                     >
                         <svg
@@ -96,6 +97,12 @@ export default function index({ achievements, auth }) {
         },
     ];
 
+    // const customStyles = [
+    //     rows: {
+
+    //     },
+    // ];
+
     return (
         <>
             <Authenticated>
@@ -113,15 +120,20 @@ export default function index({ achievements, auth }) {
                                 clipRule="evenodd"
                             />
                         </svg>
-                        Add Achivement
+                        Import Achivement
                     </ButtonRed>
                 </div>
-                <div className="container max-w-7xl mx-auto shadow-md ">
-                    <div className="">
+                <div className="container px-10 max-w-7xl mx-auto ">
+                    <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
                         <DataTable
+                            title="Achievement"
                             columns={columns}
                             data={achievements}
-                            className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg"
+                            // customStyles={customStyles}
+                            pagination
+                            dense
+                            highlightOnHover
+                            className=""
                         />
                     </div>
                 </div>
