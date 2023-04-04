@@ -10,7 +10,7 @@ export default function Authenticated({ auth, header, children }) {
 
     return (
         <>
-            <div className="min-h-screen bg-gray-100">
+            <div className="min-h-screen bg-white">
                 <Navbar roles="" />
 
                 {header && (
