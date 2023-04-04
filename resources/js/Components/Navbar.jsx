@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useState } from "react";
 import { Link } from "@inertiajs/react";
@@ -10,7 +11,7 @@ export default function Navbar({ roles, props, auth, header }) {
                 <nav class="container flex items-center justify-between mx-auto">
                     <div class="flex items-center">
                         <img
-                            src="/perusahaan.png"
+                            src="perusahaan.png"
                             alt="Image"
                             className="h-14"
                         />
@@ -32,10 +33,10 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href={route("achievementCreate")}
+                                    href="#pablo"
                                 >
                                     {" "}
-                                    Achivement{" "}
+                                    Achievement{" "}
                                 </a>
                             </li>
 
@@ -59,7 +60,7 @@ export default function Navbar({ roles, props, auth, header }) {
                 <nav class="container flex items-center justify-between mx-auto">
                     <div class="flex items-center">
                         <img
-                            src="/perusahaan.png"
+                            src="perusahaan.png"
                             alt="Image"
                             className="h-14"
                         />
@@ -72,7 +73,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href={route("welcome")}
+                                    href={route("dashboard")}
                                 >
                                     {" "}
                                     Dashboard{" "}
@@ -81,17 +82,17 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href="admin/achievement"
+                                    href="#pablo"
                                 >
                                     {" "}
-                                    Achivement{" "}
+                                    Achievement{" "}
                                 </a>
                             </li>
 
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href="admin/employee"
+                                    href={route("login")}
                                 >
                                     {" "}
                                     Operator{" "}
@@ -101,7 +102,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href="admin/products"
+                                    href={route("login")}
                                 >
                                     {" "}
                                     Product{" "}
@@ -111,7 +112,86 @@ export default function Navbar({ roles, props, auth, header }) {
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <img
-                                            className="w-10 hover:outline outline-red-500 rounded-full duration-100"
+                                            className="w-10 duration-100 rounded-full hover:outline outline-red-500"
+                                            src="profil.png"
+                                        ></img>
+                                    </Dropdown.Trigger>
+                                    <Dropdown.Content>
+                                        <Dropdown.Link
+                                            href={route("profile.edit")}
+                                        >
+                                            Profile
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
+                                            method="post"
+                                            href={route("logout")}
+                                        >
+                                            Logout
+                                        </Dropdown.Link>
+                                    </Dropdown.Content>
+                                </Dropdown>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        );
+    } else if (roles == "leader") {
+        return (
+            <div class="py-3 border bg-white border-t-neutral-400">
+                <nav class="container flex items-center justify-between mx-auto">
+                    <div class="flex items-center">
+                        <img
+                            src="/perusahaan.png"
+                            alt="Image"
+                            className="h-14"
+                        />
+                        <h1 class="text-xl font-bold text-black">
+                            Packaging Operator<br></br>Achievement System
+                        </h1>
+                    </div>
+                    <div class="flex gap-5">
+                        <ul class="flex items-center justify-between gap-5">
+                            <li class="nav-item">
+                                <a
+                                    class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-red-600 underline underline-offset-4  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
+                                    href="leader"
+                                >
+                                    {" "}
+                                    Dashboard{" "}
+                                </a>
+                            </li>
+                            <li>
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <a
+                                            class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
+                                            href=""
+                                        >
+                                            {" "}
+                                            Report{" "}
+                                        </a>
+                                    </Dropdown.Trigger>
+                                    <Dropdown.Content>
+                                        <Dropdown.Link
+                                            href="leader/cetakdata/Rekapitulasi"
+                                        >
+                                            Rekapitulasi
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
+                                            method="post"
+                                            href={route("")}
+                                        >
+                                            Detail
+                                        </Dropdown.Link>
+                                    </Dropdown.Content>
+                                </Dropdown>
+                            </li>
+                            <li>
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <img
+                                            className="w-10 duration-100 rounded-full hover:outline outline-red-500"
                                             src="/profil.png"
                                         ></img>
                                     </Dropdown.Trigger>
@@ -141,7 +221,7 @@ export default function Navbar({ roles, props, auth, header }) {
                 <nav class="container flex items-center justify-between mx-auto">
                     <div class="flex items-center">
                         <img
-                            src="/perusahaan.png"
+                            src="perusahaan.png"
                             alt="Image"
                             className="h-14"
                         />
@@ -168,7 +248,7 @@ export default function Navbar({ roles, props, auth, header }) {
                 <nav class="container flex items-center justify-between mx-auto">
                     <div class="flex items-center">
                         <img
-                            src="/perusahaan.png"
+                            src="perusahaan.png"
                             alt="Image"
                             className="h-14"
                         />
@@ -190,10 +270,10 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href={route("achievementCreate")}
+                                    href="#pablo"
                                 >
                                     {" "}
-                                    Achivement{" "}
+                                    Achievement{" "}
                                 </a>
                             </li>
 
