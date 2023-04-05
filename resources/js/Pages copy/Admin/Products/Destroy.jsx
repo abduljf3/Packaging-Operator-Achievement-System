@@ -16,7 +16,7 @@ export default function index({products,auth}) {
                 <p>{operator.date}</p>
                
                 <p>{operator.shift}</p>
-                <Link href={route('products.delete',operator.id)}>Edit</Link>
+                <Link href={route('products.edit',operator.id)}>Edit</Link>
             </li>
         ))}
         </>

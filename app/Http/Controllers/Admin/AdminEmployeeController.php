@@ -30,9 +30,9 @@ class AdminEmployeeController extends Controller
      */
     public function create()
     {
-        $products= Product::get();
+        $users= User::get();
         return Inertia::render('Admin/Employee/Create',[
-            'products'=>$products
+            'users'=>$users
         ]);
     }
 
@@ -43,10 +43,24 @@ class AdminEmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-    public function store(Request $request)
-    {
-        //
-    }
+     public function store(Request $request)
+     {
+         $validatedData = $request->validate([
+            'fullname' => 'required', 
+            'npk' => 'required', 
+            'group' => 'required', 
+            'status' => 'required',
+             'password' => 'required',
+             'roles' => 'required',
+           
+        
+
+         ]);
+     
+         $users = User::create($validatedData);
+     
+         return redirect()->route('employee.index');
+     }
 
     /**
      * Display the specified resource.
