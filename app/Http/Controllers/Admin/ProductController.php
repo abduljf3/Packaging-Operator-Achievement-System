@@ -103,15 +103,17 @@ class ProductController extends Controller
     }
 
 
-    public function delete(Request $request, $id)
+    public function delete($id)
     {
-      
-        
+        $products = Product::findOrFail($id);
+        return Inertia::render('Admin/Product/Delete',[
+            'products' => $products
+        ]);
     }
     public function destroy($id)
     {
-        Product::findOrFail($id)->delete();
-
-        return redirect()->route('products.index')->with('message', 'Operator deleted successfully.');
-    }
+        $products = Product::where('id', $id)->firstorfail()->delete();
+        echo ("User Record deleted successfully.");
+        return redirect()->route('product.index');
+     }
 }
