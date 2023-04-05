@@ -25,7 +25,11 @@ class LeaderController extends Controller
     public function detail()
     {
      
-        return Inertia::render('Leader/Detail');
+      
+        $achievements= achievement::with('product','user')->get();
+        return Inertia::render('Leader/Detail',[
+            'achievements'=>$achievements
+        ]);
     }
     public function report()
     {
