@@ -114,6 +114,6 @@ class ProductController extends Controller
     {
         $products = Product::where('id', $id)->firstorfail()->delete();
         echo ("User Record deleted successfully.");
-        return redirect()->route('product.index');
+        return redirect()->route('products');
      }
 }
