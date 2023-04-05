@@ -3,6 +3,7 @@ import { Link } from "@inertiajs/react";
 import { useState } from "react";
 import DataTable from "react-data-table-component";
 import ButtonRed from "@/Components/ButtonRed";
+import { Inertia } from '@inertiajs/inertia';
 
 export default function index({ products, auth }) {
     console.log(products);
@@ -16,11 +17,12 @@ export default function index({ products, auth }) {
         row.product_name.toLowerCase().includes(filterText.toLowerCase())
     );
     const [deleting, setDeleting] = useState(false);
-    const handleDelete = async (id) => {
-        setDeleting(true);
-        await Inertia.delete(`/admin/products/delete${id}`);
-        setDeleting(false);
-    };
+  // handle delete action
+  const handleDelete = async (id) => {
+    setDeleting(true);
+    await Inertia.delete(`/admin/products/${id}`);
+    setDeleting(false);
+  };
 
     const columns = [
         {
@@ -71,7 +73,7 @@ export default function index({ products, auth }) {
                     </a>
 
                     <a
-                        disabled={deleting}
+                    //    disabled={deleting}
                         // onClick={() => handleDelete(row.id)}
                         className="w-6 h-6 text-red-500 hover:text-red-900 duration-500"
                     >
@@ -150,9 +152,9 @@ export default function index({ products, auth }) {
                             className=""
                         />
                     </div>
+                    
                 </div>
-
-                {/* <ul>List Product</ul>
+   <ul>List Product</ul>
                 {products.map((product) => (
                     <li key={product.id} className="flex gap-3">
                         <p>{product.customer_id}</p>
@@ -164,15 +166,14 @@ export default function index({ products, auth }) {
                             Edit
                         </Link>
 
-                        <button
-                            disabled={deleting}
-                            onClick={() => handleDelete(product.id)}
-                        >
-                            {deleting ? "Deleting..." : "Delete"}
-                        </button>
+                        <button disabled={deleting} onClick={() => handleDelete(product.id)}>
+            {deleting ? 'Deleting...' : 'Delete'}
+          </button>   
                     </li>
-                ))} */}
+                ))} 
+              
             </Authenticated>
         </>
+        
     );
 }
