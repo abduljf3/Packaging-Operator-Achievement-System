@@ -72,7 +72,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href={route("welcome")}
+                                    href={route("dashboard")}
                                 >
                                     {" "}
                                     Dashboard{" "}
@@ -81,7 +81,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href="admin/achievement"
+                                    href={route("achievement.index")}
                                 >
                                     {" "}
                                     Achivement{" "}
@@ -91,7 +91,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href="admin/employee"
+                                    href={route("employee.index")}
                                 >
                                     {" "}
                                     Operator{" "}
@@ -101,7 +101,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li class="nav-item">
                                 <a
                                     class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href="admin/products"
+                                    href={route("products.index")}
                                 >
                                     {" "}
                                     Product{" "}

@@ -1,48 +1,117 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head } from "@inertiajs/react";
 
 export default function Dashboard(props) {
     return (
-        <AuthenticatedLayout
-            auth={props.auth}
-            errors={props.errors}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
-        >
+        <AuthenticatedLayout auth={props.auth} errors={props.errors}>
             <Head title="Dashboard" />
-
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                  
-                    <div className="py-11 mx-10 gap-4">
-                     <div className="bg-red-400 sm:rounded-lg pt-6 pb-2">
-                     <div class="w-80 h-42 bg-white rounded-xl mx-5 my-5 mb-5">
-                <a href="http://localhost:8000dashboard">DAFTAR LINK</a><br></br>
-                       
-                </div>      
-                     <div class="w-44 h-22 bg-white rounded-xl mx-5">
-                     <a class="pl-3" href="http://localhost:8000/admin/Achievement">Admin Achievement</a><br></br>
-                        <a  class="pl-3" href="http://localhost:8000/admin/Leader">Admin Leader</a><br></br>
-                        <a class="pl-3"  href="http://localhost:8000/admin/Employee">Admin Employee</a><br></br>
-                        <a class="pl-3"  href="http://localhost:8000/admin/products">Admin Products</a><br></br>
-                      
-                </div>        
-       
-                <div class="w-60 h-22 bg-white rounded-xl mx-5 my-5">
-                <a href="http://localhost:8000/operator/products">Operator Input Achievement</a><br></br>
-                       
-                </div>        
-       
-                <div class="w-60 h-22 bg-white rounded-xl mx-5 my-5">
-                <a href="http://localhost:8000/leader">Pimpinan Report Detail</a><br></br>
-                        <a href="http://localhost:8000/leader/detail">Pimpinan Report Rekapitulasi</a><br></br>
-                                
-                </div>    <div class="w-60 h-22 bg-white rounded-xl mx-5 my-5">
-                <a href="http://localhost:8000/">Guess</a><br></br>                    
-                </div>      
-                    
+            <div class="container w-full px-10 mx-auto bg-gray-100 py-14">
+                <div class="flex justify-between gap-5 mb-10">
+                    <div class="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
+                        <h1
+                            class="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75"
+                            href="#pablo"
+                        >
+                            Oil Seal
+                        </h1>
+                        <h1
+                            class="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75"
+                            href="#pablo"
+                        >
+                            5000pcs
+                        </h1>
+                    </div>
+                    <div class="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
+                        <h1
+                            class="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75"
+                            href="#pablo"
+                        >
+                            O-Ring
+                        </h1>
+                        <h1
+                            class="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75"
+                            href="#pablo"
+                        >
+                            5000pcs
+                        </h1>
+                    </div>
+                    <div class="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
+                        <h1
+                            class="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75"
+                            href="#pablo"
+                        >
+                            Rubber Part
+                        </h1>
+                        <h1
+                            class="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75"
+                            href="#pablo"
+                        >
+                            5000pcs
+                        </h1>
+                    </div>
+                    <div class="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
+                        <h1
+                            class="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75"
+                            href="#pablo"
+                        >
+                            Joint Carburator
+                        </h1>
+                        <h1
+                            class="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75"
+                            href="#pablo"
+                        >
+                            5000pcs
+                        </h1>
+                    </div>
+                    <div class="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
+                        <h1
+                            class="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75"
+                            href="#pablo"
+                        >
+                            Oil Level Gauge
+                        </h1>
+                        <h1
+                            class="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75"
+                            href="#pablo"
+                        >
+                            5000pcs
+                        </h1>
+                    </div>
                 </div>
-            </div>
+                <div class="flex gap-5">
+                    <div class="w-1/2">
+                        <span class="text-base font-semibold">
+                            Daily Chart
+                            <img src="grafik1.jpeg" class="w-full" />
+                        </span>
+                    </div>
+                    <div class="w-1/2">
+                        <span class="text-base font-semibold">
+                            Weekly Chart
+                            <img src="grafik1.jpeg" class="w-full" />
+                        </span>
+                    </div>
+                </div>
+                <div class="flex gap-10 py-10">
+                    <div class="w-1/2">
+                        <span class="text-base font-semibold">
+                            Monthly Chart
+                            <img src="grafik1.jpeg" class="w-full" />
+                        </span>
+                    </div>
+                    <div class="w-1/2">
+                        <span class="text-base font-semibold">
+                            Shift Chart
+                            <img src="grafik1.jpeg" class="w-full" />
+                        </span>
+                    </div>
+                </div>
+                <div class="flex gap-10 justify-center">
+                    <div class="w-1/2">
+                        <span class="text-base font-semibold">
+                            Person Chart
+                            <img src="grafik1.jpeg" class="w-full" />
+                        </span>
                     </div>
                 </div>
             </div>

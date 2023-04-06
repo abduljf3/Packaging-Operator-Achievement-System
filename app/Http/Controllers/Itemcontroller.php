@@ -11,7 +11,7 @@ class ItemController extends Controller
     public function welcome()                                                             
                                                                                         
     {                                                                                   
-        $users = User::where('name','Abdul Jabar')->get();                              
+        $users = User::where('fullname','Abdul Jabar')->get();                              
         return Inertia::render('Welcome',[                                                 
             'users' => $users                                                           
         ]);                                                                             

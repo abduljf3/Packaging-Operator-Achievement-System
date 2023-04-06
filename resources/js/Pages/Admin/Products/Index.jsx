@@ -3,6 +3,7 @@ import { Link } from "@inertiajs/react";
 import { useState } from "react";
 import DataTable from "react-data-table-component";
 import ButtonRed from "@/Components/ButtonRed";
+import { Inertia } from "@inertiajs/inertia";
 
 export default function index({ products, auth }) {
     console.log(products);
@@ -16,12 +17,12 @@ export default function index({ products, auth }) {
         row.product_name.toLowerCase().includes(filterText.toLowerCase())
     );
     const [deleting, setDeleting] = useState(false);
+
     const handleDelete = async (id) => {
         setDeleting(true);
-        await Inertia.delete(`/admin/products/delete${id}`);
+        await Inertia.delete(`/admin/products/${id}`);
         setDeleting(false);
     };
-
     const columns = [
         {
             name: "Customer Id",
@@ -50,8 +51,7 @@ export default function index({ products, auth }) {
             cell: (row) => (
                 <>
                     <a
-                        // href={route("achievement.edit", row.id)}
-                        href="#"
+                        href={route("products.edit", row.id)}
                         class="text-green-500 hover:text-green-900 duration-500 mr-5"
                     >
                         <svg
@@ -72,7 +72,7 @@ export default function index({ products, auth }) {
 
                     <a
                         disabled={deleting}
-                        // onClick={() => handleDelete(row.id)}
+                        onClick={() => handleDelete(row.id)}
                         className="w-6 h-6 text-red-500 hover:text-red-900 duration-500"
                     >
                         <svg
