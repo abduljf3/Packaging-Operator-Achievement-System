@@ -5,13 +5,11 @@ import Nav from '@/Components/Nav';
 export default function Edit({ users, auth }) {
   const [state, setState] = useState({
     id: users.id,
-    fullname: users.fullname,
-    npk: users.npk,
-    group: users.group,
-    status: users.status,
-    roles: users.roles,
+    name: users.name,
+    email: users.email,
     password: users.password,
-   
+    roles: users.roles,
+  
   });
 
   useEffect(() => {
@@ -25,10 +23,10 @@ export default function Edit({ users, auth }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    Inertia.put(`/admin/employee/${state.id}`, state)
+    Inertia.put(`/admin/leader/${state.id}`, state)
       .then(() => {
-        // Redirect to the admin list
-        Inertia.visit('/admin/employee');
+        // Redirect to the operator list
+        Inertia.visit('/admin/leader');
       })
       .catch((error) => {
         console.log(error);
@@ -42,56 +40,33 @@ export default function Edit({ users, auth }) {
       <h1>Edit Product</h1>
 
       <form onSubmit={handleSubmit}>
+
         <div>
-          <label htmlFor="fullname">fullname:</label>
+          <label htmlFor="name">name:</label>
           <input
             type="text"
-            id="fullname"
-            name="fullname"
-            value={state.fullname}
+            id="name"
+            name="name"
+            value={state.name}
             onChange={handleChange}
           />
         </div>
 
         <div>
-          <label htmlFor="npk">npk:</label>
+          <label htmlFor="email">email:</label>
           <input
             type="text"
-            id="npk"
-            name="npk"
-            value={state.npk}
+            id="email"
+            name="email"
+            value={state.email}
             onChange={handleChange}
           />
         </div>
 
         <div>
-          <label htmlFor="group">Group:</label>
+          <label htmlFor="password">password:</label>
           <input
             type="text"
-            id="group"
-            name="group"
-            value={state.group}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="status">status:</label>
-          <input
-            type="text"
-            id="status"
-            name="status"
-            value={state.status}
-            onChange={handleChange}
-          />
-        </div>
-
-    
-
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
             id="password"
             name="password"
             value={state.password}
@@ -100,7 +75,7 @@ export default function Edit({ users, auth }) {
         </div>
 
         <div>
-          <label htmlFor="roles">Spring Lot:</label>
+          <label htmlFor="roles">roles:</label>
           <input
             type="text"
             id="roles"
@@ -110,8 +85,7 @@ export default function Edit({ users, auth }) {
           />
         </div>
 
-
-        <button type="submit">submit</button>
+        <button type="submit">Update</button>
       </form>
     </>
   );

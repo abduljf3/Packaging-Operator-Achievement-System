@@ -150,9 +150,9 @@ export default function index({ products, auth }) {
                             className=""
                         />
                     </div>
+                    
                 </div>
-
-                {/* <ul>List Product</ul>
+   <ul>List Product</ul>
                 {products.map((product) => (
                     <li key={product.id} className="flex gap-3">
                         <p>{product.customer_id}</p>
@@ -164,15 +164,14 @@ export default function index({ products, auth }) {
                             Edit
                         </Link>
 
-                        <button
-                            disabled={deleting}
-                            onClick={() => handleDelete(product.id)}
-                        >
-                            {deleting ? "Deleting..." : "Delete"}
-                        </button>
+                        <button disabled={deleting} onClick={() => handleDelete(product.id)}>
+            {deleting ? 'Deleting...' : 'Delete'}
+          </button>   
                     </li>
-                ))} */}
+                ))} 
+              
             </Authenticated>
         </>
+        
     );
 }
