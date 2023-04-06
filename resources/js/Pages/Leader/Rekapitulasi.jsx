@@ -1,12 +1,27 @@
-import LeaderLayout from "@/Layouts/LeaderLayout";
+import Dropdown from "@/Components/Dropdown";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
+import LeaderLayout from "@/Layouts/LeaderLayout";
+import { Head, useForm } from "@inertiajs/react";
 import DataTable from "react-data-table-component";
-import Dropdown from "@/Components/Dropdown";
-import { Link, Head } from "@inertiajs/react";
 
-export default function Index({ achievements, auth }) {
+export default function Index({ achievements, from, to,auth }) {
     console.log(achievements);
+    const { data, setData, get, processing, errors, reset } = useForm({
+        from_date:'' ,
+        to_date: '',
+    });
+
+    const handleOnChange = (event) => {
+        setData(
+            event.target.name,event.target.value
+        );
+    };
+
+    const submit = (e) => {
+        e.preventDefault();
+        get(route("leader.rekapitulasi"));
+    };
 
     const columns = [
         {
@@ -34,25 +49,23 @@ export default function Index({ achievements, auth }) {
         },
     ];
 
-
     return (
         <>
             <Head title="Report Rekapitulasi" />
            <LeaderLayout>
                {/* content */}
                <div className="w-screen">
-
                     <div className="flex justify-between px-10 pt-2 ">
-                        <div className="flex items-center gap-2">
-                            <TextInput type="date"/>
+                        <form className="flex items-center gap-2" onSubmit={submit}>
+                            <TextInput type="date" value={from} name="from_date" onChange={handleOnChange} className="w-32"/>
                             <h1>-</h1>
-                            <TextInput type="date"/>
+                            <TextInput type="date" value={to} name="to_date" onChange={handleOnChange} className="w-32"/>
                             <PrimaryButton className="bg-green-500 hover:bg-green-500 focus:bg-green-600 active:bg-green-600 focus:ring-lime-500" text="FILTER"/>
-
-                        </div>
-                        <div className="flex mr-0">
+                        </form>
+                        {achievements && (
+                            <div className="flex mr-0">
                             <div className="flex items-center gap-3">
-                                <PrimaryButton className="bg-orange-500 hover:bg-orange-500 focus:bg-orange-600 active:bg-orange-600 focus:ring-orange-400" text="PRINT"/>
+                                <PrimaryButton id="printBtn" className="bg-orange-500 hover:bg-orange-500 focus:bg-orange-600 active:bg-orange-600 focus:ring-orange-400" text="PRINT"/>
                                     <Dropdown>
                                         <Dropdown.Trigger>
                                             <PrimaryButton className="bg-green-500 hover:bg-green-500 focus:bg-green-600 active:bg-green-600 focus:ring-lime-500" text="EKSPOR"/>
@@ -70,35 +83,37 @@ export default function Index({ achievements, auth }) {
                                                 </div>
                                             </Dropdown.Link>
                                             <Dropdown.Link
-                                                        method=""
-                                                        href=""
-                                                    >
-                                                    <div className="container flex gap-3">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20"><path fill="#169154" d="M29,6H15.744C14.781,6,14,6.781,14,7.744v7.259h15V6z"/><path fill="#18482a" d="M14,33.054v7.202C14,41.219,14.781,42,15.743,42H29v-8.946H14z"/><path fill="#0c8045" d="M14 15.003H29V24.005000000000003H14z"/><path fill="#17472a" d="M14 24.005H29V33.055H14z"/><g><path fill="#29c27f" d="M42.256,6H29v9.003h15V7.744C44,6.781,43.219,6,42.256,6z"/><path fill="#27663f" d="M29,33.054V42h13.257C43.219,42,44,41.219,44,40.257v-7.202H29z"/><path fill="#19ac65" d="M29 15.003H44V24.005000000000003H29z"/><path fill="#129652" d="M29 24.005H44V33.055H29z"/></g><path fill="#0c7238" d="M22.319,34H5.681C4.753,34,4,33.247,4,32.319V15.681C4,14.753,4.753,14,5.681,14h16.638 C23.247,14,24,14.753,24,15.681v16.638C24,33.247,23.247,34,22.319,34z"/><path fill="#fff" d="M9.807 19L12.193 19 14.129 22.754 16.175 19 18.404 19 15.333 24 18.474 29 16.123 29 14.013 25.07 11.912 29 9.526 29 12.719 23.982z"/></svg>
-                                                        <a className="justify-center">EXCEL</a>
-                                                    </div>
+                                                method=""
+                                                href=""
+                                            >
+                                                <div className="container flex gap-3">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20"><path fill="#169154" d="M29,6H15.744C14.781,6,14,6.781,14,7.744v7.259h15V6z"/><path fill="#18482a" d="M14,33.054v7.202C14,41.219,14.781,42,15.743,42H29v-8.946H14z"/><path fill="#0c8045" d="M14 15.003H29V24.005000000000003H14z"/><path fill="#17472a" d="M14 24.005H29V33.055H14z"/><g><path fill="#29c27f" d="M42.256,6H29v9.003h15V7.744C44,6.781,43.219,6,42.256,6z"/><path fill="#27663f" d="M29,33.054V42h13.257C43.219,42,44,41.219,44,40.257v-7.202H29z"/><path fill="#19ac65" d="M29 15.003H44V24.005000000000003H29z"/><path fill="#129652" d="M29 24.005H44V33.055H29z"/></g><path fill="#0c7238" d="M22.319,34H5.681C4.753,34,4,33.247,4,32.319V15.681C4,14.753,4.753,14,5.681,14h16.638 C23.247,14,24,14.753,24,15.681v16.638C24,33.247,23.247,34,22.319,34z"/><path fill="#fff" d="M9.807 19L12.193 19 14.129 22.754 16.175 19 18.404 19 15.333 24 18.474 29 16.123 29 14.013 25.07 11.912 29 9.526 29 12.719 23.982z"/></svg>
+                                                    <a className="justify-center">EXCEL</a>
+                                                </div>
                                             </Dropdown.Link>
                                         </Dropdown.Content>
                                 </Dropdown>
+                            </div>
                         </div>
+                        )}
+                    </div>
+                    <div className="pt-4 px-10">
+                        {achievements ? (
+                            <DataTable
+                            title="Report Rekapitulasi"
+                            columns={columns}
+                            data={achievements}
+                            // customStyles={customStyles}
+                            pagination
+                            dense
+                            highlightOnHover
+                            className=""
+                        />
+                        ):(
+                            <p className="w-full py-6 text-center bg-red-300 text-white">Filter terlebih dahulu</p>
+                        )}
                     </div>
                 </div>
-                <div className="pt-2 px-10">
-                    <div className="px-10">
-                        <DataTable
-                                title="Rekapitulasi"
-                                columns={columns}
-                                data={achievements}
-                                // customStyles={customStyles}
-                                pagination
-                                dense
-                                highlightOnHover
-                                className=""
-                        />
-                </div>
-            </div>
-            </div>
-
                 {/* content END */}
             </LeaderLayout>
         </>

@@ -153,8 +153,8 @@ export default function Navbar({ roles, props, auth, header }) {
                         <ul className="flex items-center justify-between gap-5">
                             <li className="nav-item">
                                 <a
-                                    className="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-red-600 underline underline-offset-4  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href="leader"
+                                    className={`${route().current("leader.dashboard") && "text-red-600 underline underline-offset-4"} flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
+                                    href={route("leader.dashboard")}
                                 >
                                     {" "}
                                     Dashboard{" "}
@@ -164,22 +164,25 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li>
                                 <Dropdown>
                                     <Dropdown.Trigger>
-                                        <div
-                                            className="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                        >Report
-                                        </div>
+                                    <a
+                                    className={`${route().current("leader.detail") && "text-red-600 underline underline-offset-4"} flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
+                                    href={route("leader.detail")}
+                                >
+                                    {" "}
+                                    Report{" "}
+                                </a>
                                     </Dropdown.Trigger>
                                     <Dropdown.Content>
                                         <Dropdown.Link
-                                            href={route("profile.edit")}
+                                            href={route("leader.rekapitulasi")}
                                         >
-                                            Profile
+                                            Rekapitulasi
                                         </Dropdown.Link>
                                         <Dropdown.Link
-                                            method="post"
-                                            href={route("logout")}
+                                            href={route("leader.detail")}
                                         >
-                                            Logout
+
+                                            Detail
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
