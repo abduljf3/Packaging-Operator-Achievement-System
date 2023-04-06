@@ -1,0 +1,51 @@
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head } from '@inertiajs/react';
+
+export default function Dashboard(props) {
+    return (
+        <AuthenticatedLayout
+            auth={props.auth}
+            errors={props.errors}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
+        >
+            <Head title="Dashboard" />
+
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                  
+                    <div className="py-11 mx-10 gap-4">
+                     <div className="bg-red-400 sm:rounded-lg pt-6 pb-2">
+                     <div class="w-80 h-42 bg-white rounded-xl mx-5 my-5 mb-5">
+                <a href="http://localhost:8000dashboard">DAFTAR LINK</a><br></br>
+                       
+                </div>      
+                     <div class="w-44 h-22 bg-white rounded-xl mx-5">
+                     <a class="pl-3" href="http://localhost:8000/admin/Achievement">Admin Achievement</a><br></br>
+                        <a  class="pl-3" href="http://localhost:8000/admin/Leader">Admin Leader</a><br></br>
+                        <a class="pl-3"  href="http://localhost:8000/admin/Employee">Admin Employee</a><br></br>
+                        <a class="pl-3"  href="http://localhost:8000/admin/products">Admin Products</a><br></br>
+                      
+                </div>        
+       
+                <div class="w-60 h-22 bg-white rounded-xl mx-5 my-5">
+                <a href="http://localhost:8000/operator/products">Operator Input Achievement</a><br></br>
+                       
+                </div>        
+       
+                <div class="w-60 h-22 bg-white rounded-xl mx-5 my-5">
+                <a href="http://localhost:8000/leader">Pimpinan Report Detail</a><br></br>
+                        <a href="http://localhost:8000/leader/detail">Pimpinan Report Rekapitulasi</a><br></br>
+                                
+                </div>    <div class="w-60 h-22 bg-white rounded-xl mx-5 my-5">
+                <a href="http://localhost:8000/">Guess</a><br></br>                    
+                </div>      
+                    
+                </div>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </AuthenticatedLayout>
+    );
+}

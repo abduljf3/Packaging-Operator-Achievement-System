@@ -1,40 +1,31 @@
 import Nav from "@/Components/Nav";
 import { Link } from "@inertiajs/react";
-
-//import React
 import React from 'react';
-
 import { useState } from 'react';
-//import inertia adapter
 import { Inertia } from '@inertiajs/inertia';
 
-export default function index({details,auth}) {
+export default function Index({ achievements, auth }) {
     console.log(auth);
   
-    return(
-            
+    return (
         <>
-     
-        
-        <Nav roles={auth.roles}/>
-   
-        <ul>List detail</ul>
-        {details.map((detail) => (
-            <li key={detail.id} className="flex gap-3">
-                <p>{detail.date}</p>
-                <p>{detail.shift}</p>
-                <p>{detail.group}</p>
-                <p>{detail.drw_no}</p>
-                <p>{detail.type}</p>
-                <p>{detail.operator_name}</p>
-                <p>{detail.lot}</p>
-                <p>{detail.qty}</p>
-                <p>{detail.remarks}</p>
-
-       
-                  </li>
+            <Nav roles={auth.roles} />
+            <ul>List achievement</ul>
+            {achievements.map((achievement) => (
+                <li key={achievement.id} className="flex gap-3">
+                    <p>{achievement.date}</p>
+                    <p>{achievement.shift}</p>
                   
-        ))}
+                    <p>{achievement.drw_no}</p>
+                   
+                    <p>{achievement.product ? achievement.product.product_type : ''}</p> 
+                    <p>{achievement.user ? achievement.user.fullname : ''}</p> 
+                    <p>{achievement.spring_lot}</p>
+                       <p>{achievement.qty}</p>
+                       <p>{achievement.remarks}</p>
+                  
+                </li>
+            ))}
         </>
-    )
+    );
 }
