@@ -71,7 +71,7 @@ export default function Navbar({ roles, props, auth, header }) {
                         <ul className="flex items-center justify-between gap-5">
                             <li className="nav-item">
                                 <a
-                                    className="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
+                                    class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
                                     href={route("dashboard")}
                                 >
                                     {" "}
@@ -80,8 +80,8 @@ export default function Navbar({ roles, props, auth, header }) {
                             </li>
                             <li className="nav-item">
                                 <a
-                                    className="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href="#pablo"
+                                    class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
+                                    href={route("achievement.index")}
                                 >
                                     {" "}
                                     Achievement{" "}
@@ -90,8 +90,8 @@ export default function Navbar({ roles, props, auth, header }) {
 
                             <li className="nav-item">
                                 <a
-                                    className="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href={route("login")}
+                                    class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
+                                    href={route("employee.index")}
                                 >
                                     {" "}
                                     Operator{" "}
@@ -100,8 +100,8 @@ export default function Navbar({ roles, props, auth, header }) {
 
                             <li className="nav-item">
                                 <a
-                                    className="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href={route("login")}
+                                    class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
+                                    href={route("products.index")}
                                 >
                                     {" "}
                                     Product{" "}

@@ -81,7 +81,7 @@ export default function CreateAchievement({ users, products }) {
             <Head title="Achievement" />
             <OperatorLayout className="bg-white">
                 <div className="flex container justify-start w-full px-10 mx-auto mb-5 bg-white py-3 font-bold">
-                    <h1>Halaman Operator Create Achievement </h1>
+                    <h1>Operator Create Achievement </h1>
                 </div>
                 <div className="py-5">
                     <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
