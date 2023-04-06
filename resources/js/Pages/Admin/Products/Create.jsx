@@ -37,16 +37,16 @@ export default function Create({ auth }) {
 
     return (
         <>
-            <Head title="Achievement" />
+            <Head title="Add Product" />
             <Authenticated className="bg-white">
                 <div className="flex container justify-start w-full px-10 mx-auto mb-5 bg-white py-3 font-bold">
-                    <h1>Operator Create Achievement </h1>
+                    <h1>Add Product </h1>
                 </div>
-                <div className="py-5">
+                <div className="py-5 mx-20">
                     <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
-                        <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                        <div className="p-4 mx-20 sm:p-8 bg-white shadow sm:rounded-lg">
                             <form onSubmit={handleSubmit}>
-                                <div className="flex justify-between">
+                                <div className="flex justify-center gap-20">
                                     <div className=" mx-10 my-2">
                                         <InputLabel value="Customer Id" />
                                         <InputError
@@ -82,39 +82,42 @@ export default function Create({ auth }) {
                                             value={data.drw_no}
                                             onChange={handleChange}
                                         />
-                                        <div className="mx-10 my-2">
-                                            <InputLabel value="Product Name" />
-                                            <InputError
-                                                message={errors.product_name}
-                                            />
-                                            <TextInput
-                                                className="mb-5 block w-full "
-                                                type="text"
-                                                name="product_name"
-                                                value={data.product_name}
-                                                onChange={handleChange}
-                                            />
+                                    </div>
+                                    <div className="mx-10 my-2">
+                                        <InputLabel value="Product Name" />
+                                        <InputError
+                                            message={errors.product_name}
+                                        />
+                                        <TextInput
+                                            className="mb-5 block w-full "
+                                            type="text"
+                                            name="product_name"
+                                            value={data.product_name}
+                                            onChange={handleChange}
+                                        />
 
-                                            <InputLabel value="Product Type" />
-                                            <InputError
-                                                message={errors.product_type}
-                                            />
-                                            <TextInput
-                                                className="mb-5 block w-full "
-                                                type="text"
-                                                name="product_type"
-                                                value={data.product_type}
-                                                onChange={handleChange}
-                                            />
+                                        <InputLabel value="Product Type" />
+                                        <InputError
+                                            message={errors.product_type}
+                                        />
+                                        <TextInput
+                                            className="mb-5 block w-full "
+                                            type="text"
+                                            name="product_type"
+                                            value={data.product_type}
+                                            onChange={handleChange}
+                                        />
+                                        <div className="flex justify-center mt-6">
+                                            <ButtonGreen
+                                                type="submit"
+                                                disabled={submitting}
+                                                className=""
+                                            >
+                                                {submitting
+                                                    ? "Adding..."
+                                                    : "Add Product"}
+                                            </ButtonGreen>
                                         </div>
-                                        <ButtonGreen
-                                            type="submit"
-                                            disabled={submitting}
-                                        >
-                                            {submitting
-                                                ? "Adding..."
-                                                : "Add Product"}
-                                        </ButtonGreen>
                                     </div>
                                 </div>
                             </form>
@@ -122,88 +125,6 @@ export default function Create({ auth }) {
                     </div>
                 </div>
             </Authenticated>
-
-            {/* <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="customer_name">CUstomer Name</label>
-                    <input
-                        type="text"
-                        name="customer_id"
-                        value={data.customer_id}
-                        onChange={handleChange}
-                        className={errors.customer_id ? "border-red-500" : ""}
-                    />
-                    {errors.customer_id && (
-                        <div className="text-red-500">{errors.customer_id}</div>
-                    )}
-                </div>
-                <div>
-                    <label htmlFor="customer_name">CUstomer Name</label>
-                    <input
-                        type="text"
-                        name="customer_name"
-                        value={data.customer_name}
-                        onChange={handleChange}
-                        className={errors.customer_name ? "border-red-500" : ""}
-                    />
-                    {errors.customer_name && (
-                        <div className="text-red-500">
-                            {errors.customer_name}
-                        </div>
-                    )}
-                </div>
-                <div>
-                    <label htmlFor="drw_no">Drawing Number</label>
-                    <input
-                        type="text"
-                        name="drw_no"
-                        value={data.drw_no}
-                        onChange={handleChange}
-                        className={errors.drw_no ? "border-red-500" : ""}
-                    />
-                    {errors.drw_no && (
-                        <div className="text-red-500">{errors.drw_no}</div>
-                    )}
-                </div>
-
-                <div>
-                    <label htmlFor="product_name">Product Name</label>
-                    <input
-                        type="text"
-                        name="product_name"
-                        value={data.product_name}
-                        onChange={handleChange}
-                        className={errors.product_name ? "border-red-500" : ""}
-                    />
-                    {errors.product_name && (
-                        <div className="text-red-500">
-                            {errors.product_name}
-                        </div>
-                    )}
-                </div>
-
-                <div>
-                    <label htmlFor="product_type">ID Type</label>
-                    <input
-                        type="text"
-                        name="product_type"
-                        value={data.product_type}
-                        onChange={handleChange}
-                        className={errors.product_type ? "border-red-500" : ""}
-                    />
-                    {errors.product_type && (
-                        <div className="text-red-500">
-                            {errors.product_type}
-                        </div>
-                    )}
-                </div>
-
-                <div>
-                    <button type="submit" disabled={submitting}>
-                        {submitting ? "Creating..." : "Create"}
-                    </button>
-                </div>
-            </form> */}
         </>
     );
 }
