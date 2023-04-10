@@ -11,19 +11,19 @@ class Achievement extends Model
     protected $fillable = [
         'date',
         'shift',
-       
+
         'proses',
         'user_id',
         'drw_no',
         'npk',
-       
+
         'spring_lot',
         'product_lot',
         'total_lot',
         'qty',
         'remarks',
- 
-      
+
+
     ];
     public function user()
     {
@@ -32,7 +32,7 @@ class Achievement extends Model
 
     public function product()
     {
-       
+
         return $this->hasOne(Product::class, 'drw_no', 'drw_no');
     }
 }
