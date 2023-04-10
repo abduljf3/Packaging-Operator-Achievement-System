@@ -1,7 +1,5 @@
 import React from "react";
 import Dropdown from "@/Components/Dropdown";
-import { useState } from "react";
-import { Link } from "@inertiajs/react";
 
 export default function Navbar({ roles, props, auth, header }) {
     if (roles === "operator") {
@@ -10,7 +8,7 @@ export default function Navbar({ roles, props, auth, header }) {
                 <nav className="container flex items-center justify-between mx-auto">
                     <div className="flex items-center">
                         <img
-                            src="perusahaan.png"
+                            src="/perusahaan.png"
                             alt="Image"
                             className="h-14"
                         />
@@ -22,7 +20,7 @@ export default function Navbar({ roles, props, auth, header }) {
                         <ul className="flex items-center justify-between gap-5">
                             <li className="nav-item">
                                 <a
-                                    className="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
+                                    className={`${route().current("dashboard") && "text-red-600 underline underline-offset-4"} flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
                                     href={route("dashboard")}
                                 >
                                     {" "}
@@ -59,7 +57,7 @@ export default function Navbar({ roles, props, auth, header }) {
                 <nav className="container flex items-center justify-between mx-auto">
                     <div className="flex items-center">
                         <img
-                            src="perusahaan.png"
+                            src="/perusahaan.png"
                             alt="Image"
                             className="h-14"
                         />
@@ -70,8 +68,8 @@ export default function Navbar({ roles, props, auth, header }) {
                     <div className="flex gap-5">
                         <ul className="flex items-center justify-between gap-5">
                             <li className="nav-item">
-                                <a
-                                    class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
+                            <a
+                                    className={`${route().current("dashboard") && "text-red-600 underline underline-offset-4 decoration-2"} flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
                                     href={route("dashboard")}
                                 >
                                     {" "}
@@ -80,7 +78,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             </li>
                             <li className="nav-item">
                                 <a
-                                    class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
+                                    className={`${route().current("achievement.index") && "text-red-600 underline underline-offset-4 decoration-2"} flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
                                     href={route("achievement.index")}
                                 >
                                     {" "}
@@ -90,7 +88,7 @@ export default function Navbar({ roles, props, auth, header }) {
 
                             <li className="nav-item">
                                 <a
-                                    class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
+                                    className={`${route().current("employee.index") && "text-red-600 underline underline-offset-4 decoration-2"} flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
                                     href={route("employee.index")}
                                 >
                                     {" "}
@@ -100,7 +98,7 @@ export default function Navbar({ roles, props, auth, header }) {
 
                             <li className="nav-item">
                                 <a
-                                    class="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
+                                    className={`${route().current("products.index") && "text-red-600 underline underline-offset-4 decoration-2"} flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
                                     href={route("products.index")}
                                 >
                                     {" "}
@@ -111,8 +109,9 @@ export default function Navbar({ roles, props, auth, header }) {
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <img
-                                            className="w-10 duration-100 rounded-full hover:outline outline-red-500"
-                                            src="profil.png"
+                                            className={`${route().current("profile.edit") && "w-10 rounded-full outline outline-red-500"} w-10 duration-100 rounded-full hover:outline outline-red-500 `}
+                                            href={route("profile.edit")}
+                                            src="/profil.png"
                                         ></img>
                                     </Dropdown.Trigger>
                                     <Dropdown.Content>
@@ -153,7 +152,7 @@ export default function Navbar({ roles, props, auth, header }) {
                         <ul className="flex items-center justify-between gap-5">
                             <li className="nav-item">
                                 <a
-                                    className={`${route().current("leader.dashboard") && "text-red-600 underline underline-offset-4"} flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
+                                    className={`${route().current("leader.dashboard") && "text-red-600 underline underline-offset-4 decoration-2"} flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
                                     href={route("leader.dashboard")}
                                 >
                                     {" "}
@@ -165,8 +164,8 @@ export default function Navbar({ roles, props, auth, header }) {
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                     <a
-                                    className={`${route().current("leader.detail") && "text-red-600 underline underline-offset-4"} flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
-                                    href={route("leader.detail")}
+                                    className={`${route().current("leader.detail && leader.rekapitulasi") && "text-red-600 underline underline-offset-4 decoration-2"} flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
+                                    href="#"
                                 >
                                     {" "}
                                     Report{" "}
@@ -191,8 +190,9 @@ export default function Navbar({ roles, props, auth, header }) {
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <img
-                                            className="w-10 duration-100 rounded-full hover:outline outline-red-500"
-                                            src="/profil.png"
+                                             className={`${route().current("profile.edit") && "w-10 rounded-full outline outline-red-500"} w-10 duration-100 rounded-full hover:outline outline-red-500 `}
+                                             href={route("profile.edit")}
+                                             src="/profil.png"
                                         ></img>
                                     </Dropdown.Trigger>
                                     <Dropdown.Content>
@@ -221,7 +221,7 @@ export default function Navbar({ roles, props, auth, header }) {
                 <nav className="container flex items-center justify-between mx-auto">
                     <div className="flex items-center">
                         <img
-                            src="perusahaan.png"
+                            src="/perusahaan.png"
                             alt="Image"
                             className="h-14"
                         />
@@ -248,7 +248,7 @@ export default function Navbar({ roles, props, auth, header }) {
                 <nav className="container flex items-center justify-between mx-auto">
                     <div className="flex items-center">
                         <img
-                            src="perusahaan.png"
+                            src="/perusahaan.png"
                             alt="Image"
                             className="h-14"
                         />
@@ -259,8 +259,8 @@ export default function Navbar({ roles, props, auth, header }) {
                     <div className="flex gap-5">
                         <ul className="flex items-center justify-between gap-5">
                             <li className="nav-item">
-                                <a
-                                    className="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
+                            <a
+                                    className={`${route().current("welcome") && "text-red-600 underline underline-offset-4 decoration-2"} flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
                                     href={route("welcome")}
                                 >
                                     {" "}
@@ -268,9 +268,9 @@ export default function Navbar({ roles, props, auth, header }) {
                                 </a>
                             </li>
                             <li className="nav-item">
-                                <a
-                                    className="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href="#pablo"
+                            <a
+                                    className={`${route().current("achievementCreate") && "text-red-600 underline underline-offset-4 decoration-2"} flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
+                                    href={route("achievementCreate")}
                                 >
                                     {" "}
                                     Achievement{" "}
