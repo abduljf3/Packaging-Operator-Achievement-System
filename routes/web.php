@@ -69,6 +69,8 @@ Route::prefix('operator')->group(function () {
 Route::prefix('admin')->middleware(['auth'])->group(function () { 
     Route::resource('products',ProductController::class)->name('index','products.index');
     Route::resource('achievement',\App\Http\Controllers\Admin\AchievementController::class)->name('index','achievement.index');
+    Route::get('/achievement/index',[\App\Http\Controllers\Admin\AchievementController::class,'achievement'])->name('admin.achievement.index');
+
     Route::resource('employee',AdminEmployeeController::class)->name('index','employee.index');
     Route::resource('leader',AdminLeaderController::class)->name('index','leader.index');
 });

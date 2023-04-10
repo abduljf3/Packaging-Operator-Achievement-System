@@ -5,9 +5,10 @@ import Nav from '@/Components/Nav';
 export default function Edit({ users, auth }) {
   const [state, setState] = useState({
     id: users.id,
-    name: users.name,
-    email: users.email,
-    password: users.password,
+    fullname: users.fullname,
+    npk: users.npk,
+    group: users.group,
+    status: users.status,
     roles: users.roles,
   
   });
@@ -42,34 +43,34 @@ export default function Edit({ users, auth }) {
       <form onSubmit={handleSubmit}>
 
         <div>
-          <label htmlFor="name">name:</label>
+          <label htmlFor="fullname">fullname:</label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={state.name}
+            id="fullname"
+            name="fullname"
+            value={state.fullname}
             onChange={handleChange}
           />
         </div>
 
         <div>
-          <label htmlFor="email">email:</label>
+          <label htmlFor="npk">npk:</label>
           <input
             type="text"
-            id="email"
-            name="email"
-            value={state.email}
+            id="npk"
+            name="npk"
+            value={state.npk}
             onChange={handleChange}
           />
         </div>
 
         <div>
-          <label htmlFor="password">password:</label>
+          <label htmlFor="group">group:</label>
           <input
             type="text"
-            id="password"
-            name="password"
-            value={state.password}
+            id="group"
+            name="group"
+            value={state.group}
             onChange={handleChange}
           />
         </div>
@@ -81,6 +82,17 @@ export default function Edit({ users, auth }) {
             id="roles"
             name="roles"
             value={state.roles}
+            onChange={handleChange}
+          />
+        </div>
+        
+        <div>
+          <label htmlFor="status">status:</label>
+          <input
+            type="text"
+            id="status"
+            name="status"
+            value={state.status}
             onChange={handleChange}
           />
         </div>

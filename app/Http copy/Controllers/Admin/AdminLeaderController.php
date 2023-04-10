@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,7 +12,7 @@ class AdminLeaderController extends Controller
 {
     public function index()
     {
-        $users = User::where('roles', 'admin')->get();
+        $users = User::where('roles','Admin')->get();
 
         return Inertia::render('Admin/Leader/Index', [
             'users' => $users,
@@ -49,7 +49,8 @@ class AdminLeaderController extends Controller
         
 
          ]);
-     
+         $validatedData['password'] = Hash::make($request->password);
+       
          $users = User::create($validatedData);
      
          return redirect()->route('Leader.Index');
