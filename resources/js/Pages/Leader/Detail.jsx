@@ -1,9 +1,9 @@
-import LeaderLayout from "@/Layouts/LeaderLayout";
+import Dropdown from "@/Components/Dropdown";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
+import LeaderLayout from "@/Layouts/LeaderLayout";
+import { Head, useForm } from "@inertiajs/react";
 import DataTable from "react-data-table-component";
-import Dropdown from "@/Components/Dropdown";
-import { Link, Head } from "@inertiajs/react";
 
 
 export default function Index({ achievements, from, to,auth }) {
@@ -21,14 +21,12 @@ export default function Index({ achievements, from, to,auth }) {
 
     const submit = (e) => {
         e.preventDefault();
-        get(route("leader.rekapitulasi"));
+        get(route("leader.detail"));
     };
     const columns = [
         {
             name : 'No',
             selector : (row) => row.id,
-            // {{ $id->count() * ($articles->currentPage() - 1) + $loop->iteration }}
-
         },
         {
             name: 'Date',
@@ -84,6 +82,7 @@ export default function Index({ achievements, from, to,auth }) {
                             <TextInput type="date" value={to} name="to_date" onChange={handleOnChange} className="w-32"/>
                             <PrimaryButton className="bg-green-500 hover:bg-green-500 focus:bg-green-600 active:bg-green-600 focus:ring-lime-500" text="FILTER"/>
                         </form>
+                        {achievements && (
                     <div className="flex mr-0">
                         <div className="flex items-center gap-3">
                             <PrimaryButton  id="printBtn" className="bg-orange-500 hover:bg-orange-500 focus:bg-orange-600 active:bg-orange-600 focus:ring-orange-400" text="PRINT"/>
@@ -116,6 +115,7 @@ export default function Index({ achievements, from, to,auth }) {
                                 </Dropdown>
                             </div>
                         </div>
+                         )}
                     </div>
                     <div className="pt-4 px-10">
                         {achievements ? (
