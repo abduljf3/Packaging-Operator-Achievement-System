@@ -12,7 +12,7 @@ class AdminLeaderController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::where('roles', 'admin')->get();
 
         return Inertia::render('Admin/Leader/Index', [
             'users' => $users,

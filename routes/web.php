@@ -53,25 +53,26 @@ Route::get('/achievement/create',[AchievementCreateController::class,'create'])-
 Route::post('/achievement/store',[AchievementCreateController::class,'store'])->name('achievementStore');
 
 
-Route::prefix('leader')->middleware(['auth'])->group(function () { 
-    Route::get('/',[\App\Http\Controllers\Leader\LeaderController::class,'index'])->name('leader.index');
-    Route::get('/report',[\App\Http\Controllers\Leader\LeaderController::class,'report'])->name('leader.report');
+Route::prefix('leader')->middleware(['auth'])->group(function () {
+    Route::get('/',[\App\Http\Controllers\Leader\LeaderController::class,'index'])->name('leader.dashboard');
     Route::get('/detail',[\App\Http\Controllers\Leader\LeaderController::class,'detail'])->name('leader.detail');
- 
-    Route::get('/rekapitulasi/{[dari,sampai]?}',[\App\Http\Controllers\Leader\LeaderController::class,'rekapitulasi'])->name('leader.rekapitulasi');
+
+    Route::get('/rekapitulasi',[\App\Http\Controllers\Leader\LeaderController::class,'rekapitulasi'])->name('leader.rekapitulasi');
 });
 
 
-Route::prefix('operator')->group(function () { 
+Route::prefix('operator')->group(function () {
     Route::resource('operatorachievement',OperatorController::class);
 });
 
 
 Route::prefix('admin')->middleware(['auth'])->group(function () { 
-    Route::resource('products',ProductController::class);
-    Route::resource('achievement',\App\Http\Controllers\Admin\AchievementController::class);
-    Route::resource('employee',AdminEmployeeController::class);
-    Route::resource('leader',AdminLeaderController::class);
+    Route::resource('products',ProductController::class)->name('index','products.index');
+    Route::resource('achievement',\App\Http\Controllers\Admin\AchievementController::class)->name('index','achievement.index');
+    Route::get('/achievement/index',[\App\Http\Controllers\Admin\AchievementController::class,'achievement'])->name('admin.achievement.index');
+
+    Route::resource('employee',AdminEmployeeController::class)->name('index','employee.index');
+    Route::resource('leader',AdminLeaderController::class)->name('index','leader.index');
 });
 
 
@@ -85,6 +86,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
 });
 require __DIR__.'/auth.php';

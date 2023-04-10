@@ -19,11 +19,11 @@ class AchievementsTableSeeder extends Seeder
             [
                 'date' =>now(),
                 'shift' => '2',
-                'group' => '3',
+              
                 'proses' => '1',
-                'npk' => '8828732N',
-                'drw_no' => '4',
-                'product_id' => 'Oil Seals',
+                'npk' => '7777',
+                'drw_no' => '1K-001',
+               
                 'spring_lot' => 'Oil Seals',
                 'product_lot' => 'Oil Seals',
                 'total_lot' => 'Oil Seals',

@@ -1,24 +1,14 @@
-import Nav from "@/Components/Nav";
-import { Link } from "@inertiajs/react";
+import { useRef, useState } from "react";
+import DangerButton from "@/Components/DangerButton";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
+import SecondaryButton from "@/Components/SecondaryButton";
+import TextInput from "@/Components/TextInput";
+import { useForm } from "@inertiajs/react";
 
-export default function index({products,auth}) {
-    console.log(auth);
-    return(
-        <>
-        
-        <Nav roles={auth.roles}/>
-
-        <ul>ADMIN PRODUCT DELETE</ul>
-        {products.map((operator) => (
-            <li key={operator.id} className="flex gap-3">
-
-<p>{operator.id}</p>
-                <p>{operator.date}</p>
-               
-                <p>{operator.shift}</p>
-                <Link href={route('products.edit',operator.id)}>Edit</Link>
-            </li>
-        ))}
-        </>
-    )
+export default function Destroy({ className }) {
+    const deleteUser = (e) => {
+        destroy(route("profile.destroy"), {});
+    };
 }

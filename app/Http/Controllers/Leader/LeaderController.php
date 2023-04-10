@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Leader;
 
 use App\Http\Controllers\Controller;
-use App\Models\achievement;
+use App\Models\Achievement;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -14,32 +14,34 @@ class LeaderController extends Controller
         return Inertia::render('Leader/Index');
     }
 
-    public function rekapitulasi($dari,$sampai)
+    public function rekapitulasi(Request $request)
     {
-        if($dari){
-            $achievements = achievement::where([
-                'date','>=',$dari,
-                'date','<=',$sampai
-            ])->DB::raw([
-                'SUM(total_lot) as lot',
-                'SUM(qty) as total_qty'
-            ])->groupBy('product_id')->get();
-        }else{
-            $achievements = null;   
+        $achievements = null;
+        if( $request->input('from_date')){
+            $from = $request->input('from_date');
+            $to = $request->input('to_date');
+            $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
         }
         return Inertia::render('Leader/Rekapitulasi',[
             'achievements' => $achievements
         ]);
     }
-    public function detail()
+    public function detail(Request $request)
     {
-     
-        return Inertia::render('Leader/Detail');
+        $achievements = null;
+        if( $request->input('from_date')){
+            $from = $request->input('from_date');
+            $to = $request->input('to_date');
+            $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
+        }
+        return Inertia::render('Leader/Detail',[
+            'achievements' => $achievements
+        ]);
     }
     public function report()
     {
-     
+
         return Inertia::render('Leader/Report');
     }
-    
+
 }

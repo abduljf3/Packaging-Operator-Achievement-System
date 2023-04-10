@@ -15,14 +15,24 @@ class AchievementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $achievements= achievement::with('user')->get();
+    
+        return Inertia::render('Admin/Achievement/Index',);
+
+    }
+    public function achievement(Request $request)
+    {
+        $achievements = null;
+        if( $request->input('from_date')){
+            $from = $request->input('from_date');
+            $to = $request->input('to_date');
+            $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
+        }
         return Inertia::render('Admin/Achievement/Index',[
-            'achievements'=>$achievements
+            'achievements' => $achievements
         ]);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -54,9 +64,17 @@ class AchievementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $achievements = null;
+        if( $request->input('from_date')){
+            $from = $request->input('from_date');
+            $to = $request->input('to_date');
+            $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
+        }
+        return Inertia::render('Admin/Achievement/Index',[
+            'achievements' => $achievements
+        ]);
     }
 
     /**

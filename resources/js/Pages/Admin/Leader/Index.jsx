@@ -1,7 +1,7 @@
 import Nav from "@/Components/Nav";
 import { Link } from "@inertiajs/react";
 
-export default function index({achievements,auth}) {
+export default function index({users,auth}) {
     console.log(auth);
     return(
         <>
@@ -13,14 +13,11 @@ export default function index({achievements,auth}) {
         <ul>List user</ul>
         {users.map((user) => (
             <li key={user.id} className="flex gap-3">
-                <p>{user.drw_no}</p>
+                <p>{user.fullname}</p>
                 <p>{user.user_name}</p>
                 <p>{user.id_type}</p>
                 <Link href={route('leader.edit',user.id)}>Edit</Link>
               
-                <button disabled={deleting} onClick={() => handleDelete(user.id)}>
-            {deleting ? 'Deleting...' : 'Delete'}
-          </button>  
        
                   </li>
                   

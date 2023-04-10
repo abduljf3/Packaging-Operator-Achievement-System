@@ -1,11 +1,18 @@
+import TextInput from "@/Components/TextInput";
+import { Head, useForm } from "@inertiajs/react";
 import ButtonRed from "@/Components/ButtonRed";
+import ButtonGreen from "@/Components/ButtonGreen";
 import { useState } from "react";
 import DataTable from "react-data-table-component";
 import { Inertia } from "@inertiajs/inertia";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 
-export default function index({ achievements, auth }) {
+export default function Index({ achievements, from, to, auth }) {
     console.log(achievements);
+    const { data, setData, get, processing, errors, reset } = useForm({
+        from_date: "",
+        to_date: "",
+    });
     const [deleting, setDeleting] = useState(false);
     // handle delete action
     const handleDelete = async (id) => {
@@ -14,46 +21,56 @@ export default function index({ achievements, auth }) {
         setDeleting(false);
     };
 
+    const handleOnChange = (event) => {
+        setData(event.target.name, event.target.value);
+    };
+
+    const submit = (e) => {
+        e.preventDefault();
+        get(route("admin.achievement.index"));
+    };
+
     const columns = [
         {
             name: "ID",
-            selector: "id",
+            selector: (row) => row.id,
         },
 
         {
             name: "Date",
-            selector: "date",
+            selector: (row) => row.date,
         },
         {
             name: "Nama",
             selector: (row) => row.user.fullname,
+            sortable: true,
         },
         {
             name: "Group",
-            selector: "group",
+            selector: (row) => row.group,
         },
         {
             name: "NPK",
-            selector: "npk",
+            selector: (row) => row.npk,
         },
         {
             name: "Drawing Number",
-            selector: "drw_no",
+            selector: (row) => row.drw_no,
         },
         {
             name: "Total Lot",
-            selector: "total_lot",
+            selector: (row) => row.total_lot,
         },
         {
             name: "Qty (pcs)",
-            selector: "qty",
+            selector: (row) => row.qty,
         },
         {
             name: "Action",
             cell: (row) => (
                 <>
                     <a
-                        href={route("operatorachievement.edit", row.id)}
+                        href={route("achievement.edit", row.id)}
                         class="text-green-500 hover:text-green-900 duration-500 mr-5"
                     >
                         <svg
@@ -98,33 +115,76 @@ export default function index({ achievements, auth }) {
 
     return (
         <>
+            <Head title="Report Achievement" />
             <Authenticated>
-                <div className="flex container justify-end w-full px-10 mx-auto mb-5 bg-red-300 py-3">
-                    <ButtonRed>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            className="w-6 h-6"
+                {/* content */}
+                <div className="w-screen">
+                    <div className="flex justify-between px-10 pt-2 ">
+                        <form
+                            className="flex items-center gap-2"
+                            onSubmit={submit}
                         >
-                            <path
-                                fillRule="evenodd"
-                                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
-                                clipRule="evenodd"
+                            <TextInput
+                                type="date"
+                                value={from}
+                                name="from_date"
+                                onChange={handleOnChange}
+                                className="w-32"
                             />
-                        </svg>
-                        Add Achivement
-                    </ButtonRed>
-                </div>
-                <div className="container max-w-7xl mx-auto shadow-md ">
-                    <div className="">
-                        <DataTable
-                            columns={columns}
-                            data={achievements}
-                            className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg"
-                        />
+                            <h1>-</h1>
+                            <TextInput
+                                type="date"
+                                value={to}
+                                name="to_date"
+                                onChange={handleOnChange}
+                                className="w-32"
+                            />
+                            <ButtonGreen>Filter</ButtonGreen>
+                        </form>
+                        {achievements && (
+                            <div className="flex mr-0">
+                                <div className="flex items-center gap-3">
+                                    <ButtonRed>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24"
+                                            fill="currentColor"
+                                            className="w-6 h-6"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                        Import Achivement
+                                    </ButtonRed>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    <div className="pt-4 px-10  ">
+                        <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
+                            {achievements ? (
+                                <DataTable
+                                    title="Achievement"
+                                    columns={columns}
+                                    data={achievements}
+                                    // customStyles={customStyles}
+                                    pagination
+                                    dense
+                                    highlightOnHover
+                                    className=""
+                                />
+                            ) : (
+                                <p className="w-full py-6 text-center bg-red-300 text-white">
+                                    Filter terlebih dahulu
+                                </p>
+                            )}
+                        </div>
                     </div>
                 </div>
+                {/* content END */}
             </Authenticated>
         </>
     );

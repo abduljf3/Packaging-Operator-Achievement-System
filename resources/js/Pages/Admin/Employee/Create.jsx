@@ -4,11 +4,17 @@ import { useState } from "react";
 
 export default function Create({auth}) {
   const { data, setData, post, errors } = useForm({
-    id: "",
-    name: "",
-    email: "",
+ 
+   
+    fullname: "",
+    npk: "",
+    group: "",
+    status: "",
     password: "",
     roles: "",
+ 
+
+   
   });
 
   const [submitting, setSubmitting] = useState(false);
@@ -22,7 +28,7 @@ export default function Create({auth}) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    await post("/admin/products", {
+    await post("/admin/employee", {
       data,
       preserveScroll: true,
     });
@@ -34,39 +40,67 @@ export default function Create({auth}) {
       <Nav roles={auth.roles} />
 
       <form onSubmit={handleSubmit}>
+      <div>
+       <label htmlFor="fullname">fullname</label>
+       <input
+         type="text"
+         name="fullname"
+         value={data.fullname}
+         onChange={handleChange}
+         className={errors.fullname ? "border-red-500" : ""}  
+       />
+       {errors.fullname && (
+         <div className="text-red-500">{errors.fullname}</div>
+       )}
+     </div>
+
+     <div>
+       <label htmlFor="npk">npk</label>
+       <input
+         type="text"
+         name="npk"
+         value={data.npk}
+         onChange={handleChange}
+         className={errors.npk ? "border-red-500" : ""}
+       />
+       {errors.npk && (
+         <div className="text-red-500">{errors.npk}</div>
+       )}
+     </div>
      
-        <div>
-          <label htmlFor="name"> name</label>
+     
+     <div>
+          <label htmlFor="group">Group</label>
           <input
             type="text"
-            name="name"
-            value={data.name}
+            name="group"
+            value={data.group}
             onChange={handleChange}
-            className={errors.name ? "border-red-500" : ""}
+            className={errors.group ? "border-red-500" : ""}
           />
-          {errors.name && (
-            <div className="text-red-500">{errors.name}</div>
+          {errors.group && (
+            <div className="text-red-500">{errors.group}</div>
           )}
         </div>
 
         <div>
-          <label htmlFor="email">email</label>
+          <label htmlFor="status">status</label>
           <input
             type="text"
-            name="email"
-            value={data.email}
+            name="status"
+            value={data.status}
             onChange={handleChange}
-            className={errors.email ? "border-red-500" : ""}
+            className={errors.status ? "border-red-500" : ""}
           />
-          {errors.email && (
-            <div className="text-red-500">{errors.email}</div>
+          {errors.status && (
+            <div className="text-red-500">{errors.status}</div>
           )}
         </div>
-
+       
         <div>
-          <label htmlFor="password">ID Type</label>
+          <label htmlFor="password">User Id</label>
           <input
-            type="text"
+            type="password"
             name="password"
             value={data.password}
             onChange={handleChange}
@@ -76,8 +110,9 @@ export default function Create({auth}) {
             <div className="text-red-500">{errors.password}</div>
           )}
         </div>
+
         <div>
-          <label htmlFor="roles">ID Type</label>
+          <label htmlFor="roles">roles</label>
           <input
             type="text"
             name="roles"
@@ -89,6 +124,8 @@ export default function Create({auth}) {
             <div className="text-red-500">{errors.roles}</div>
           )}
         </div>
+        
+     
         <div>
           <button type="submit" disabled={submitting}>
             {submitting ? "Creating..." : "Create"}
