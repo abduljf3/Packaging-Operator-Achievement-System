@@ -85,7 +85,7 @@ export default function CreateAchievement({ users, products }) {
                 </div>
                 <div className="py-5">
                     <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
-                        <div className="p-4 sm:p-8 bg-gray-100 shadow sm:rounded-lg">
+                        <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-between">
                                     <div className=" mx-10 my-2">

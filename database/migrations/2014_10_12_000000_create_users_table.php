@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('fullname');
             $table->string('npk')->unique();
             $table->string('email')->nullable();
+            $table->string('group')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('roles')->default('USER');
