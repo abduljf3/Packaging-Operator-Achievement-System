@@ -16,7 +16,7 @@ class Achievement extends Model
         'user_id',
         'drw_no',
         'npk',
-
+        
         'spring_lot',
         'product_lot',
         'total_lot',

@@ -21,18 +21,7 @@ class AchievementController extends Controller
         return Inertia::render('Admin/Achievement/Index',);
 
     }
-    public function achievement(Request $request)
-    {
-        $achievements = null;
-        if( $request->input('from_date')){
-            $from = $request->input('from_date');
-            $to = $request->input('to_date');
-            $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
-        }
-        return Inertia::render('Admin/Achievement/Index',[
-            'achievements' => $achievements
-        ]);
-    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -66,15 +55,17 @@ class AchievementController extends Controller
      */
     public function show(Request $request)
     {
-        $achievements = null;
-        if( $request->input('from_date')){
-            $from = $request->input('from_date');
-            $to = $request->input('to_date');
-            $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
+        if(!empty($request->from_date)) {
+
+            $achievements = DB::table('users')
+                ->whereBetween('created_at', array($request->from_date, $request->to_date))
+                ->get();
+
+        } else {
+
+            $achievements = null;
+
         }
-        return Inertia::render('Admin/Achievement/Index',[
-            'achievements' => $achievements
-        ]);
     }
 
     /**
