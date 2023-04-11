@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin\Employee;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AchievementStore extends FormRequest
+class Update extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,7 @@ class AchievementStore extends FormRequest
     public function rules()
     {
         return [
-            'date' => 'required|date',
-            'shift' => 'required|integer',
-            'proses' => 'required|string',
-            'npk' => 'required|string',
-            'product_id' => 'required|integer',
+            //
         ];
     }
 }

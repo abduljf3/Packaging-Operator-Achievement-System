@@ -1,38 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Inertia } from '@inertiajs/inertia';
 import Nav from '@/Components/Nav';
+import { Inertia } from '@inertiajs/inertia';
+import { router, useForm } from '@inertiajs/react';
+import { useEffect } from 'react';
 
-export default function Edit({ users, auth }) {
-  const [state, setState] = useState({
-    id: users.id,
-    fullname: users.fullname,
-    npk: users.npk,
-    group: users.group,
-    status: users.status,
-    roles: users.roles,
-    password: users.password,
+export default function Edit({ user, auth }) {
+  const {data, setData, post} = useForm({
+    id: user.id,
+    fullname: user.fullname,
+    npk: user.npk,
+    group: user.group,
+    status: user.status,
+    roles: user.roles,
+    password: "",
    
   });
-
-  useEffect(() => {
-    setState(users);
-  }, [users]);
+ 
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setState({ ...state, [name]: value });
+    setData(
+      e.target.name,
+      e.target.value
+    )
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    Inertia.put(`/admin/employee/${state.id}`, state)
-      .then(() => {
-        // Redirect to the admin list
-        Inertia.visit('/admin/employee');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    router.post(route('admin.employee.update', user.id),{
+      _method: 'PUT',
+      ...data
+    })
   };
 
   return (
@@ -48,7 +44,7 @@ export default function Edit({ users, auth }) {
             type="text"
             id="fullname"
             name="fullname"
-            value={state.fullname}
+            value={data.fullname}
             onChange={handleChange}
           />
         </div>
@@ -59,7 +55,7 @@ export default function Edit({ users, auth }) {
             type="text"
             id="npk"
             name="npk"
-            value={state.npk}
+            value={data.npk}
             onChange={handleChange}
           />
         </div>
@@ -70,7 +66,7 @@ export default function Edit({ users, auth }) {
             type="text"
             id="group"
             name="group"
-            value={state.group}
+            value={data.group}
             onChange={handleChange}
           />
         </div>
@@ -81,7 +77,7 @@ export default function Edit({ users, auth }) {
             type="text"
             id="status"
             name="status"
-            value={state.status}
+            value={data.status}
             onChange={handleChange}
           />
         </div>
@@ -94,7 +90,7 @@ export default function Edit({ users, auth }) {
             type="password"
             id="password"
             name="password"
-            value={state.password}
+            value={data.password}
             onChange={handleChange}
           />
         </div>
@@ -105,7 +101,7 @@ export default function Edit({ users, auth }) {
             type="text"
             id="roles"
             name="roles"
-            value={state.roles}
+            value={data.roles}
             onChange={handleChange}
           />
         </div>
