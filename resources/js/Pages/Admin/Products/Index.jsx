@@ -102,7 +102,7 @@ export default function index({ products, auth }) {
         <>
             <Authenticated>
                 <div className="">
-                    <div className="flex justify-between w-full px-10 mb-5 bg-red-300 py-3">
+                    <div className="flex justify-between  px-10 pt-3 ">
                         <label className="relative text-gray-400 focus-within:text-gray-600 block duration-500">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -118,10 +118,10 @@ export default function index({ products, auth }) {
                             </svg>
 
                             <input
-                                placeholder="Search Product"
+                                placeholder="Search Product..."
                                 onChange={handleFilter}
                                 value={filterText}
-                                className="  py-3 px-4 bg-white placeholder-gray-400 text-gray-500 duration-500 appearance-none w-full block pl-10 focus:outline-none rounded-lg "
+                                className="  py-3 px-4 bg-white placeholder-gray-400 text-black border-2 border-gray-300 duration-500 appearance-none w-full block pl-10 focus:outline-none rounded-lg "
                             ></input>
                         </label>
                         <Link href={route("products.create")}>
@@ -146,20 +146,19 @@ export default function index({ products, auth }) {
                 <div>
                     <div className="flex w-full px-10 mb-5 py-3">
                         <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
-                        <DataTable
-                            title="List Product"
-                            columns={columns}
-                            data={filteredData}
-                            pagination
-                            dense
-                            highlightOnHover
-                            className=""
-                        />
+                            <DataTable
+                                title="List Product"
+                                columns={columns}
+                                data={filteredData}
+                                pagination
+                                dense
+                                highlightOnHover
+                                className=""
+                            />
                         </div>
                     </div>
                 </div>
             </Authenticated>
         </>
-
     );
 }

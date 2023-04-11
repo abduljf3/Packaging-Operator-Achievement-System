@@ -80,12 +80,12 @@ export default function CreateAchievement({ users, products }) {
         <>
             <Head title="Achievement" />
             <OperatorLayout className="bg-white">
-                <div className="flex container justify-start w-full px-10 mx-auto mb-5 bg-white py-3 font-bold">
-                    <h1>Operator Create Achievement </h1>
-                </div>
                 <div className="py-5">
                     <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
                         <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                            <div className="mb-6 font-extrabold">
+                                <h1>Create Achievement</h1>
+                            </div>
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-between">
                                     <div className=" mx-10 my-2">

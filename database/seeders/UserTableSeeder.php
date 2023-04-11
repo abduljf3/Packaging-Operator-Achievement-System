@@ -20,6 +20,7 @@ class UserTableSeeder extends Seeder
             'fullname' => 'Abdul Jabar',
             'npk' => '7474',
             'group' => '1',
+            'status' => 'KARYAWAN',
             'password' => bcrypt('admin'),
             'roles' => 'admin',
 
@@ -29,6 +30,7 @@ class UserTableSeeder extends Seeder
             'fullname' => 'Nur Firdaus',
             'npk' => '7777',
             'group' => '1',
+            'status' => 'MAGANG',
             'password' => bcrypt('admin'),
             'roles' => 'admin',
 

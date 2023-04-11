@@ -119,7 +119,7 @@ export default function Index({ achievements, from, to, auth }) {
             <Authenticated>
                 {/* content */}
                 <div className="w-screen">
-                    <div className="flex justify-between px-10 pt-2 ">
+                    <div className="flex justify-between px-10 pt-3 ">
                         <form
                             className="flex items-center gap-2"
                             onSubmit={submit}
@@ -129,7 +129,7 @@ export default function Index({ achievements, from, to, auth }) {
                                 value={from}
                                 name="from_date"
                                 onChange={handleOnChange}
-                                className="w-32"
+                                className="w-34"
                             />
                             <h1>-</h1>
                             <TextInput
@@ -137,7 +137,7 @@ export default function Index({ achievements, from, to, auth }) {
                                 value={to}
                                 name="to_date"
                                 onChange={handleOnChange}
-                                className="w-32"
+                                className="w-34"
                             />
                             <ButtonGreen>Filter</ButtonGreen>
                         </form>
@@ -177,7 +177,7 @@ export default function Index({ achievements, from, to, auth }) {
                                     className=""
                                 />
                             ) : (
-                                <p className="w-full py-6 text-center bg-red-300 text-white">
+                                <p className="w-full py-6 text-center bg-red-500 text-white">
                                     Filter terlebih dahulu
                                 </p>
                             )}
