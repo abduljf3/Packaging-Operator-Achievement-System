@@ -50,12 +50,16 @@ export default function Edit({ user, achievements, products, auth }) {
         <>
             <Head title="Edit Achievement" />
             <Authenticated className="bg-white">
-                <div className="flex container justify-start w-full px-10 mx-auto mb-5 bg-white py-3 font-bold">
+                {/* <div className="flex container justify-start w-full px-10 mx-auto mb-5 bg-white py-3 font-bold">
                     <h1>Edit Achievement </h1>
-                </div>
+                </div> */}
                 <div className="py-5">
                     <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
                         <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                            <div className="mb-6 font-extrabold">
+                                <h1>Edit Achievement </h1>
+                            </div>
+
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-between">
                                     <div className=" mx-10 my-2">
