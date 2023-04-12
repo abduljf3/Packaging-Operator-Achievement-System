@@ -113,6 +113,8 @@ export default function index({ users, auth }) {
                                         </svg>
                                         Add Employee
                                     </ButtonRed>
+                                    <Link href={route('employee.leader')}>leader</Link>
+ 
                                 </Link>
                             </div>
                         </div>
