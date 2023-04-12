@@ -39,6 +39,7 @@ export default function index({ users, auth }) {
             name: "Group",
             selector: (row) => row.group,
         },
+
         {
             name: "Action",
             cell: (row) => (
