@@ -40,94 +40,92 @@ export default function Edit({ users, auth }) {
 
     return (
         <>
-            <>
-                <Head title="Edit Operator" />
-                <Authenticated className="bg-white">
-                    <div className="py-5 mx-20">
-                        <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
-                            <div className="p-4 mx-20 sm:p-8 bg-white shadow sm:rounded-lg">
-                                <div className="mb-6 font-extrabold">
-                                    <h1>Edit Operator</h1>
-                                </div>
-                                <form onSubmit={handleSubmit}>
-                                    <div className="flex justify-center gap-20">
-                                        <div className=" mx-10 my-2">
-                                            <InputLabel value="NPK" />
+            <Head title="Edit Operator" />
+            <Authenticated className="bg-white">
+                <div className="py-5 mx-20">
+                    <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
+                        <div className="p-4 mx-20 sm:p-8 bg-white shadow sm:rounded-lg">
+                            <div className="mb-6 font-extrabold">
+                                <h1>Edit Operator</h1>
+                            </div>
+                            <form onSubmit={handleSubmit}>
+                                <div className="flex justify-center gap-20">
+                                    <div className=" mx-10 my-2">
+                                        <InputLabel value="NPK" />
 
-                                            <TextInput
-                                                className="mb-5 w-full block"
-                                                type="text"
-                                                name="npk"
-                                                value={state.npk}
-                                                onChange={handleChange}
-                                            />
+                                        <TextInput
+                                            className="mb-5 w-full block"
+                                            type="text"
+                                            name="npk"
+                                            value={state.npk}
+                                            onChange={handleChange}
+                                        />
 
-                                            <InputLabel value="Nama" />
+                                        <InputLabel value="Nama" />
 
-                                            <TextInput
-                                                className="mb-5 w-full block"
-                                                type="text"
-                                                name="fullname"
-                                                value={state.fullname}
-                                                onChange={handleChange}
-                                            />
+                                        <TextInput
+                                            className="mb-5 w-full block"
+                                            type="text"
+                                            name="fullname"
+                                            value={state.fullname}
+                                            onChange={handleChange}
+                                        />
 
-                                            <InputLabel value="Group" />
+                                        <InputLabel value="Group" />
 
-                                            <TextInput
-                                                className="mb-5 block w-full "
-                                                type="text"
-                                                name="group"
-                                                value={state.group}
-                                                onChange={handleChange}
-                                            />
-                                        </div>
-                                        <div className="mx-10 my-2">
-                                            <InputLabel value="Status" />
+                                        <TextInput
+                                            className="mb-5 block w-full "
+                                            type="text"
+                                            name="group"
+                                            value={state.group}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                    <div className="mx-10 my-2">
+                                        <InputLabel value="Status" />
 
-                                            <TextInput
-                                                className="mb-5 block w-full "
-                                                type="text"
-                                                name="status"
-                                                value={state.status}
-                                                onChange={handleChange}
-                                            />
+                                        <TextInput
+                                            className="mb-5 block w-full "
+                                            type="text"
+                                            name="status"
+                                            value={state.status}
+                                            onChange={handleChange}
+                                        />
 
-                                            <InputLabel value="Password" />
+                                        <InputLabel value="Password" />
 
-                                            <TextInput
-                                                className="mb-5 block w-full "
-                                                type="password"
-                                                name="password"
-                                                value={state.password}
-                                                onChange={handleChange}
-                                            />
+                                        <TextInput
+                                            className="mb-5 block w-full "
+                                            type="password"
+                                            name="password"
+                                            value={state.password}
+                                            onChange={handleChange}
+                                        />
 
-                                            <InputLabel value="Roles" />
+                                        <InputLabel value="Roles" />
 
-                                            <TextInput
-                                                className="mb-5 block w-full "
-                                                type="text"
-                                                name="roles"
-                                                value={state.roles}
-                                                onChange={handleChange}
-                                            />
-                                            <div className="flex justify-center mt-6">
-                                                <ButtonGreen
-                                                    type="submit"
-                                                    className=""
-                                                >
-                                                    Update
-                                                </ButtonGreen>
-                                            </div>
+                                        <TextInput
+                                            className="mb-5 block w-full "
+                                            type="text"
+                                            name="roles"
+                                            value={state.roles}
+                                            onChange={handleChange}
+                                        />
+                                        <div className="flex justify-center mt-6">
+                                            <ButtonGreen
+                                                type="submit"
+                                                className=""
+                                            >
+                                                Update
+                                            </ButtonGreen>
                                         </div>
                                     </div>
-                                </form>
-                            </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                </Authenticated>
-            </>
+                </div>
+            </Authenticated>
         </>
         // <>
         //     <Nav roles={auth.roles} />

@@ -80,9 +80,9 @@ class AdminEmployeeController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findorfail($id);
+        $users = User::findorfail($id);
         return Inertia::render('Admin/Employee/Edit',[
-            'user' => $user
+            'users' => $users
         ]);
     }
     /**

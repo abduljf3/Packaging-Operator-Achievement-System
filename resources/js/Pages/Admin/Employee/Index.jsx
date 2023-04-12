@@ -40,6 +40,11 @@ export default function index({ users, auth }) {
             selector: (row) => row.group,
         },
         {
+            name: "Level",
+            selector: (row) => row.roles,
+            sortable: true,
+        },
+        {
             name: "Action",
             cell: (row) => (
                 <>
@@ -113,13 +118,14 @@ export default function index({ users, auth }) {
                                         </svg>
                                         Add Employee
                                     </ButtonRed>
-                                    <Link href={route('employee.leader')}>leader</Link>
- 
+                                    {/* <Link href={route("employee.leader")}>
+                                        leader
+                                    </Link> */}
                                 </Link>
                             </div>
                         </div>
                     </div>
-                    <div className="pt-4 px-10  ">
+                    <div className="pt-4 pb-10 px-10  ">
                         <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
                             <DataTable
                                 title="Operator"
