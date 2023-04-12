@@ -12,7 +12,7 @@ class AchievementCreateController extends Controller
 {
     public function create()
     {
-        $users = User::where('roles','admin')->get();
+        $users = User::where('roles','user')->get();
        
         $products = Product::get();
         

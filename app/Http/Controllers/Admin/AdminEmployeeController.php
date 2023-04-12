@@ -25,7 +25,14 @@ class AdminEmployeeController extends Controller
             'users'=>$users
         ]);
     }
+    public function employee()
+    {
+        $users = User::where('roles', 'leader')->get();
 
+        return Inertia::render('Admin/Employee/Leader', [
+            'users' => $users,
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      *

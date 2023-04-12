@@ -20,7 +20,7 @@ class UserTableSeeder extends Seeder
             'fullname' => 'Abdul Jabar Nur Firdaus',
             'npk' => '7474',
             'group' => '1',
-            'status' => 'KARYAWAN',
+            'status' => 'MAGANG',
             'password' => bcrypt('admin'),
             'roles' => 'admin',
 
@@ -62,7 +62,7 @@ class UserTableSeeder extends Seeder
             'group' => '2',
             'status' => 'KARYAWAN',
             'password' => bcrypt('admin'),
-            'roles' => 'admin',
+            'roles' => 'user',
 
             
         ],
@@ -72,7 +72,7 @@ class UserTableSeeder extends Seeder
             'group' => '1',
             'status' => 'KARYAWAN',
             'password' => bcrypt('admin'),
-            'roles' => 'admin',
+            'roles' => 'user',
 
             
         ]
@@ -83,7 +83,7 @@ class UserTableSeeder extends Seeder
             'group' => '1',
             'status' => 'PKL',
             'password' => bcrypt('admin'),
-            'roles' => 'admin',
+            'roles' => 'user',
         ]
         ,
         [
@@ -92,7 +92,7 @@ class UserTableSeeder extends Seeder
             'group' => '2',
             'status' => 'PKL',
             'password' => bcrypt('admin'),
-            'roles' => 'admin',
+            'roles' => 'user',
         ] ,
         [
             'fullname' => 'Wawan',
@@ -100,7 +100,7 @@ class UserTableSeeder extends Seeder
             'group' => '3',
             'status' => 'PKL',
             'password' => bcrypt('admin'),
-            'roles' => 'admin',
+            'roles' => 'user',
         ] ,
         [
             'fullname' => 'Wati',
@@ -109,6 +109,46 @@ class UserTableSeeder extends Seeder
             'status' => 'PKL',
             'password' => bcrypt('admin'),
             'roles' => 'admin',
+        ] ,
+        [
+            'fullname' => 'Yusri',
+            'npk' => '4444',
+            'group' => '1',
+            'status' => 'Manager HR',
+            'password' => bcrypt('admin'),
+            'roles' => 'leader',
+        ] ,
+        [
+            'fullname' => 'Yusni',
+            'npk' => '4343',
+            'group' => '1',
+            'status' => 'Manager Produksi',
+            'password' => bcrypt('admin'),
+            'roles' => 'leader',
+        ],
+        [
+            'fullname' => 'Yuyun',
+            'npk' => '4242',
+            'group' => '1',
+            'status' => 'Manager IT',
+            'password' => bcrypt('admin'),
+            'roles' => 'leader',
+        ],
+        [
+            'fullname' => 'Yuda',
+            'npk' => '4141',
+            'group' => '1',
+            'status' => 'Manager Engginering',
+            'password' => bcrypt('admin'),
+            'roles' => 'leader',
+        ],
+        [
+            'fullname' => 'Yuni',
+            'npk' => '4040',
+            'group' => '1',
+            'status' => 'Manager QA',
+            'password' => bcrypt('admin'),
+            'roles' => 'leader',
         ]
             
     ]);
