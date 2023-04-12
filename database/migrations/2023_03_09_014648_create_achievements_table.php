@@ -17,11 +17,9 @@ return new class extends Migration
             $table->id();
             $table->date('date');
             $table->integer('shift');
-          
-            $table->integer('proses');
+            $table->string('proses');
             $table->string('npk');
             $table->string('drw_no');
-            
             $table->string('spring_lot');
             $table->string('product_lot');
             $table->string('total_lot');

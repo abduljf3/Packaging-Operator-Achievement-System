@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\Employee;
+namespace App\Http\Requests\Admin\Achievements;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -13,7 +13,7 @@ class Store extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -24,12 +24,7 @@ class Store extends FormRequest
     public function rules()
     {
         return [
-            'fullname' => 'required|max:40|string', 
-            'npk' => 'required|integer', 
-            'group' => 'required|integer', 
-            'status' => 'required|max:20|string',
-             'password' => 'required|min:8',
-             'roles' => 'required|min:4|max:6|string ',
+            //
         ];
     }
 }
