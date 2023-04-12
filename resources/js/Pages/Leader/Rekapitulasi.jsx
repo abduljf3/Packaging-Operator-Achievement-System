@@ -56,16 +56,21 @@ export default function Index({ achievements, from, to,auth }) {
                {/* content */}
                <div className="w-screen">
                     <div className="flex justify-between px-10 pt-2 ">
+                
                         <form className="flex items-center gap-2" onSubmit={submit}>
                             <TextInput type="date" value={from} name="from_date" onChange={handleOnChange} className="w-32"/>
                             <h1>-</h1>
                             <TextInput type="date" value={to} name="to_date" onChange={handleOnChange} className="w-32"/>
                             <PrimaryButton className="bg-green-500 hover:bg-green-500 focus:bg-green-600 active:bg-green-600 focus:ring-lime-500" text="FILTER"/>
+                            <a href="/leader/cetak_pdf" class="btn btn-primary" target="_blank">CETAK PDF</a>
+                            <a href="/leader/cetak_pdf_detail" class="btn btn-primary" target="_blank">Detail PDF</a>
+	
                         </form>
                         {achievements && (
                             <div className="flex mr-0">
                             <div className="flex items-center gap-3">
                                 <PrimaryButton id="printBtn" className="bg-orange-500 hover:bg-orange-500 focus:bg-orange-600 active:bg-orange-600 focus:ring-orange-400" text="PRINT"/>
+                                   
                                     <Dropdown>
                                         <Dropdown.Trigger>
                                             <PrimaryButton className="bg-green-500 hover:bg-green-500 focus:bg-green-600 active:bg-green-600 focus:ring-lime-500" text="EKSPOR"/>

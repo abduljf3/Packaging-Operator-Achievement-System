@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Employee\Store;
+use App\Http\Requests\Admin\Employee\Update;
 use App\Models\Achievement;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Hash;
 
 class AdminEmployeeController extends Controller
 {
@@ -22,7 +25,14 @@ class AdminEmployeeController extends Controller
             'users'=>$users
         ]);
     }
+    public function employee()
+    {
+        $users = User::where('roles', 'leader')->get();
 
+        return Inertia::render('Admin/Employee/Leader', [
+            'users' => $users,
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -43,22 +53,11 @@ class AdminEmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-     public function store(Request $request)
+     public function store(Store $request)
      {
-         $validatedData = $request->validate([
-            'fullname' => 'required', 
-            'npk' => 'required', 
-            'group' => 'required', 
-            'status' => 'required',
-             'password' => 'required',
-             'roles' => 'required',
-           
-        
-
-         ]);
-     
-         $users = User::create($validatedData);
-     
+        $data = $request->validated();
+        $data['password'] = Hash::make($request->password);
+        User::create($data);
          return redirect()->route('employee.index');
      }
 
@@ -81,16 +80,9 @@ class AdminEmployeeController extends Controller
      */
     public function edit($id)
     {
-        $users = user::findOrFail($id);
+        $user = User::findorfail($id);
         return Inertia::render('Admin/Employee/Edit',[
-            'users' => $users
-        ]);
-    }
-    public function delete($id)
-    {
-        $product = Product::findOrFail($id);
-        return Inertia::render('Admin/Achievement/Delete',[
-            'product' => $product
+            'user' => $user
         ]);
     }
     /**
@@ -100,9 +92,13 @@ class AdminEmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Update $request, $id)
     {
-        //
+        $data = $request->all();
+        $user = User::findOrFail($id);
+        $data['password'] = Hash::make($request->password);
+        $user->update($data);
+        return redirect()->route('employee.index');
     }
 
       /**
