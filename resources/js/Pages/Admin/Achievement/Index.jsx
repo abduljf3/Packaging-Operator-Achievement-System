@@ -47,7 +47,7 @@ export default function Index({ achievements, from, to, auth }) {
         },
         {
             name: "Group",
-            selector: (row) => row.group,
+            selector: (row) => row.user.group,
         },
         {
             name: "NPK",
