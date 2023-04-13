@@ -41,10 +41,11 @@ class LeaderController extends Controller
         ]);
     }
 
-    public function cetak_pdf()
+    public function cetak_pdf(Request $request)
     {
-    	$achievements = Achievement::all();
- 
+        $from = $request->input('from_date');
+        $to = $request->input('to_date');
+        $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
     	$pdf = Pdf::loadview('rekapitulasi_pdf',['achievements'=>$achievements]);
     	return $pdf->download('laporan-rekapitulasi.pdf');
         

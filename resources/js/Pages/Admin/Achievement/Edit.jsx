@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { usedata, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import ButtonGreen from "@/Components/ButtonGreen";
 import TextInput from "@/Components/TextInput";
@@ -7,7 +7,7 @@ import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Link, Head, useForm } from "@inertiajs/react";
 
 export default function Edit({ user, achievements, products, auth }) {
-    const [state, setState] = useState({
+    const { data, setData, post } = useForm({
         id: achievements.id,
         date: achievements.date,
         shift: achievements.shift,
@@ -26,25 +26,31 @@ export default function Edit({ user, achievements, products, auth }) {
     });
 
     useEffect(() => {
-        setState(achievements);
+        setData(achievements);
     }, [achievements]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setState({ ...state, [name]: value });
+        setData(e.target.name, e.target.value);
     };
+
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setdata({ ...data, [name]: value });
+    // };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        Inertia.put(`/operator/operatorachievement/${state.id}`, state)
-            .then(() => {
-                // Redirect to the operator list
-                Inertia.visit("/operator/operatorachievement");
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        router.post(route("admin.achievement.index", achievements.id), {
+            _method: "PUT",
+            ...data,
+        });
     };
+    console.log(handleSubmit);
+
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     Inertia.put(route("admin.achievement.update", achievements.id), data);
+    // };
 
     return (
         <>
@@ -69,19 +75,19 @@ export default function Edit({ user, achievements, products, auth }) {
                                             type="text"
                                             id="npk"
                                             name="npk"
-                                            value={state.npk}
+                                            value={data.npk}
                                             readOnly
                                         />
                                         {/* <select
                                             id="npk"
                                             name="npk"
-                                            value={state.npk}
+                                            value={data.npk}
                                             onChange={handleChange}
                                             className="w-full mb-5 block border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                                         >
                                             <option
                                                 className=""
-                                                value={state.npk}
+                                                value={data.npk}
                                             ></option>
                                         </select> */}
 
@@ -91,7 +97,7 @@ export default function Edit({ user, achievements, products, auth }) {
                                             type="text"
                                             id="fullname"
                                             name="fullname"
-                                            value={state.fullname}
+                                            value={data.fullname}
                                             readOnly
                                         />
 
@@ -99,7 +105,7 @@ export default function Edit({ user, achievements, products, auth }) {
                                         <TextInput
                                             type="date"
                                             className="mb-5 block w-full"
-                                            value={state.date}
+                                            value={data.date}
                                             onChange={handleChange}
                                         />
 
@@ -110,7 +116,7 @@ export default function Edit({ user, achievements, products, auth }) {
                                                     className=""
                                                     type="text"
                                                     name="shift"
-                                                    value={state.shift}
+                                                    value={data.shift}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -120,7 +126,7 @@ export default function Edit({ user, achievements, products, auth }) {
                                                     className=""
                                                     type="text"
                                                     name="group"
-                                                    value={state.group}
+                                                    value={data.group}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -129,7 +135,7 @@ export default function Edit({ user, achievements, products, auth }) {
                                         <select
                                             id="drw_no"
                                             name="drw_no"
-                                            value={state.drw_no}
+                                            value={data.drw_no}
                                             onChange={handleChange}
                                             className="w-1/2 mb-5 block border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                                         >
@@ -152,7 +158,7 @@ export default function Edit({ user, achievements, products, auth }) {
                                             className="mb-5 block w-full"
                                             type="text"
                                             name="product_id"
-                                            value={state.product_name}
+                                            value={data.product_name}
                                         />
 
                                         <div class="flex gap-4">
@@ -163,7 +169,7 @@ export default function Edit({ user, achievements, products, auth }) {
                                                     className=""
                                                     type="text"
                                                     name="spring_lot"
-                                                    value={state.spring_lot}
+                                                    value={data.spring_lot}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -173,7 +179,7 @@ export default function Edit({ user, achievements, products, auth }) {
                                                     className=""
                                                     type="text"
                                                     name="product_lot"
-                                                    value={state.product_lot}
+                                                    value={data.product_lot}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -185,7 +191,7 @@ export default function Edit({ user, achievements, products, auth }) {
                                                     className=""
                                                     type="text"
                                                     name="total_lot"
-                                                    value={state.total_lot}
+                                                    value={data.total_lot}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -195,7 +201,7 @@ export default function Edit({ user, achievements, products, auth }) {
                                                     className=""
                                                     type="text"
                                                     name="qty"
-                                                    value={state.qty}
+                                                    value={data.qty}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -205,7 +211,7 @@ export default function Edit({ user, achievements, products, auth }) {
                                             className="mb-5 block w-full"
                                             type="text"
                                             name="remarks"
-                                            value={state.remarks}
+                                            value={data.remarks}
                                             onChange={handleChange}
                                         />
 
@@ -214,14 +220,14 @@ export default function Edit({ user, achievements, products, auth }) {
                                             className="mb-5 block"
                                             id="customer_id"
                                             name="customer_id"
-                                            value={state.customer_id}
+                                            value={data.customer_id}
                                         />
 
                                         <TextInput
                                             className="mb-5 w-full block"
                                             type="text"
                                             name="proses"
-                                            value={state.proses}
+                                            value={data.proses}
                                             onChange={handleChange}
                                         />
 
@@ -230,7 +236,7 @@ export default function Edit({ user, achievements, products, auth }) {
                                             className="mb-5 w-full block"
                                             type="text"
                                             name="product_id"
-                                            value={state.product_id}
+                                            value={data.product_id}
                                             onChange={handleChange}
                                         />
                                     </div>
@@ -254,7 +260,7 @@ export default function Edit({ user, achievements, products, auth }) {
                         type="date"
                         id="date"
                         name="date"
-                        value={state.date}
+                        value={data.date}
                         onChange={handleChange}
                     />
                 </div>
@@ -265,7 +271,7 @@ export default function Edit({ user, achievements, products, auth }) {
                         type="text"
                         id="shift"
                         name="shift"
-                        value={state.shift}
+                        value={data.shift}
                         onChange={handleChange}
                     />
                 </div>
@@ -276,7 +282,7 @@ export default function Edit({ user, achievements, products, auth }) {
                         type="text"
                         id="group"
                         name="group"
-                        value={state.group}
+                        value={data.group}
                         onChange={handleChange}
                     />
                 </div>
@@ -287,7 +293,7 @@ export default function Edit({ user, achievements, products, auth }) {
                         type="text"
                         id="proses"
                         name="proses"
-                        value={state.proses}
+                        value={data.proses}
                         onChange={handleChange}
                     />
                 </div>
@@ -298,7 +304,7 @@ export default function Edit({ user, achievements, products, auth }) {
                         type="text"
                         id="user_id"
                         name="user_id"
-                        value={state.user_id}
+                        value={data.user_id}
                         onChange={handleChange}
                     />
                 </div>
@@ -309,7 +315,7 @@ export default function Edit({ user, achievements, products, auth }) {
                         type="text"
                         id="product_id"
                         name="product_id"
-                        value={state.product_id}
+                        value={data.product_id}
                         onChange={handleChange}
                     />
                 </div>
@@ -320,7 +326,7 @@ export default function Edit({ user, achievements, products, auth }) {
                         type="text"
                         id="spring_lot"
                         name="spring_lot"
-                        value={state.spring_lot}
+                        value={data.spring_lot}
                         onChange={handleChange}
                     />
                 </div>
@@ -331,7 +337,7 @@ export default function Edit({ user, achievements, products, auth }) {
                         type="text"
                         id="product_lot"
                         name="product_lot"
-                        value={state.product_lot}
+                        value={data.product_lot}
                         onChange={handleChange}
                     />
                 </div>
@@ -342,7 +348,7 @@ export default function Edit({ user, achievements, products, auth }) {
                         type="text"
                         id="total_lot"
                         name="total_lot"
-                        value={state.total_lot}
+                        value={data.total_lot}
                         onChange={handleChange}
                     />
                 </div>
@@ -353,7 +359,7 @@ export default function Edit({ user, achievements, products, auth }) {
                         type="text"
                         id="qty"
                         name="qty"
-                        value={state.qty}
+                        value={data.qty}
                         onChange={handleChange}
                     />
                 </div>
@@ -364,7 +370,7 @@ export default function Edit({ user, achievements, products, auth }) {
                         type="text"
                         id="remarks"
                         name="remarks"
-                        value={state.remarks}
+                        value={data.remarks}
                         onChange={handleChange}
                     />
                 </div>

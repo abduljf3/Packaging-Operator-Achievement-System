@@ -40,11 +40,16 @@ export default function index({ users, auth }) {
             selector: (row) => row.group,
         },
         {
+            name: "Level",
+            selector: (row) => row.roles,
+            sortable: true,
+        },
+        {
             name: "Action",
             cell: (row) => (
                 <>
                     <a
-                        href={route("employee.edit", row.id)}
+                        href={route("admin.employee.edit", row.id)}
                         class="text-green-500 hover:text-green-900 duration-500 mr-5"
                     >
                         <svg
@@ -97,7 +102,7 @@ export default function index({ users, auth }) {
                     <div className="flex justify-end px-10 pt-3 ">
                         <div className="flex mr-0">
                             <div className="flex items-center gap-3">
-                                <Link href={route("employee.create")}>
+                                <Link href={route("admin.employee.create")}>
                                     <ButtonRed>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -113,13 +118,14 @@ export default function index({ users, auth }) {
                                         </svg>
                                         Add Employee
                                     </ButtonRed>
-                                    <Link href={route('employee.leader')}>leader</Link>
- 
+                                    {/* <Link href={route("employee.leader")}>
+                                        leader
+                                    </Link> */}
                                 </Link>
                             </div>
                         </div>
                     </div>
-                    <div className="pt-4 px-10  ">
+                    <div className="pt-4 pb-10 px-10  ">
                         <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
                             <DataTable
                                 title="Operator"

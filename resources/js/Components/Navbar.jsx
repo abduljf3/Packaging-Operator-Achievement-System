@@ -86,12 +86,11 @@ export default function Navbar({ roles, props, auth, header }) {
                                 <a
                                     className={`${
                                         route().current(
-                                            "achievement.index",
-                                            "achievement.edit"
+                                            "admin.achievement.*"
                                         ) &&
                                         "text-red-600 underline underline-offset-4 decoration-2"
                                     } flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
-                                    href={route("achievement.index")}
+                                    href={route("admin.achievement.index")}
                                 >
                                     {" "}
                                     Achievement{" "}
@@ -101,10 +100,10 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li className="nav-item">
                                 <a
                                     className={`${
-                                        route().current("employee.index") &&
+                                        route().current("admin.employee.*") &&
                                         "text-red-600 underline underline-offset-4 decoration-2"
                                     } flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
-                                    href={route("employee.index")}
+                                    href={route("admin.employee.index")}
                                 >
                                     {" "}
                                     Operator{" "}
@@ -114,10 +113,10 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li className="nav-item">
                                 <a
                                     className={`${
-                                        route().current("products.index") &&
+                                        route().current("admin.products.*") &&
                                         "text-red-600 underline underline-offset-4 decoration-2"
                                     } flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
-                                    href={route("products.index")}
+                                    href={route("admin.products.index")}
                                 >
                                     {" "}
                                     Product{" "}

@@ -34,11 +34,13 @@ export default function Index({ achievements, from, to, auth }) {
         {
             name: "ID",
             selector: (row) => row.id,
+            sortable: true,
         },
 
         {
             name: "Date",
             selector: (row) => row.date,
+            sortable: true,
         },
         {
             name: "Nama",
@@ -48,29 +50,34 @@ export default function Index({ achievements, from, to, auth }) {
         {
             name: "Group",
             selector: (row) => row.user.group,
+            sortable: true,
         },
         {
             name: "NPK",
             selector: (row) => row.npk,
+            sortable: true,
         },
         {
             name: "Drawing Number",
             selector: (row) => row.drw_no,
+            sortable: true,
         },
         {
             name: "Total Lot",
             selector: (row) => row.total_lot,
+            sortable: true,
         },
         {
             name: "Qty (pcs)",
             selector: (row) => row.qty,
+            sortable: true,
         },
         {
             name: "Action",
             cell: (row) => (
                 <>
                     <a
-                        href={route("achievement.edit", row.id)}
+                        href={route("admin.achievement.edit", row.id)}
                         class="text-green-500 hover:text-green-900 duration-500 mr-5"
                     >
                         <svg

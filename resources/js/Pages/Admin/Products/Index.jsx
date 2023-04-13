@@ -144,8 +144,8 @@ export default function index({ products, auth }) {
                     </div>
                 </div>
                 <div>
-                    <div className="flex w-full px-10 mb-5 py-3">
-                        <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
+                    <div className="flex w-full px-10 pb-10 py-3">
+                        <div className="inline-block min-w-full overflow-hidden align-middle border-b shadow sm:rounded-lg">
                             <DataTable
                                 title="List Product"
                                 columns={columns}
