@@ -49,7 +49,7 @@ export default function index({ users, auth }) {
             cell: (row) => (
                 <>
                     <a
-                        href={route("employee.edit", row.id)}
+                        href={route("admin.employee.edit", row.id)}
                         class="text-green-500 hover:text-green-900 duration-500 mr-5"
                     >
                         <svg
@@ -102,7 +102,7 @@ export default function index({ users, auth }) {
                     <div className="flex justify-end px-10 pt-3 ">
                         <div className="flex mr-0">
                             <div className="flex items-center gap-3">
-                                <Link href={route("employee.create")}>
+                                <Link href={route("admin.employee.create")}>
                                     <ButtonRed>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"

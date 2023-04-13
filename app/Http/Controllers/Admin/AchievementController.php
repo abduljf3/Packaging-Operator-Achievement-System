@@ -18,7 +18,15 @@ class AchievementController extends Controller
     public function index(Request $request)
     {
     
-        return Inertia::render('Admin/Achievement/Index',);
+        $achievements = null;
+        if( $request->input('from_date')){
+            $from = $request->input('from_date');
+            $to = $request->input('to_date');
+            $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
+        }
+        return Inertia::render('Admin/Achievement/Index',[
+            'achievements' => $achievements
+        ]);
 
     }
     public function achievement(Request $request)
