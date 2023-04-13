@@ -44,12 +44,12 @@ export default function Index({ achievements, from, to, auth }) {
         },
         {
             name: "Nama",
-            selector: (row) => row.user.fullname,
+            selector: (row) => row.user?.fullname,
             sortable: true,
         },
         {
             name: "Group",
-            selector: (row) => row.user.group,
+            selector: (row) => row.user?.group,
             sortable: true,
         },
         {

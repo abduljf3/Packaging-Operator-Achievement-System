@@ -99,7 +99,7 @@ class ProductController extends Controller
         $products = Product::findOrFail($request->id); // find the operator by id
         $products->update($validatedData); // update the operator instance
     
-        return redirect()->route('products.index');
+        return redirect()->route('admin.products.index');
     }
 
 
@@ -114,6 +114,6 @@ class ProductController extends Controller
     {
         $products = Product::where('id', $id)->firstorfail()->delete();
         echo ("User Record deleted successfully.");
-        return redirect()->route("products.index");
+        return redirect()->route("admin.products.index");
      }
     }

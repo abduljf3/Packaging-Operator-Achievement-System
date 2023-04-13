@@ -4,7 +4,7 @@ import ButtonGreen from "@/Components/ButtonGreen";
 import TextInput from "@/Components/TextInput";
 import InputLabel from "@/Components/InputLabel";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { Link, Head, useForm } from "@inertiajs/react";
+import { router, Link, Head, useForm } from "@inertiajs/react";
 
 export default function Edit({ user, achievements, products, auth }) {
     const { data, setData, post } = useForm({
@@ -40,7 +40,7 @@ export default function Edit({ user, achievements, products, auth }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        router.post(route("admin.achievement.index", achievements.id), {
+        router.post(route("admin.achievement.update", achievements.id), {
             _method: "PUT",
             ...data,
         });

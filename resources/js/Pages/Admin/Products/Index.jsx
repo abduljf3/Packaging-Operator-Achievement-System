@@ -27,10 +27,12 @@ export default function index({ products, auth }) {
         {
             name: "No",
             selector: (row) => row.id,
+            sortable: true,
         },
         {
             name: "Customer Id",
             selector: (row) => row.customer_id,
+            sortable: true,
         },
         {
             name: "Customer Name",
@@ -40,6 +42,7 @@ export default function index({ products, auth }) {
         {
             name: "Drawing Number",
             selector: (row) => row.drw_no,
+            sortable: true,
         },
         {
             name: "Product Name",
@@ -49,13 +52,14 @@ export default function index({ products, auth }) {
         {
             name: "Product Type",
             selector: (row) => row.product_type,
+            sortable: true,
         },
         {
             name: "Action",
             cell: (row) => (
                 <>
                     <a
-                        href={route("products.edit", row.id)}
+                        href={route("admin.products.edit", row.id)}
                         class="text-green-500 hover:text-green-900 duration-500 mr-5"
                     >
                         <svg
