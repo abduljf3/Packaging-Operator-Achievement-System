@@ -58,7 +58,7 @@ class AdminEmployeeController extends Controller
         $data = $request->validated();
         $data['password'] = Hash::make($request->password);
         User::create($data);
-         return redirect()->route('employee.index');
+         return redirect()->route('admin.employee.index');
      }
 
     /**
@@ -98,7 +98,7 @@ class AdminEmployeeController extends Controller
         $user = User::findOrFail($id);
         $data['password'] = Hash::make($request->password);
         $user->update($data);
-        return redirect()->route('employee.index');
+        return redirect()->route('admin.employee.index');
     }
 
       /**
@@ -111,6 +111,6 @@ class AdminEmployeeController extends Controller
     {
         $users = User::where('id', $id)->firstorfail()->delete();
         echo ("User Record deleted successfully.");
-        return redirect()->route('employee.index');
+        return redirect()->route('admin.employee.index');
      }
 }

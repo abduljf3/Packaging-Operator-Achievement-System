@@ -8,6 +8,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class LeaderController extends Controller
 {
@@ -19,15 +20,21 @@ class LeaderController extends Controller
     public function rekapitulasi(Request $request)
     {
         $achievements = null;
+        $from = null;
+        $to = null;
         if( $request->input('from_date')){
             $from = $request->input('from_date');
             $to = $request->input('to_date');
-            $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
+            $achievements = Achievement::with(['user','product'])->select('drw_no', DB::raw('SUM(total_lot) as totalLot'), DB::raw('SUM(qty) as totalQty'))->whereBetween('date',[$from,$to])->groupBy('drw_no')->get();
         }
         return Inertia::render('Leader/Rekapitulasi',[
-            'achievements' => $achievements
+            'achievements' => $achievements,
+            'from' => $from,
+            'to' => $to
         ]);
     }
+
+
     public function detail(Request $request)
     {
         $achievements = null;
@@ -42,13 +49,18 @@ class LeaderController extends Controller
     }
 
     public function cetak_pdf(Request $request)
-    {
+    {   
         $from = $request->input('from_date');
         $to = $request->input('to_date');
+
         $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
-    	$pdf = Pdf::loadview('rekapitulasi_pdf',['achievements'=>$achievements]);
-    	return $pdf->download('laporan-rekapitulasi.pdf');
-        
+        $filename = 'Laporan_Rekapitulasi '.$from.' sampai '.$to.'.pdf';
+        $pdf = PDF::loadView('rekapitulasi_pdf', [
+            'achievements' => $achievements,
+            'from' => $from,
+            'to' => $to,
+        ]);
+        return $pdf->download($filename);
     }
     
     public function cetak_pdf_detail()
