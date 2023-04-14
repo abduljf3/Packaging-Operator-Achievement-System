@@ -14,7 +14,7 @@ export default function Create({ auth }) {
         customer_name: "",
         drw_no: "",
         product_name: "",
-        product_type: "",
+        target: "",
     });
 
     const [submitting, setSubmitting] = useState(false);
@@ -28,6 +28,8 @@ export default function Create({ auth }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitting(true);
+        const url = route("admin.products.index") ;
+        window.location.href = url;
         await post("/admin/products", {
             data,
             preserveScroll: true,
@@ -105,6 +107,13 @@ export default function Create({ auth }) {
                                             type="text"
                                             name="product_type"
                                             value={data.product_type}
+                                            onChange={handleChange}
+                                        /> <InputLabel value="Target" />
+                                          <TextInput
+                                            className="mb-5 block w-full "
+                                            type="text"
+                                            name="target"
+                                            value={data.target}
                                             onChange={handleChange}
                                         />
                                         <div className="flex justify-center mt-6">

@@ -20,6 +20,8 @@ export default function index({ products, auth }) {
 
     const handleDelete = async (id) => {
         setDeleting(true);
+        const url = route("admin.products.index") ;
+        window.location.href = url;
         await Inertia.delete(`/admin/products/${id}`);
         setDeleting(false);
     };
@@ -52,6 +54,10 @@ export default function index({ products, auth }) {
         {
             name: "Product Type",
             selector: (row) => row.product_type,
+            sortable: true,
+        },{
+            name: "Target",
+            selector: (row) => row.target,
             sortable: true,
         },
         {
@@ -128,7 +134,7 @@ export default function index({ products, auth }) {
                                 className="  py-3 px-4 bg-white placeholder-gray-400 text-black border-2 border-gray-300 duration-500 appearance-none w-full block pl-10 focus:outline-none rounded-lg "
                             ></input>
                         </label>
-                        <Link href={route("products.create")}>
+                        <Link href={route("admin.products.create")}>
                             <ButtonRed>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"

@@ -15,7 +15,7 @@ export default function Edit({ user, achievements, products, auth }) {
         proses: achievements.proses,
         user_id: achievements.user_id,
         npk: achievements.npk,
-        fullname: achievements.fullname,
+
         drw_no: achievements.drw_no,
         product_id: achievements.product_id,
         spring_lot: achievements.spring_lot,
@@ -24,7 +24,20 @@ export default function Edit({ user, achievements, products, auth }) {
         qty: achievements.qty,
         remarks: achievements.remarks,
     });
+///////////////////////////
+useEffect(() => {
+    const fetchUser = async () => {
+      const response = await fetch(`/api/users/${achievements.npk}`);
+      const data = await response.json();
+      setUser(data);
+    };
+  
+    fetchUser();
+  }, [achievements.npk]);
 
+
+
+    ///////////////////////
     useEffect(() => {
         setData(achievements);
     }, [achievements]);
