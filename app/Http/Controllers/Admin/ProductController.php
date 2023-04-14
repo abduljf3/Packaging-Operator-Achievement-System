@@ -49,6 +49,7 @@ class ProductController extends Controller
             'drw_no' => 'required', 
             'product_name' => 'required',
              'product_type' => 'required',
+             'target' => 'required',
            
         
 
@@ -93,6 +94,7 @@ class ProductController extends Controller
             'drw_no' => 'required', 
             'product_name' => 'required',
              'product_type' => 'required',
+             'target' => 'required',
            
         ]);
     

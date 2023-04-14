@@ -24,6 +24,8 @@ export default function Edit({ users, auth }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const url = route("admin.employee.index") ;
+        window.location.href = url;
         router.post(route("admin.employee.update", users.id), {
             _method: "PUT",
             ...data,

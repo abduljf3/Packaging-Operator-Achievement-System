@@ -14,6 +14,7 @@ export default function Edit({ products, auth }) {
         drw_no: products.drw_no,
         product_name: products.product_name,
         product_type: products.product_type,
+        target: products.target,
     });
 
     useEffect(() => {
@@ -27,14 +28,9 @@ export default function Edit({ products, auth }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        Inertia.put(`/admin/products/${state.id}`, state)
-            .then(() => {
-                // Redirect to the operator list
-                Inertia.visit("/admin/products");
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        const url = route("admin.products.index") ;
+        window.location.href = url;
+        Inertia.put(`/admin/products/${state.id}`, state)      
     };
 
     return (
@@ -100,10 +96,22 @@ export default function Edit({ products, auth }) {
                                             value={state.product_type}
                                             onChange={handleChange}
                                         />
+
+                                        
+                                        <InputLabel value="Target" />
+
+                                        <TextInput
+                                            className="mb-5 block w-full "
+                                            type="text"
+                                            name="target"
+                                            value={state.target}
+                                            onChange={handleChange}
+                                        />
                                         <div className="flex justify-center mt-6">
                                             <ButtonGreen
                                                 type="submit"
                                                 className=""
+                                                
                                             >
                                                 Update
                                             </ButtonGreen>
