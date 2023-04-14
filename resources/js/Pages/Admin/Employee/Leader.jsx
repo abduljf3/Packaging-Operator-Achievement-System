@@ -20,11 +20,13 @@ export default function index({ users, auth }) {
         {
             name: "No",
             selector: (row) => row.id,
+            sortable: true,
         },
 
         {
             name: "NPK",
             selector: (row) => row.npk,
+            sortable: true,
         },
         {
             name: "Operator Name",
@@ -34,10 +36,12 @@ export default function index({ users, auth }) {
         {
             name: "Status",
             selector: (row) => row.status,
+            sortable: true,
         },
         {
             name: "Group",
             selector: (row) => row.group,
+            sortable: true,
         },
 
         {

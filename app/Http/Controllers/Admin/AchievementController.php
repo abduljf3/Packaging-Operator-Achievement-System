@@ -114,7 +114,11 @@ class AchievementController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $achievements = Achievement ::findOrFail($id);
+    
+        $achievements->update($data);
+        return redirect()->route('admin.achievement.index');
     }
 
       /**
@@ -127,6 +131,6 @@ class AchievementController extends Controller
     {
         $achievements = achievement::where('id', $id)->firstorfail()->delete();
         echo ("User Record deleted successfully.");
-        return redirect()->route('achievement.index');
+        return redirect()->route('admin.achievement.index');
      }
 }
