@@ -38,18 +38,23 @@ class LeaderController extends Controller
     public function detail(Request $request)
     {
         $achievements = null;
+        $from = null;
+        $to = null;
         if( $request->input('from_date')){
             $from = $request->input('from_date');
+            $to = $request->input('to_date');;
             $to = $request->input('to_date');
             $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
         }
         return Inertia::render('Leader/Detail',[
-            'achievements' => $achievements
+            'achievements' => $achievements,
+            'from' => $from,
+            'to' => $to
         ]);
     }
 
     public function cetak_pdf(Request $request)
-    {   
+    {
         $from = $request->input('from_date');
         $to = $request->input('to_date');
 
@@ -62,15 +67,24 @@ class LeaderController extends Controller
         ]);
         return $pdf->download($filename);
     }
-    
+
     public function cetak_pdf_detail()
     {
         $achievements = Achievement::all();
         $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
-    
+
         $pdf = Pdf::loadview('detail_pdf', ['achievements' => $achievements]);
-    
+
         return $pdf->download('Laporan_Detail - ' . $dateNow . '.pdf');
+    }
+
+    public function cetak_excel(Request $request)
+    {
+        $data = $request->all();
+        $from = $request->input('from_date');
+        $to = $request->input('to_date');
+        $achievements = Achievement::with(['user','product'])->select('drw_no', DB::raw('SUM(total_lot) as totalLot'), DB::raw('SUM(qty) as totalQty'))->whereBetween('date',[$from,$to])->groupBy('drw_no')->get();
+        return Excel::download( achievements, 'rekapitulasi.xlsx');
     }
 
     public function report()
