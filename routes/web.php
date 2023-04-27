@@ -43,15 +43,16 @@ Route::prefix('leader')->middleware(['auth'])->name('leader.')->group(function (
     Route::get('/rekapitulasi',[LeaderController::class,'rekapitulasi'])->name('rekapitulasi');
     Route::get('/cetak_pdf', [LeaderController::class,'cetak_pdf'])->name('cetak_pdf');
     Route::get('/cetak_pdf_detail', [LeaderController::class,'cetak_pdf_detail']);
+    Route::get('/cetak_excel', [LeaderController::class,'cetak_excel'])->name('cetak_excel');
 });
 
 
-Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () { 
+Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
     Route::resource('products',ProductController::class);
     Route::resource('achievement',AchievementController::class);
     Route::resource('employee',AdminEmployeeController::class);
     Route::resource('leader',AdminLeaderController::class);
-}); 
+});
 
 
 Route::get('/welcome',[ItemController::class,'welcome'])->name('welcome');
