@@ -4,13 +4,19 @@ import ButtonGreen from "@/Components/ButtonGreen";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import Dropdown from "@/Components/Dropdown";
+import Select from "react-select";
 import OperatorLayout from "@/Layouts/OperatorLayout";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import { Link, Head, useForm } from "@inertiajs/react";
 
 export default function CreateAchievement({ users, products }) {
+    const [selectedNpk, setSelectedNpk] = useState(null);
+    const [fullname, setFullname] = useState("");
+    const [group, setGroup] = useState("");
+    const [selectedDrwNo, setSelectedDrwNo] = useState(null);
+    const [productName, setProductName] = useState("");
+
     const { data, setData, post, errors } = useForm({
         shift: "",
         group: "",
@@ -28,7 +34,7 @@ export default function CreateAchievement({ users, products }) {
     const handleClick = () => {
         Swal.fire({
             icon: "success",
-            title: "Achievement berhasil ditambahkan",
+            title: "Achievement berhasil ditambah",
             showConfirmButton: false,
             timer: 1500,
         });
@@ -36,6 +42,29 @@ export default function CreateAchievement({ users, products }) {
 
     const [submitting, setSubmitting] = useState(false);
     const [date, setDate] = useState();
+
+    const optionNpk = users.map((user) => ({
+        value: user.npk,
+        label: user.npk,
+    }));
+    const optionDrwNo = products.map((product) => ({
+        value: product.drw_no,
+        label: product.drw_no + "  |  " + product.customer_id,
+    }));
+
+    const handleNpkChange = (selectedNpkOption) => {
+        setSelectedNpk(selectedNpkOption);
+        const user = users.find((u) => u.npk === selectedNpkOption.value);
+        setFullname(user.fullname);
+        setGroup(user.group);
+    };
+
+    const handleDrwNoChange = (selectedDrwNo) => {
+        setSelectedDrwNo(selectedDrwNo);
+        const product = products.find((p) => p.drw_no === selectedDrwNo.value);
+        setProductName(product.product_name);
+    };
+
     const handleChange = (e) => {
         const key = e.target.name;
         const value = e.target.value;
@@ -73,7 +102,7 @@ export default function CreateAchievement({ users, products }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const url = route("achievementCreate") ;
+        const url = route("achievementCreate");
         window.location.href = url;
         post(route("achievementStore"), data);
     };
@@ -92,7 +121,15 @@ export default function CreateAchievement({ users, products }) {
                                 <div className="flex justify-between">
                                     <div className=" mx-10 my-2">
                                         <InputLabel value="NPK" />
-                                        <select
+
+                                        <Select
+                                            value={selectedNpk}
+                                            onChange={handleNpkChange}
+                                            options={optionNpk}
+                                            className="mb-5"
+                                        />
+
+                                        {/* <select
                                             id="npk"
                                             name="npk"
                                             value={data.npk}
@@ -110,15 +147,18 @@ export default function CreateAchievement({ users, products }) {
                                                     {user.npk}
                                                 </option>
                                             ))}
-                                        </select>
+                                        </select> */}
 
                                         <InputLabel value="Name" />
                                         <TextInput
                                             className="mb-5 block w-full"
                                             type="text"
                                             id="fullname"
+                                            onChange={(e) =>
+                                                setFullname(e.target.value)
+                                            }
                                             name="fullname"
-                                            value={data.fullname}
+                                            value={fullname}
                                             readOnly
                                         />
                                         <InputError message={errors.fullname} />
@@ -153,8 +193,10 @@ export default function CreateAchievement({ users, products }) {
                                                     className=""
                                                     type="text"
                                                     name="group"
-                                                    value={data.group}
-                                                    onChange={handleChange}
+                                                    value={group}
+                                                    onChange={(e) =>
+                                                        setGroup(e.target.value)
+                                                    }
                                                 />
                                                 <InputError
                                                     message={errors.group}
@@ -162,7 +204,14 @@ export default function CreateAchievement({ users, products }) {
                                             </div>
                                         </div>
                                         <InputLabel value="Drawing Number" />
-                                        <select
+                                        <Select
+                                            options={optionDrwNo}
+                                            value={selectedDrwNo}
+                                            onChange={handleDrwNoChange}
+                                            className="mb-5"
+                                        />
+
+                                        {/* <select
                                             id="drw_no"
                                             name="drw_no"
                                             value={data.drw_no}
@@ -175,10 +224,11 @@ export default function CreateAchievement({ users, products }) {
                                                     key={product.id}
                                                     value={product.drw_no}
                                                 >
-                                                    {product.drw_no}
+                                                    {product.drw_no} |{" "}
+                                                    {product.customer_id}
                                                 </option>
                                             ))}
-                                        </select>
+                                        </select> */}
                                         {/* <TextInput className="mb-5 block w-full" /> */}
                                     </div>
 
@@ -188,7 +238,10 @@ export default function CreateAchievement({ users, products }) {
                                             className="mb-5 block w-full"
                                             type="text"
                                             name="product_id"
-                                            value={data.product_name}
+                                            value={productName}
+                                            onChange={(e) =>
+                                                setProductName(e.target.value)
+                                            }
                                         />
                                         <InputError
                                             message={errors.product_name}
@@ -260,7 +313,7 @@ export default function CreateAchievement({ users, products }) {
                                         />
                                         <InputError message={errors.remarks} />
 
-                                        <InputLabel value="Customer Id" />
+                                        {/* <InputLabel value="Customer Id" />
                                         <TextInput
                                             className="mb-5 block"
                                             id="customer_id"
@@ -284,20 +337,21 @@ export default function CreateAchievement({ users, products }) {
                                             name="product_id"
                                             value={data.product_id}
                                             onChange={handleChange}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="flex justify-end gap-4 mx-10 my-2">
-                                    <ButtonRed>Cancel</ButtonRed>
-                                    {/* <ButtonGreen
+                                        /> */}
+
+                                        <div className="flex justify-end gap-4  pt-5">
+                                            <ButtonRed>Reset</ButtonRed>
+                                            {/* <ButtonGreen
                                         // disabled={submitting}
                                         onclick="handleClick"
                                     >
                                         save
                                     </ButtonGreen> */}
-                                    <ButtonGreen onClick={handleClick}>
-                                        save
-                                    </ButtonGreen>
+                                            <ButtonGreen onClick={handleClick}>
+                                                save
+                                            </ButtonGreen>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </div>

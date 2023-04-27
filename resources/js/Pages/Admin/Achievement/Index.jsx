@@ -1,5 +1,5 @@
 import TextInput from "@/Components/TextInput";
-import { Head, useForm } from "@inertiajs/react";
+import { Link, Head, useForm } from "@inertiajs/react";
 import ButtonRed from "@/Components/ButtonRed";
 import ButtonGreen from "@/Components/ButtonGreen";
 import { useState } from "react";
@@ -20,11 +20,8 @@ export default function Index({ achievements, from, to, auth }) {
 
         await Inertia.delete(`/admin/achievement/${id}`);
 
-        const url = new URL(window.location.href);  
-        window.location.href =url.toString();
-        
         setDeleting(false);
-};
+    };
 
     const handleOnChange = (event) => {
         setData(event.target.name, event.target.value);
@@ -100,8 +97,7 @@ export default function Index({ achievements, from, to, auth }) {
                             />
                         </svg>
                     </a>
-
-                    <a
+                    <Link
                         disabled={deleting}
                         onClick={() => handleDelete(row.id)}
                         className="w-6 h-6 text-red-500 hover:text-red-900 duration-500"
@@ -119,7 +115,7 @@ export default function Index({ achievements, from, to, auth }) {
                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                             />
                         </svg>
-                    </a>
+                    </Link>
                 </>
             ),
         },

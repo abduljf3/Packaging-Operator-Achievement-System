@@ -24,18 +24,16 @@ export default function Edit({ users, achievements, products, auth }) {
         qty: achievements.qty,
         remarks: achievements.remarks,
     });
-///////////////////////////
-useEffect(() => {
-    const fetchUser = async () => {
-      const response = await fetch(`/api/users/${achievements.npk}`);
-      const data = await response.json();
-      setUser(data);
-    };
-  
-    fetchUser();
-  }, [achievements.npk]);
+    ///////////////////////////
+    useEffect(() => {
+        const fetchUser = async () => {
+            const response = await fetch(`/api/users/${achievements.npk}`);
+            const data = await response.json();
+            setUser(data);
+        };
 
-
+        fetchUser();
+    }, [achievements.npk]);
 
     ///////////////////////
     useEffect(() => {
@@ -198,7 +196,8 @@ useEffect(() => {
                                                     key={product.data.id}
                                                     value={product.data.drw_no}
                                                 >
-                                                    {product.data.drw_no}
+                                                    {product.data.drw_no} |{" "}
+                                                    {product.data.customer_id}
                                                 </option>
                                             ))}
                                         </select>
@@ -267,33 +266,9 @@ useEffect(() => {
                                             value={data.remarks}
                                             onChange={handleChange}
                                         />
-
-                                        <InputLabel value="Customer Id" />
-                                        <TextInput
-                                            className="mb-5 block"
-                                            id="customer_id"
-                                            name="customer_id"
-                                            value={data.customer_id}
-                                        />
-
-                                        <TextInput
-                                            className="mb-5 w-full block"
-                                            type="text"
-                                            name="proses"
-                                            value={data.proses}
-                                            onChange={handleChange}
-                                        />
-
-                                        <InputLabel value="Product Id" />
-                                        <TextInput
-                                            className="mb-5 w-full block"
-                                            type="text"
-                                            name="product_id"
-                                            value={data.product_id}
-                                            onChange={handleChange}
-                                        />
                                     </div>
                                 </div>
+
                                 <div className="flex justify-end gap-4 mx-10 my-2">
                                     <ButtonGreen type="submit">
                                         Update
