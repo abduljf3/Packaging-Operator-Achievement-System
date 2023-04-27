@@ -6,7 +6,7 @@ import InputLabel from "@/Components/InputLabel";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { router, Link, Head, useForm } from "@inertiajs/react";
 
-export default function Edit({ user, achievements, products, auth }) {
+export default function Edit({ users, achievements, products, auth }) {
     const { data, setData, post } = useForm({
         id: achievements.id,
         date: achievements.date,
@@ -44,6 +44,36 @@ useEffect(() => {
 
     const handleChange = (e) => {
         setData(e.target.name, e.target.value);
+
+        if (key === "npk") {
+            // Look up the corresponding fullname from the users array
+            const user = users.find((user) => user.npk === value);
+            const fullname = user ? user.fullname : "";
+            const shift = user ? user.shift : "";
+            const group = user ? user.group : "";
+            setData((data) => ({
+                ...data,
+                npk: value,
+                fullname,
+                shift,
+                group,
+            }));
+        } else if (key === "drw_no") {
+            // Look up the corresponding product name from the products array
+            const product = products.find(
+                (product) => product.drw_no === value
+            );
+            const product_name = product ? product.product_name : "";
+            const customer_id = product ? product.customer_id : "";
+            setData((data) => ({
+                ...data,
+                drw_no: value,
+                product_name,
+                customer_id,
+            }));
+        } else {
+            setData((data) => ({ ...data, [key]: value }));
+        }
     };
 
     // const handleChange = (e) => {
@@ -82,15 +112,25 @@ useEffect(() => {
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-between">
                                     <div className=" mx-10 my-2">
-                                        <InputLabel value="NPK" />
-                                        <TextInput
-                                            className="mb-5 block w-full"
-                                            type="text"
+                                        <select
                                             id="npk"
                                             name="npk"
                                             value={data.npk}
-                                            readOnly
-                                        />
+                                            onChange={handleChange}
+                                            className="w-full mb-5 block border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                        >
+                                            <option className="" value="">
+                                                -
+                                            </option>
+                                            {users?.map((user) => (
+                                                <option
+                                                    key={user.data.id}
+                                                    value={user.data.npk}
+                                                >
+                                                    {user.data.npk}
+                                                </option>
+                                            ))}
+                                        </select>
                                         {/* <select
                                             id="npk"
                                             name="npk"
@@ -155,10 +195,10 @@ useEffect(() => {
                                             <option value="">-</option>
                                             {products?.map((product) => (
                                                 <option
-                                                    key={product.id}
-                                                    value={product.drw_no}
+                                                    key={product.data.id}
+                                                    value={product.data.drw_no}
                                                 >
-                                                    {product.drw_no}
+                                                    {product.data.drw_no}
                                                 </option>
                                             ))}
                                         </select>
