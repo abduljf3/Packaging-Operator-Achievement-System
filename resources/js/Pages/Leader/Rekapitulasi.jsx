@@ -62,12 +62,24 @@ export default function Index({ achievements, from, to,auth }) {
             selector: (row) => row.product.product_type,
         },
     ];
+    const Print = () =>{     
+        //console.log('print');  
+        let printContents = document.getElementById('printablediv').innerHTML;
+        let originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+       document.body.innerHTML = originalContents; 
+      }
 
     return (
         <>
             <Head title="Report Rekapitulasi" />
+            
            <LeaderLayout>
+            
                {/* content */}
+            
+   
                <div className="w-screen">
                     <div className="flex justify-between px-10 pt-2 ">
                         <form className="flex items-center gap-2" onSubmit={submit}>
@@ -77,7 +89,12 @@ export default function Index({ achievements, from, to,auth }) {
                             <PrimaryButton type ="submit" className="bg-green-500 hover:bg-green-500 focus:bg-green-600 active:bg-green-600 focus:ring-lime-500" text="FILTER"/>
                             <a href="/leader/cetak_pdf" className="btn btn-primary" target="_blank">CETAK PDF</a>
                             <a href="/leader/cetak_pdf_detail" className="btn btn-primary" target="_blank">Detail PDF</a>
-                        </form>
+                            
+               </form>
+               
+              
+               <button type="button" onClick={Print} > Print</button>
+
                         <button
                             onClick={pdfSubmit}
                             className="btn bg-blue-600 px-4 py-2"
@@ -130,10 +147,14 @@ export default function Index({ achievements, from, to,auth }) {
                             </div>
                         </div>
                         )}
-                    </div>
+                    </div>   <div  id='printablediv'>
+                        
                     <div className="px-10 pt-4">
-                        {achievements ? (
+   
+                       {achievements ? (
+                         
                             <DataTable
+                            
                             title="Report Rekapitulasi"
                             columns={columns}
                             data={achievements}
@@ -147,7 +168,8 @@ export default function Index({ achievements, from, to,auth }) {
                             <p className="w-full py-6 text-center text-white bg-red-300">Filter terlebih dahulu</p>
                         )}
                     </div>
-                </div>
+                </div> 
+    </div>
                 {/* content END */}
             </LeaderLayout>
         </>

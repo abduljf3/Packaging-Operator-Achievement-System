@@ -70,7 +70,7 @@ class AchievementsTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],   [
-                'date' =>now(),
+                'date' =>'2023-04-11',
                 'shift' => '1',
                 'proses' => '2',
                 'npk' => '9999',
@@ -83,7 +83,7 @@ class AchievementsTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],   [
-                'date' =>now(),
+                'date' =>'2023-04-11',
                 'shift' => '1',
                 'proses' => '2',
                 'npk' => '9494',
