@@ -14,6 +14,7 @@ class Product extends Model
         'drw_no',
         'product_name',
         'product_type',
+        'target',
     ];
     public function achievements()
     {

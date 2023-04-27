@@ -14,12 +14,17 @@ export default function Index({ achievements, from, to, auth }) {
         to_date: "",
     });
     const [deleting, setDeleting] = useState(false);
-    // handle delete action
+
     const handleDelete = async (id) => {
         setDeleting(true);
-        await Inertia.delete(`/operator/operatorachievement/${id}`);
+
+        await Inertia.delete(`/admin/achievement/${id}`);
+
+        const url = new URL(window.location.href);  
+        window.location.href =url.toString();
+        
         setDeleting(false);
-    };
+};
 
     const handleOnChange = (event) => {
         setData(event.target.name, event.target.value);

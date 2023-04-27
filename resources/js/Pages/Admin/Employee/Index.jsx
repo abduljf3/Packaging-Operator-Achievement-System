@@ -12,6 +12,8 @@ export default function index({ users, auth }) {
     // handle delete action
     const handleDelete = async (id) => {
         setDeleting(true);
+        const url = route("admin.employee.index") ;
+        window.location.href = url;
         await Inertia.delete(`/admin/employee/${id}`);
         setDeleting(false);
     };

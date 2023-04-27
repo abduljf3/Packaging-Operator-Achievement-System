@@ -73,6 +73,8 @@ export default function CreateAchievement({ users, products }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const url = route("achievementCreate") ;
+        window.location.href = url;
         post(route("achievementStore"), data);
     };
 
