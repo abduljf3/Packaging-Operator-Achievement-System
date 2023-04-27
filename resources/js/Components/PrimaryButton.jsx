@@ -9,7 +9,7 @@ export default function PrimaryButton({ className, href, text, disabled, childre
             }
             disabled={disabled}
         >
-            {text}
+            {text}{children}
         </button>
     );
 }

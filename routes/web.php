@@ -42,7 +42,7 @@ Route::prefix('leader')->middleware(['auth'])->name('leader.')->group(function (
     Route::get('/detail',[LeaderController::class,'detail'])->name('detail');
     Route::get('/rekapitulasi',[LeaderController::class,'rekapitulasi'])->name('rekapitulasi');
     Route::get('/cetak_pdf', [LeaderController::class,'cetak_pdf'])->name('cetak_pdf');
-    Route::get('/cetak_pdf_detail', [LeaderController::class,'cetak_pdf_detail']);
+    Route::get('/cetak_pdf_detail', [LeaderController::class,'cetak_pdf_detail'])->name('cetak_pdf_detail');
     Route::get('/cetak_excel', [LeaderController::class,'cetak_excel'])->name('cetak_excel');
 });
 
