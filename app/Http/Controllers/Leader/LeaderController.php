@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Exports\DetailExport;
+use App\Exports\RekapitulasiExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class LeaderController extends Controller
@@ -81,21 +83,22 @@ class LeaderController extends Controller
 
     public function cetak_excel(Request $request)
     {
-        $data = $request->all();
-        $from = $request->input('from_date');
-        $to = $request->input('to_date');
-        $achievements = Achievement::with(['user','product'])->select('drw_no', DB::raw('SUM(total_lot) as totalLot'), DB::raw('SUM(qty) as totalQty'))->whereBetween('date',[$from,$to])->groupBy('drw_no')->get();
-        return Excel::download(function($excel) use ($achievements) {
-            $excel->sheet('sheet1', function ($sheet) use ($achievements) {
-                $sheet->fromArray($achievements);
-            });
-        },'detail.xls');
+        // $data = $request->all();
+        // $from = $request->input('from_date');
+        // $to = $request->input('to_date');
+        // $achievements = Achievement::all();;
+        // return Excel::download(function($excel) use ($achievements) {
+        //     $excel->sheet('sheet1', function ($sheet) use ($achievements) {
+        //         $sheet->fromArray($achievements);
+        //     });
+        // },'detail.xls');
+        return Excel::download(new DetailExport, 'detail.xls');
     }
 
-    public function report()
-    {
+    public function cetak_excel_rekapitulasi(Request $request)
 
-        return Inertia::render('Leader/Report');
+    {
+        return Excel::download(new RekapitulasiExport, 'rekapitulasi.xls');
     }
 
 }
