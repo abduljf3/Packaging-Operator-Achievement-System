@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminLeaderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\FormController;
+
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Leader\LeaderController;
 use App\Http\Controllers\Operator\OperatorController;
@@ -16,8 +17,6 @@ use Barryvdh\DomPDF\PDF;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-
 
 
 Route::post('/import', [ExcelController::class, 'import']);
@@ -44,7 +43,9 @@ Route::prefix('leader')->middleware(['auth'])->name('leader.')->group(function (
     Route::get('/cetak_pdf', [LeaderController::class,'cetak_pdf'])->name('cetak_pdf');
     Route::get('/cetak_pdf_detail', [LeaderController::class,'cetak_pdf_detail'])->name('cetak_pdf_detail');
     Route::get('/cetak_excel', [LeaderController::class,'cetak_excel'])->name('cetak_excel');
+    Route::get('/cetak_excel_rekapitulasi', [LeaderController::class,'cetak_excel_rekapitulasi'])->name('cetak_excel_rekapitulasi');
 });
+
 
 
 Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
@@ -53,6 +54,7 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::resource('employee',AdminEmployeeController::class);
     Route::resource('leader',AdminLeaderController::class);
 });
+
 
 
 Route::get('/welcome',[ItemController::class,'welcome'])->name('welcome');
