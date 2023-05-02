@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\Achievements\Store;
 use App\Models\Achievement;
 use App\Models\Product;
 use App\Models\User;
@@ -22,10 +23,10 @@ class AchievementCreateController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Store $request)
     {
         $data = $request->all();
-        
+        // return $data;
         Achievement::create($data);
     }
     

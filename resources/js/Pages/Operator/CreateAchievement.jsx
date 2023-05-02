@@ -8,22 +8,25 @@ import Select from "react-select";
 import OperatorLayout from "@/Layouts/OperatorLayout";
 import Swal from "sweetalert2";
 import { useState } from "react";
+import FlashMessage from "@/Components/FlashMessage";
 import { Link, Head, useForm } from "@inertiajs/react";
 
 export default function CreateAchievement({ users, products }) {
-    const [selectedNpk, setSelectedNpk] = useState(null);
+    const [selectedNpk, setSelectedNpk] = useState();
+
     const [fullname, setFullname] = useState("");
     const [group, setGroup] = useState("");
-    const [selectedDrwNo, setSelectedDrwNo] = useState(null);
+    const [selectedDrwNo, setSelectedDrwNo] = useState("");
     const [productName, setProductName] = useState("");
+    const [submitting, setSubmitting] = useState(false);
+    const [date, setDate] = useState();
 
     const { data, setData, post, errors } = useForm({
         shift: "",
         group: "",
-        proses: "",
         npk: "",
         date: new Date().toISOString().slice(0, 10),
-        product_id: "",
+        drw_no: "",
         spring_lot: "",
         product_lot: "",
         total_lot: "",
@@ -40,9 +43,6 @@ export default function CreateAchievement({ users, products }) {
         });
     };
 
-    const [submitting, setSubmitting] = useState(false);
-    const [date, setDate] = useState();
-
     const optionNpk = users.map((user) => ({
         value: user.npk,
         label: user.npk,
@@ -57,12 +57,21 @@ export default function CreateAchievement({ users, products }) {
         const user = users.find((u) => u.npk === selectedNpkOption.value);
         setFullname(user.fullname);
         setGroup(user.group);
+        setData((data) => ({
+            ...data,
+            npk: selectedNpkOption.value,
+            group: user.group,
+        }));
     };
 
     const handleDrwNoChange = (selectedDrwNo) => {
         setSelectedDrwNo(selectedDrwNo);
         const product = products.find((p) => p.drw_no === selectedDrwNo.value);
         setProductName(product.product_name);
+        setData((data) => ({
+            ...data,
+            drw_no: selectedDrwNo.value,
+        }));
     };
 
     const handleChange = (e) => {
@@ -102,8 +111,8 @@ export default function CreateAchievement({ users, products }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const url = route("achievementCreate");
-        window.location.href = url;
+        // const url = route("achievementCreate");
+        // window.location.href = url;
         post(route("achievementStore"), data);
     };
 
@@ -117,17 +126,23 @@ export default function CreateAchievement({ users, products }) {
                             <div className="mb-6 font-extrabold">
                                 <h1>Create Achievement</h1>
                             </div>
+                            {/* {flashMessage?.message && (
+                                <FlashMessage message={flashMesage.message} />
+                            )} */}
+
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-between">
                                     <div className=" mx-10 my-2">
                                         <InputLabel value="NPK" />
 
                                         <Select
+                                            id="npk"
                                             value={selectedNpk}
                                             onChange={handleNpkChange}
                                             options={optionNpk}
                                             className="mb-5"
                                         />
+                                        <InputError message={errors.npk} />
 
                                         {/* <select
                                             id="npk"
@@ -148,6 +163,15 @@ export default function CreateAchievement({ users, products }) {
                                                 </option>
                                             ))}
                                         </select> */}
+
+                                        <TextInput
+                                            className="hidden"
+                                            type="text"
+                                            id="npk"
+                                            name="npk"
+                                            value={data.npk}
+                                            readOnly
+                                        />
 
                                         <InputLabel value="Name" />
                                         <TextInput
@@ -209,6 +233,15 @@ export default function CreateAchievement({ users, products }) {
                                             value={selectedDrwNo}
                                             onChange={handleDrwNoChange}
                                             className="mb-5"
+                                        />
+
+                                        <TextInput
+                                            className="hidden"
+                                            type="text"
+                                            id="drw_no"
+                                            name="drw_no"
+                                            value={data.drw_no}
+                                            readOnly
                                         />
 
                                         {/* <select
@@ -303,7 +336,7 @@ export default function CreateAchievement({ users, products }) {
                                                 />
                                             </div>
                                         </div>
-                                        <InputLabel value="Remaks" />
+                                        <InputLabel value="Remarks" />
                                         <TextInput
                                             className="mb-5 block w-full"
                                             type="text"
@@ -347,7 +380,11 @@ export default function CreateAchievement({ users, products }) {
                                     >
                                         save
                                     </ButtonGreen> */}
-                                            <ButtonGreen onClick={handleClick}>
+
+                                            <ButtonGreen
+                                                handleClick={handleClick}
+                                                disabled={submitting}
+                                            >
                                                 save
                                             </ButtonGreen>
                                         </div>

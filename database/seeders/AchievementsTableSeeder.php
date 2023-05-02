@@ -19,7 +19,7 @@ class AchievementsTableSeeder extends Seeder
             [
                 'date' =>now(),
                 'shift' => '2',
-                'proses' => '1',
+               
                 'npk' => '8484',
                 'drw_no' => '1K-001',
                 'spring_lot' => '10',
@@ -32,7 +32,7 @@ class AchievementsTableSeeder extends Seeder
             ],   [
                 'date' =>now(),
                 'shift' => '2',
-                'proses' => '1',
+              
                 'npk' => '7474',
                 'drw_no' => '1K-001',
                 'spring_lot' => '7',
@@ -45,7 +45,7 @@ class AchievementsTableSeeder extends Seeder
             ],   [
                 'date' =>now(),
                 'shift' => '1',
-                'proses' => '2',
+             
                 'npk' => '7777',
                 'drw_no' => '1K-001',
                 'spring_lot' => '44',
@@ -59,7 +59,7 @@ class AchievementsTableSeeder extends Seeder
             ,   [
                 'date' =>now(),
                 'shift' => '3',
-                'proses' => '2',
+             
                 'npk' => '8888',
                 'drw_no' => '1K-002',
                 'spring_lot' => '92',
@@ -72,7 +72,7 @@ class AchievementsTableSeeder extends Seeder
             ],   [
                 'date' =>'2023-04-11',
                 'shift' => '1',
-                'proses' => '2',
+              
                 'npk' => '9999',
                 'drw_no' => '1K-003',
                 'spring_lot' => '444',
@@ -85,7 +85,7 @@ class AchievementsTableSeeder extends Seeder
             ],   [
                 'date' =>'2023-04-11',
                 'shift' => '1',
-                'proses' => '2',
+              
                 'npk' => '9494',
                 'drw_no' => '1K-002',
                 'spring_lot' => '521',
@@ -98,7 +98,7 @@ class AchievementsTableSeeder extends Seeder
             ],   [
                 'date' =>now(),
                 'shift' => '2',
-                'proses' => '2',
+            
                 'npk' => '5555',
                 'drw_no' => '1K-002',
                 'spring_lot' => '644',
@@ -111,7 +111,7 @@ class AchievementsTableSeeder extends Seeder
             ],   [
                 'date' =>now(),
                 'shift' => '1',
-                'proses' => '2',
+            
                 'npk' => '5454',
                 'drw_no' => '1K-003',
                 'spring_lot' => '421',

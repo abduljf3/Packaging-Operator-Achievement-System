@@ -26,7 +26,6 @@ class AchievementStore extends FormRequest
         return [
             'date' => 'required|date',
             'shift' => 'required|integer',
-            'proses' => 'required|string',
             'npk' => 'required|string',
             'product_id' => 'required|integer',
         ];

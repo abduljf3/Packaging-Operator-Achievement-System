@@ -35,7 +35,7 @@ export default function Index({ achievements, from, to, auth }) {
     const columns = [
         {
             name: "ID",
-            selector: (row) => row.id,
+            selector: (_, index) => index + 1,
             sortable: true,
         },
 
