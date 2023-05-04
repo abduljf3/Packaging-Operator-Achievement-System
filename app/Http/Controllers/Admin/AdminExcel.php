@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Leader;
+namespace App\Http\Controllers\Admin;
 
+use App\Exports\AdminAchievementExport;
 use App\Http\Controllers\Controller;
 use App\Models\Achievement;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -9,11 +10,9 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Exports\DetailExport;
-use App\Exports\RekapitulasiExport;
 use Maatwebsite\Excel\Facades\Excel;
 
-class LeaderController extends Controller
+class AdminExcel extends Controller
 {
     public function index()
     {
@@ -79,21 +78,21 @@ class LeaderController extends Controller
         return $pdf->download('Laporan_Detail - ' . $dateNow . '.pdf');
     }
 
-    public function cetak_excel(Request $request)
+    public function cetak_pdf_detail_admin(Request $request)
     {
-        $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
         $from = $request->input('from_date');
         $to = $request->input('to_date');
-        return Excel::download(new DetailExport($from, $to), 'Laporan_Detail - ' . $dateNow . '.xlsx');
+        
+        return Excel::download(new AdminAchievementExport($from, $to), 'Laporan_Detail.xlsx');
     }
 
-    public function cetak_excel_rekapitulasi(Request $request)
+    public function sss(Request $request)
 
     {
     $from = $request->input('from_date');
         $to = $request->input('to_date');
 
-return Excel::download(new RekapitulasiExport($from, $to), 'rekapitulasi.xlsx');
+return Excel::download(new AdminAc($from, $to), 'rekapitulasi.xlsx');
     }
     
 

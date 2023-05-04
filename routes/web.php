@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AchievementController;
 use App\Http\Controllers\Admin\AdminEmployeeController;
 use App\Http\Controllers\Admin\AdminLeaderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\AdminExcel;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\FormController;
 
@@ -53,6 +54,8 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::resource('achievement',AchievementController::class);
     Route::resource('employee',AdminEmployeeController::class);
     Route::resource('leader',AdminLeaderController::class);
+    Route::get('cetak_pdf_detail_admin', [AchievementController::class,'cetak_pdf_detail_admin'])->name('cetak_pdf_detail_admin');
+
 });
 
 
