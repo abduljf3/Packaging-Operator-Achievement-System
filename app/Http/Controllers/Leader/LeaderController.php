@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Leader;
 
 use App\Http\Controllers\Controller;
+use App\Imports\AchievementImport;
 use App\Models\Achievement;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -96,5 +97,16 @@ class LeaderController extends Controller
 return Excel::download(new RekapitulasiExport($from, $to), 'rekapitulasi.xlsx');
     }
     
-
+    public function importExcel(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+    
+        $file = $request->file('file');
+    
+        Excel::import(new AchievementImport, $file);
+    
+        return redirect()->back()->with('success', 'Data has been imported successfully.');
+    }
 }

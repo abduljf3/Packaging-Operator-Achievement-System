@@ -24,13 +24,18 @@ class AchievementController extends Controller
     {
     
         $achievements = null;
+        $from = null;
+        $to = null;
         if( $request->input('from_date')){
             $from = $request->input('from_date');
             $to = $request->input('to_date');
             $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
         }
         return Inertia::render('Admin/Achievement/Index',[
-            'achievements' => $achievements
+            'achievements' => $achievements,
+            'from' => $from,
+            'to' => $to
+
         ]);
 
     }
@@ -140,12 +145,12 @@ class AchievementController extends Controller
      }
 
 
-     public function cetak_pdf_detail_admin(Request $request)
+     public function cetak_excel_detail_admin(Request $request)
      {
          $from = $request->input('from_date');
          $to = $request->input('to_date');
          
-         return Excel::download(new DetailExport($from, $to), 'Laporan_Detail.xlsx');
+         return Excel::download(new DetailExport($from, $to), 'Laporan_Achievement.xlsx');
      }
      
 

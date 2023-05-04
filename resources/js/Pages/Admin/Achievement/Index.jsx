@@ -35,9 +35,14 @@ export default function Index({ achievements, from, to, auth }) {
         get(route("admin.achievement.index"));
     };
 
-    const cetak_pdf_detail_admin = (e) =>{
+    const cetak_excel_detail_admin = (e) =>{
         e.preventDefault();
-        const url = route("admin.cetak_pdf_detail_admin") + "?" + new URLSearchParams(data).toString();
+        const url = route("admin.cetak_excel_detail_admin") + "?" + new URLSearchParams(data).toString();
+        window.location.href = url;
+    };
+    const cetak_pdf_detail = (e) =>{
+        e.preventDefault();
+        const url = route("admin.cetak_pdf_detail") + "?" + new URLSearchParams(data).toString();
         window.location.href = url;
     };
 
@@ -160,14 +165,14 @@ export default function Index({ achievements, from, to, auth }) {
                             />
                             <ButtonGreen>Filter</ButtonGreen>
                             
-                            <Link onClick={cetak_pdf_detail_admin}
+                            <Link onClick={cetak_excel_detail_admin}
                                             className="container flex gap-3">
                                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20"><path fill="#169154" d="M29,6H15.744C14.781,6,14,6.781,14,7.744v7.259h15V6z"/><path fill="#18482a" d="M14,33.054v7.202C14,41.219,14.781,42,15.743,42H29v-8.946H14z"/><path fill="#0c8045" d="M14 15.003H29V24.005000000000003H14z"/><path fill="#17472a" d="M14 24.005H29V33.055H14z"/><g><path fill="#29c27f" d="M42.256,6H29v9.003h15V7.744C44,6.781,43.219,6,42.256,6z"/><path fill="#27663f" d="M29,33.054V42h13.257C43.219,42,44,41.219,44,40.257v-7.202H29z"/><path fill="#19ac65" d="M29 15.003H44V24.005000000000003H29z"/><path fill="#129652" d="M29 24.005H44V33.055H29z"/></g><path fill="#0c7238" d="M22.319,34H5.681C4.753,34,4,33.247,4,32.319V15.681C4,14.753,4.753,14,5.681,14h16.638 C23.247,14,24,14.753,24,15.681v16.638C24,33.247,23.247,34,22.319,34z"/><path fill="#fff" d="M9.807 19L12.193 19 14.129 22.754 16.175 19 18.404 19 15.333 24 18.474 29 16.123 29 14.013 25.07 11.912 29 9.526 29 12.719 23.982z"/></svg>
                                                 EXCEL
                                             </Link>   
                                             <div className="">
                                                 <Link
-                                                    onClick={cetak_pdf_detail_admin}
+                                                    onClick={cetak_pdf_detail}
                                                     className="w-full flex gap-3 justify-start bg-transparent">
                                                         <svg width="17" height="17" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M23.625 23.625V7.59375L16.0312 0H6.75C5.85489 0 4.99645 0.355579 4.36351 0.988515C3.73058 1.62145 3.375 2.47989 3.375 3.375V23.625C3.375 24.5201 3.73058 25.3785 4.36351 26.0115C4.99645 26.6444 5.85489 27 6.75 27H20.25C21.1451 27 22.0035 26.6444 22.6365 26.0115C23.2694 25.3785 23.625 24.5201 23.625 23.625ZM16.0312 5.0625C16.0312 5.73383 16.2979 6.37766 16.7726 6.85236C17.2473 7.32707 17.8912 7.59375 18.5625 7.59375H21.9375V23.625C21.9375 24.0726 21.7597 24.5018 21.4432 24.8182C21.1268 25.1347 20.6976 25.3125 20.25 25.3125H6.75C6.30245 25.3125 5.87322 25.1347 5.55676 24.8182C5.24029 24.5018 5.0625 24.0726 5.0625 23.625V3.375C5.0625 2.92745 5.24029 2.49822 5.55676 2.18176C5.87322 1.86529 6.30245 1.6875 6.75 1.6875H16.0312V5.0625Z" fill="#E30000"/>

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Item;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AdminProductExport;
 class ProductController extends Controller
 {
     /**
@@ -118,4 +120,18 @@ class ProductController extends Controller
         echo ("User Record deleted successfully.");
         return redirect()->route("admin.products.index");
      }
+     public function cetak_pdf_product()
+     {
+         $products = Product::all();
+         $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
+         $pdf = Pdf::loadview('product_pdf', ['products' => $products]);
+         return $pdf->download('Daftar_Product - ' . $dateNow . '.pdf');
+     }
+     public function cetak_excel_product()
+     {   
+        $products = Product::all();
+         
+         return Excel::download(new AdminProductExport($products), 'Daftar_Product.xlsx');
+     }
+
     }
