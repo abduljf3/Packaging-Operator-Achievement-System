@@ -70,14 +70,7 @@ export default function Index({ achievements, from, to,auth }) {
             sortable: true,
         },
     ];
-    const Print = () =>{     
-        //console.log('print');  
-        let printContents = document.getElementById('printablediv').innerHTML;
-        let originalContents = document.body.innerHTML;
-        document.body.innerHTML = printContents;
-        window.print();
-       document.body.innerHTML = originalContents; 
-      }
+
 
     return (
         <>
@@ -94,7 +87,7 @@ export default function Index({ achievements, from, to,auth }) {
                             <TextInput type="date" value={from} name="from_date" onChange={handleOnChange} className="w-34"/>
                             <h1>-</h1>
                             <TextInput type="date" value={to} name="to_date" onChange={handleOnChange} className="w-34"/>
-                            <PrimaryButton type ="submit" className="bg-green-500 hover:bg-green-500 focus:bg-green-600 active:bg-green-600 focus:ring-lime-500" text="FILTER"/>
+                            <PrimaryButton type ="submit" className="bg-green-500 hover:bg-green-500 focus:bg-green-600 active:bg-green-600 focus:ring-lime-500" text="FILTEsR"/>
                         </form>
                         {achievements && (
                             <div className="flex mr-0">

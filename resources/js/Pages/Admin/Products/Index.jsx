@@ -14,8 +14,14 @@ export default function index({ products, auth }) {
     };
 
     const filteredData = products.filter((row) =>
-        row.product_name.toLowerCase().includes(filterText.toLowerCase())
-    );
+  row.product_name.toLowerCase().includes(filterText.toLowerCase()) ||
+  row.drw_no.toLowerCase().includes(filterText.toLowerCase()) ||
+  row.product_type.toLowerCase().includes(filterText.toLowerCase()) ||
+  row.customer_id.toLowerCase().includes(filterText.toLowerCase()) ||
+  row.customer_name.toLowerCase().includes(filterText.toLowerCase()) ||
+  row.target === parseInt(filterText, 1000000)
+);
+
     const [deleting, setDeleting] = useState(false);
 
     const handleDelete = async (id) => {

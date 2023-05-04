@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\AdminAchievementExport;
+use App\Exports\DetailExport;
 use App\Http\Controllers\Controller;
 use App\Models\achievement;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 class AchievementController extends Controller
 {
     /**
@@ -133,4 +138,15 @@ class AchievementController extends Controller
         echo ("User Record deleted successfully.");
         return redirect()->route('admin.achievement.index');
      }
+
+
+     public function cetak_pdf_detail_admin(Request $request)
+     {
+         $from = $request->input('from_date');
+         $to = $request->input('to_date');
+         
+         return Excel::download(new DetailExport($from, $to), 'Laporan_Detail.xlsx');
+     }
+     
+
 }

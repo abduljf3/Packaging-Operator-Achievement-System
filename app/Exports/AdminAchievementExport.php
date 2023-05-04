@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithTitle;
 
-class DetailExport implements FromQuery, WithHeadings, WithTitle
+class AdminAchievementExport implements FromQuery, WithHeadings, WithTitle
 {
     protected $from;
     protected $to;
