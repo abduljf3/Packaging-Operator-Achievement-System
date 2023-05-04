@@ -3,8 +3,10 @@ import { Inertia } from "@inertiajs/inertia";
 import ButtonGreen from "@/Components/ButtonGreen";
 import TextInput from "@/Components/TextInput";
 import InputLabel from "@/Components/InputLabel";
+import Select from "react-select";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { router, Link, Head, useForm } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function Edit({ users, achievements, products, auth }) {
     const { data, setData, post } = useForm({
@@ -15,7 +17,7 @@ export default function Edit({ users, achievements, products, auth }) {
         proses: achievements.proses,
         user_id: achievements.user_id,
         npk: achievements.npk,
-
+        fullname: achievements.fullname,
         drw_no: achievements.drw_no,
         product_id: achievements.product_id,
         spring_lot: achievements.spring_lot,
@@ -24,21 +26,74 @@ export default function Edit({ users, achievements, products, auth }) {
         qty: achievements.qty,
         remarks: achievements.remarks,
     });
+    const [selectedNpk, setSelectedNpk] = useState({
+        value: achievements.npk,
+        label: achievements.npk,
+    });
+
+    const [fullname, setFullname] = useState(achievements.fullname);
+    const [group, setGroup] = useState(achievements.group);
+    const [selectedDrwNo, setSelectedDrwNo] = useState("");
+    const [productName, setProductName] = useState("");
+
     ///////////////////////////
-    useEffect(() => {
-        const fetchUser = async () => {
-            const response = await fetch(`/api/users/${achievements.npk}`);
-            const data = await response.json();
-            setUser(data);
-        };
+    // useEffect(() => {
+    //     const fetchUser = async () => {
+    //         const response = await fetch(`/api/users/${achievements.npk}`);
+    //         const data = await response.json();
+    //         setUser(data);
+    //     };
 
-        fetchUser();
-    }, [achievements.npk]);
+    //     fetchUser();
+    // }, [achievements.npk]);
 
-    ///////////////////////
-    useEffect(() => {
-        setData(achievements);
-    }, [achievements]);
+    // ///////////////////////
+    // useEffect(() => {
+    //     setData(achievements);
+    // }, [achievements]);
+
+    const optionNpk = users?.map((user) => ({
+        value: user.data.npk,
+        label: user.data.npk,
+    }));
+    const optionDrwNo = products?.map((product) => ({
+        value: product.drw_no,
+        label: product.drw_no + "  |  " + product.customer_id,
+    }));
+
+    const handleNpkChange = (selectedNpkOption) => {
+        setSelectedNpk(selectedNpkOption);
+        const user = users.find((u) => u.npk === selectedNpkOption.value);
+        setFullname(user.fullname);
+        setGroup(user.group);
+        setData((data) => ({
+            ...data,
+            npk: selectedNpkOption.value,
+            group: user.group,
+        }));
+    };
+
+    // const handleNpkChange = (selectedNpkOption) => {
+    //     setSelectedNpk(selectedNpkOption);
+    //     const user = users.find((u) => u.npk === selectedNpkOption.value);
+    //     setFullname(user.fullname);
+    //     setGroup(user.group);
+    //     setData((data) => ({
+    //         ...data,
+    //         npk: selectedNpkOption.value,
+    //         group: user.group,
+    //     }));
+    // };
+
+    const handleDrwNoChange = (selectedDrwNo) => {
+        setSelectedDrwNo(selectedDrwNo);
+        const product = products.find((p) => p.drw_no === selectedDrwNo.value);
+        setProductName(product.product_name);
+        setData((data) => ({
+            ...data,
+            drw_no: selectedDrwNo.value,
+        }));
+    };
 
     const handleChange = (e) => {
         setData(e.target.name, e.target.value);
@@ -110,7 +165,25 @@ export default function Edit({ users, achievements, products, auth }) {
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-between">
                                     <div className=" mx-10 my-2">
-                                        <select
+                                        <InputLabel value="NPK" />
+
+                                        <Select
+                                            id="npk"
+                                            value={selectedNpk}
+                                            onChange={handleNpkChange}
+                                            options={optionNpk}
+                                            className="mb-5"
+                                        />
+                                        <TextInput
+                                            className="hidden"
+                                            type="text"
+                                            id="npk"
+                                            name="npk"
+                                            value={data.npk}
+                                            readOnly
+                                        />
+
+                                        {/* <select
                                             id="npk"
                                             name="npk"
                                             value={data.npk}
@@ -128,7 +201,7 @@ export default function Edit({ users, achievements, products, auth }) {
                                                     {user.data.npk}
                                                 </option>
                                             ))}
-                                        </select>
+                                        </select> */}
                                         {/* <select
                                             id="npk"
                                             name="npk"

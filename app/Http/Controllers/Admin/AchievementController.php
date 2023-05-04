@@ -19,26 +19,35 @@ class AchievementController extends Controller
     {
     
         $achievements = null;
+        $from = null;
+        $to = null;
         if( $request->input('from_date')){
             $from = $request->input('from_date');
             $to = $request->input('to_date');
             $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
         }
         return Inertia::render('Admin/Achievement/Index',[
-            'achievements' => $achievements
+            'achievements' => $achievements,
+            'from' => $from,
+            'to' => $to
         ]);
 
     }
     public function achievement(Request $request)
     {
         $achievements = null;
+        $from = null;
+        $to = null;
         if( $request->input('from_date')){
             $from = $request->input('from_date');
+            $to = $request->input('to_date');;
             $to = $request->input('to_date');
             $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
         }
         return Inertia::render('Admin/Achievement/Index',[
-            'achievements' => $achievements
+            'achievements' => $achievements,
+            'from' => $from,
+            'to' => $to
         ]);
     }
     /**
