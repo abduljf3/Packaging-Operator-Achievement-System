@@ -9,6 +9,22 @@ import { router, Link, Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function Edit({ users, achievements, products, auth }) {
+    console.log(achievements);
+    const [selectedNpk, setSelectedNpk] = useState({
+        value: achievements.npk,
+        label: achievements.npk,
+    });
+    const [fullname, setFullname] = useState(achievements.user.fullname);
+    const [group, setGroup] = useState(achievements.user.group);
+    const [selectedDrwNo, setSelectedDrwNo] = useState({
+        value: achievements.products.drw_no,
+        label:
+            achievements.products?.drw_no +
+            "  |  " +
+            achievements.products.customer_id,
+    });
+    const [productName, setProductName] = useState("");
+
     const { data, setData, post } = useForm({
         id: achievements.id,
         date: achievements.date,
@@ -17,8 +33,8 @@ export default function Edit({ users, achievements, products, auth }) {
         proses: achievements.proses,
         user_id: achievements.user_id,
         npk: achievements.npk,
-        fullname: achievements.fullname,
-        drw_no: achievements.drw_no,
+        fullname: achievements.user.fullname,
+        drw_no: achievements.products.drw_no,
         product_id: achievements.product_id,
         spring_lot: achievements.spring_lot,
         product_lot: achievements.product_lot,
@@ -26,15 +42,6 @@ export default function Edit({ users, achievements, products, auth }) {
         qty: achievements.qty,
         remarks: achievements.remarks,
     });
-    const [selectedNpk, setSelectedNpk] = useState({
-        value: achievements.npk,
-        label: achievements.npk,
-    });
-
-    const [fullname, setFullname] = useState(achievements.fullname);
-    const [group, setGroup] = useState(achievements.group);
-    const [selectedDrwNo, setSelectedDrwNo] = useState("");
-    const [productName, setProductName] = useState("");
 
     ///////////////////////////
     // useEffect(() => {
@@ -53,8 +60,8 @@ export default function Edit({ users, achievements, products, auth }) {
     // }, [achievements]);
 
     const optionNpk = users?.map((user) => ({
-        value: user.data.npk,
-        label: user.data.npk,
+        value: user.npk,
+        label: user.npk,
     }));
     const optionDrwNo = products?.map((product) => ({
         value: product.drw_no,
@@ -221,7 +228,7 @@ export default function Edit({ users, achievements, products, auth }) {
                                             type="text"
                                             id="fullname"
                                             name="fullname"
-                                            value={data.fullname}
+                                            value={fullname}
                                             readOnly
                                         />
 
@@ -250,30 +257,27 @@ export default function Edit({ users, achievements, products, auth }) {
                                                     className=""
                                                     type="text"
                                                     name="group"
-                                                    value={data.group}
+                                                    value={group}
                                                     onChange={handleChange}
                                                 />
                                             </div>
                                         </div>
                                         <InputLabel value="Drawing Number" />
-                                        <select
+                                        <Select
+                                            options={optionDrwNo}
+                                            value={selectedDrwNo}
+                                            onChange={handleDrwNoChange}
+                                            className="mb-5"
+                                        />
+
+                                        <TextInput
+                                            className="hidden"
+                                            type="text"
                                             id="drw_no"
                                             name="drw_no"
                                             value={data.drw_no}
-                                            onChange={handleChange}
-                                            className="w-1/2 mb-5 block border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                        >
-                                            <option value="">-</option>
-                                            {products?.map((product) => (
-                                                <option
-                                                    key={product.data.id}
-                                                    value={product.data.drw_no}
-                                                >
-                                                    {product.data.drw_no} |{" "}
-                                                    {product.data.customer_id}
-                                                </option>
-                                            ))}
-                                        </select>
+                                            readOnly
+                                        />
                                         {/* <TextInput className="mb-5 block w-full" /> */}
                                     </div>
 

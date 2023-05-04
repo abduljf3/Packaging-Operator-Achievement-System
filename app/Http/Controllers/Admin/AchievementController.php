@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\achievement;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -102,9 +103,13 @@ class AchievementController extends Controller
      */
     public function edit($id)
     {
-        $achievements = achievement::findOrFail($id);
+        $users = User::where('roles','user')->get();
+        $achievements = achievement::with(['user','product'])->findOrFail($id);
+        $products = Product::findOrFail($id);
         return Inertia::render('Admin/Achievement/Edit',[
-            'achievements' => $achievements
+            'users' => $users,
+            'achievements' => $achievements,
+            'products' => $products,
         ]);
     }
     public function delete($id)

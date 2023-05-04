@@ -18,8 +18,17 @@ export default function Index({ achievements, from, to, auth }) {
         setFilterText(value);
     };
 
-    const filteredData = achievements.filter((row) =>
-        row.date.toLowerCase().includes(filterText.toLowerCase())
+    const filteredData = achievements?.filter(
+        (row) =>
+            row.date.toLowerCase().includes(filterText.toLowerCase()) ||
+            row.user.fullname
+                .toLowerCase()
+                .includes(filterText.toLowerCase()) ||
+            row.user.group.toLowerCase().includes(filterText.toLowerCase()) ||
+            row.npk.toLowerCase().includes(filterText.toLowerCase()) ||
+            row.drw_no.toLowerCase().includes(filterText.toLowerCase()) ||
+            row.total_lot.toLowerCase().includes(filterText.toLowerCase()) ||
+            row.qty.toLowerCase().includes(filterText.toLowerCase())
     );
     const [deleting, setDeleting] = useState(false);
 

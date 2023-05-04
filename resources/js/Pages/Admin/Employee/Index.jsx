@@ -9,6 +9,21 @@ import Authenticated from "@/Layouts/AuthenticatedLayout";
 export default function index({ users, auth }) {
     console.log(auth);
     const [deleting, setDeleting] = useState(false);
+
+    const [filterText, setFilterText] = useState();
+    const handleFilter = (event) => {
+        const value = event.target.value || "";
+        setFilterText(value);
+    };
+
+    const filteredData = users.filter(
+        (row) =>
+            row.fullname?.toLowerCase().includes(filterText?.toLowerCase()) ||
+            row.npk?.toLowerCase().includes(filterText?.toLowerCase()) ||
+            row.status?.toLowerCase().includes(filterText?.toLowerCase()) ||
+            row.group?.toLowerCase().includes(filterText?.toLowerCase()) ||
+            row.roles?.toLowerCase().includes(filterText?.toLowerCase())
+    );
     // handle delete action
     const handleDelete = async (id) => {
         setDeleting(true);
@@ -132,7 +147,7 @@ export default function index({ users, auth }) {
                             <DataTable
                                 title="Operator"
                                 columns={columns}
-                                data={users}
+                                data={(users, filteredData)}
                                 // customStyles={customStyles}
                                 pagination
                                 dense
