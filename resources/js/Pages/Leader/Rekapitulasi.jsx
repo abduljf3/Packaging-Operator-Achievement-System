@@ -118,11 +118,7 @@ export default function Index({ achievements, from, to,auth }) {
                                             </svg>
                                         </PrimaryButton>  
                                         
-                                        <form onSubmit={handleImportExcel}>
-    <label htmlFor="fileInput">Choose file to import:</label>
-    <input id="fileInput" type="file" name="file" accept=".xlsx,.xls,.csv" />
-    <button type="submit">Import</button>
-  </form>
+                                       
   
                                         </Dropdown.Trigger>
                                         
