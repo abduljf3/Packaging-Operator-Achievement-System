@@ -104,12 +104,13 @@ class AchievementController extends Controller
     public function edit($id)
     {
         $users = User::where('roles','user')->get();
-        $achievements = achievement::with(['user','product'])->findOrFail($id);
-        $products = Product::findOrFail($id);
+        $achievements = achievement::with(['user', 'product'])->findOrFail($id);
+        
+        
         return Inertia::render('Admin/Achievement/Edit',[
             'users' => $users,
             'achievements' => $achievements,
-            'products' => $products,
+            
         ]);
     }
     public function delete($id)

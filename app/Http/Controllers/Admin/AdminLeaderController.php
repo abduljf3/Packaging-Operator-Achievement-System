@@ -42,12 +42,8 @@ class AdminLeaderController extends Controller
           
             'name' => 'required', 
             'email' => 'required',
-             'password' => 'required',
-             'roles' => 'required',
-          
-           
-        
-
+            'password' => 'required',
+            'roles' => 'required',
          ]);
      
          $users = User::create($validatedData);

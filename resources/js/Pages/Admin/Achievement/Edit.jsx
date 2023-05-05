@@ -17,13 +17,11 @@ export default function Edit({ users, achievements, products, auth }) {
     const [fullname, setFullname] = useState(achievements.user.fullname);
     const [group, setGroup] = useState(achievements.user.group);
     const [selectedDrwNo, setSelectedDrwNo] = useState({
-        value: achievements.products.drw_no,
-        label:
-            achievements.products?.drw_no +
-            "  |  " +
-            achievements.products.customer_id,
+        value: achievements.drw_no,
+        label: achievements.drw_no + "  |  " + achievements.customer_id,
     });
-    const [productName, setProductName] = useState("");
+
+    const [productName, setProductName] = useState(achievements.product_name);
 
     const { data, setData, post } = useForm({
         id: achievements.id,
@@ -34,7 +32,7 @@ export default function Edit({ users, achievements, products, auth }) {
         user_id: achievements.user_id,
         npk: achievements.npk,
         fullname: achievements.user.fullname,
-        drw_no: achievements.products.drw_no,
+        drw_no: achievements.drw_no,
         product_id: achievements.product_id,
         spring_lot: achievements.spring_lot,
         product_lot: achievements.product_lot,
@@ -96,9 +94,11 @@ export default function Edit({ users, achievements, products, auth }) {
         setSelectedDrwNo(selectedDrwNo);
         const product = products.find((p) => p.drw_no === selectedDrwNo.value);
         setProductName(product.product_name);
+        setGroup(product.product_name);
         setData((data) => ({
             ...data,
             drw_no: selectedDrwNo.value,
+            product_name: product.product_name,
         }));
     };
 
@@ -287,7 +287,10 @@ export default function Edit({ users, achievements, products, auth }) {
                                             className="mb-5 block w-full"
                                             type="text"
                                             name="product_id"
-                                            value={data.product_name}
+                                            value={productName}
+                                            onChange={(e) =>
+                                                setProductName(e.target.value)
+                                            }
                                         />
 
                                         <div class="flex gap-4">
