@@ -10,7 +10,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
-
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AdminEmployeeExport;
 class AdminEmployeeController extends Controller
 {
     /**
@@ -112,5 +115,18 @@ class AdminEmployeeController extends Controller
         $users = User::where('id', $id)->firstorfail()->delete();
         echo ("User Record deleted successfully.");
         return redirect()->route('admin.employee.index');
+     }
+     public function cetak_pdf_employee()
+     {
+         $users = User::all();
+         $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
+         $pdf = Pdf::loadview('employee_pdf', ['users' => $users]);
+         return $pdf->download('Daftar_Employee - ' . $dateNow . '.pdf');
+     }
+     public function cetak_excel_employee()
+     {   
+        $users = User::all();
+         
+         return Excel::download(new AdminEmployeeExport($users), 'Daftar_Employee.xlsx');
      }
 }

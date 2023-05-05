@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Leader;
 
 use App\Http\Controllers\Controller;
+use App\Imports\AchievementImport;
 use App\Models\Achievement;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -75,30 +76,37 @@ class LeaderController extends Controller
     {
         $achievements = Achievement::all();
         $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
-
         $pdf = Pdf::loadview('detail_pdf', ['achievements' => $achievements]);
-
         return $pdf->download('Laporan_Detail - ' . $dateNow . '.pdf');
     }
 
     public function cetak_excel(Request $request)
     {
-        // $data = $request->all();
-        // $from = $request->input('from_date');
-        // $to = $request->input('to_date');
-        // $achievements = Achievement::all();;
-        // return Excel::download(function($excel) use ($achievements) {
-        //     $excel->sheet('sheet1', function ($sheet) use ($achievements) {
-        //         $sheet->fromArray($achievements);
-        //     });
-        // },'detail.xls');
-        return Excel::download(new DetailExport, 'detail.xls');
+        $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
+        $from = $request->input('from_date');
+        $to = $request->input('to_date');
+        return Excel::download(new DetailExport($from, $to), 'Laporan_Detail - ' . $dateNow . '.xlsx');
     }
 
     public function cetak_excel_rekapitulasi(Request $request)
 
     {
-        return Excel::download(new RekapitulasiExport, 'rekapitulasi.xls');
-    }
+    $from = $request->input('from_date');
+        $to = $request->input('to_date');
 
+return Excel::download(new RekapitulasiExport($from, $to), 'rekapitulasi.xlsx');
+    }
+    
+    public function importExcel(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+    
+        $file = $request->file('file');
+    
+        Excel::import(new AchievementImport, $file);
+    
+        return redirect()->back()->with('success', 'Data has been imported successfully.');
+    }
 }

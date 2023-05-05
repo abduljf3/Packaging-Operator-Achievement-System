@@ -4,6 +4,7 @@ import TextInput from "@/Components/TextInput";
 import LeaderLayout from "@/Layouts/LeaderLayout";
 import {Head,Link, useForm } from "@inertiajs/react";
 import DataTable from "react-data-table-component";
+import axios from 'axios';
 
 
 export default function Index({ achievements, from, to,auth }) {
@@ -42,7 +43,21 @@ export default function Index({ achievements, from, to,auth }) {
         const url = route("leader.cetak_excel_rekapitulasi") + "?" + new URLSearchParams(data).toString();
         window.location.href = url;
     };
-
+    const handleImportExcel = (e) => {
+        e.preventDefault();
+        const fileInput = document.querySelector('#fileInput');
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+        axios.post('/leader/import_excel', formData)
+          .then(response => {
+            console.log(response.data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      };
+      
+      
     const columns = [
         {
             name: "No",
@@ -70,14 +85,7 @@ export default function Index({ achievements, from, to,auth }) {
             sortable: true,
         },
     ];
-    const Print = () =>{
-        //console.log('print');
-        let printContents = document.getElementById('printablediv').innerHTML;
-        let originalContents = document.body.innerHTML;
-        document.body.innerHTML = printContents;
-        window.print();
-       document.body.innerHTML = originalContents;
-      }
+
 
     return (
         <>
@@ -94,7 +102,7 @@ export default function Index({ achievements, from, to,auth }) {
                             <TextInput type="date" value={from} name="from_date" onChange={handleOnChange} className="w-34"/>
                             <h1>-</h1>
                             <TextInput type="date" value={to} name="to_date" onChange={handleOnChange} className="w-34"/>
-                            <PrimaryButton type ="submit" className="bg-green-500 hover:bg-green-500 focus:bg-green-600 active:bg-green-600 focus:ring-lime-500" text="FILTER"/>
+                            <PrimaryButton type ="submit" className="bg-green-500 hover:bg-green-500 focus:bg-green-600 active:bg-green-600 focus:ring-lime-500" text="FILTEsR"/>
                         </form>
                         {achievements && (
                             <div className="flex mr-0">
@@ -108,8 +116,12 @@ export default function Index({ achievements, from, to,auth }) {
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                                             </svg>
-                                        </PrimaryButton>
+                                        </PrimaryButton>  
+                                        
+                                       
+  
                                         </Dropdown.Trigger>
+                                        
                                         <Dropdown.Content>
                                         <Dropdown.Link
                                             >
@@ -132,6 +144,7 @@ export default function Index({ achievements, from, to,auth }) {
                                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20"><path fill="#169154" d="M29,6H15.744C14.781,6,14,6.781,14,7.744v7.259h15V6z"/><path fill="#18482a" d="M14,33.054v7.202C14,41.219,14.781,42,15.743,42H29v-8.946H14z"/><path fill="#0c8045" d="M14 15.003H29V24.005000000000003H14z"/><path fill="#17472a" d="M14 24.005H29V33.055H14z"/><g><path fill="#29c27f" d="M42.256,6H29v9.003h15V7.744C44,6.781,43.219,6,42.256,6z"/><path fill="#27663f" d="M29,33.054V42h13.257C43.219,42,44,41.219,44,40.257v-7.202H29z"/><path fill="#19ac65" d="M29 15.003H44V24.005000000000003H29z"/><path fill="#129652" d="M29 24.005H44V33.055H29z"/></g><path fill="#0c7238" d="M22.319,34H5.681C4.753,34,4,33.247,4,32.319V15.681C4,14.753,4.753,14,5.681,14h16.638 C23.247,14,24,14.753,24,15.681v16.638C24,33.247,23.247,34,22.319,34z"/><path fill="#fff" d="M9.807 19L12.193 19 14.129 22.754 16.175 19 18.404 19 15.333 24 18.474 29 16.123 29 14.013 25.07 11.912 29 9.526 29 12.719 23.982z"/></svg>
                                                 EXCEL
                                             </Link>
+                                         
                                             </Dropdown.Link>
                                         </Dropdown.Content>
                                 </Dropdown>
