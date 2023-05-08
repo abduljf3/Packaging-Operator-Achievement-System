@@ -10,7 +10,8 @@ class Summary extends Model
     use HasFactory;
     protected $fillable = [
         'drw_no',
-        'product_name',
-        'product_type',
+        'lot',
+        'qty',
+        'type',
     ];
 }

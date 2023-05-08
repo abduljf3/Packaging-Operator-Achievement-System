@@ -5,8 +5,11 @@ use App\Http\Controllers\Admin\AdminEmployeeController;
 use App\Http\Controllers\Admin\AdminLeaderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\AdminExcel;
+use App\Http\Controllers\ChartController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\HighchartController;
+use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Leader\LeaderController;
 use App\Http\Controllers\Operator\OperatorController;
@@ -32,6 +35,16 @@ Route::get('/', function () {
     ]);
 });
 
+
+//CHART WELCOME PAGE
+Route::get('/product',[UserController::class,'product'])->name('product');
+Route::get('/person',[UserController::class,'person'])->name('person');
+Route::get('/shift',[UserController::class,'shift'])->name('shift');
+Route::get('/weekly',[UserController::class,'weekly'])->name('weekly');
+Route::get('/monthly',[UserController::class,'monthly'])->name('monthly');
+Route::get('/daily',[UserController::class,'daily'])->name('daily');
+
+//ACHIEVEMENT CREATE ( OPERATOR )
 Route::get('/achievement/create',[AchievementCreateController::class,'create'])->name('achievementCreate');
 Route::post('/achievement/store',[AchievementCreateController::class,'store'])->name('achievementStore');
 
@@ -54,9 +67,8 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
    
     //Admin Achievement
     Route::resource('achievement',AchievementController::class);
-    Route::get('cetak_excel_detail_admin', [AchievementController::class,'cetak_excel_detail_admin'])->name('cetak_excel_detail_admin');
+    Route::get('cetak_excel', [LeaderController::class,'cetak_excel'])->name('cetak_excel');
     Route::get('cetak_pdf_detail', [LeaderController::class,'cetak_pdf_detail'])->name('cetak_pdf_detail');
-    
     //Admin Employee
     Route::resource('employee',AdminEmployeeController::class);
     Route::get('cetak_pdf_employee', [AdminEmployeeController::class,'cetak_pdf_employee'])->name('cetak_pdf_employee');
@@ -68,8 +80,14 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::get('cetak_excel_product', [ProductController::class,'cetak_excel_product'])->name('cetak_excel_product');
 
 });
+Route::get('/welcome/chart', function () {
+    return view('welcome.chart');
+});
 
 
+Route::post('/import', [ImportController::class, 'import'])->name('import');
+
+Route::get('/chart', [HighchartController::class, 'handleChart']);
 
 Route::get('/welcome',[ItemController::class,'welcome'])->name('welcome');
 Route::get('/dashboard', function () {

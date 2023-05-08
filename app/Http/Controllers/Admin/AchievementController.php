@@ -137,6 +137,7 @@ class AchievementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function destroy($id)
     {
         $achievements = achievement::where('id', $id)->firstorfail()->delete();
@@ -144,13 +145,8 @@ class AchievementController extends Controller
         return redirect()->route('admin.achievement.index');
      }
 
-
-     public function cetak_excel_detail_admin(Request $request)
-     {
-         $from = $request->input('from_date');
-         $to = $request->input('to_date');
-         
-         return Excel::download(new DetailExport($from, $to), 'Laporan_Achievement.xlsx');
+     public function import(Request $request)
+     {  return inertia('importexcel'); 
      }
      
 

@@ -60,10 +60,11 @@ export default function Index({ achievements, from, to,auth }) {
       
     const columns = [
         {
-            name: "No",
-            selector: (_, index) => index + 1,
+            name: 'No',
+            selector: (row, index) => index + 1,
             sortable: true,
-        },
+          },
+          
         {
             name: 'Drawing Number',
             selector:  (row) => row.drw_no,
@@ -102,7 +103,7 @@ export default function Index({ achievements, from, to,auth }) {
                             <TextInput type="date" value={from} name="from_date" onChange={handleOnChange} className="w-34"/>
                             <h1>-</h1>
                             <TextInput type="date" value={to} name="to_date" onChange={handleOnChange} className="w-34"/>
-                            <PrimaryButton type ="submit" className="bg-green-500 hover:bg-green-500 focus:bg-green-600 active:bg-green-600 focus:ring-lime-500" text="FILTEsR"/>
+                            <PrimaryButton type ="submit" className="bg-green-500 hover:bg-green-500 focus:bg-green-600 active:bg-green-600 focus:ring-lime-500" text="FILTER"/>
                         </form>
                         {achievements && (
                             <div className="flex mr-0">

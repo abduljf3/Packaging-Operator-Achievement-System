@@ -20,7 +20,7 @@ return new class extends Migration
          $table->string('product_type');
          $table->string('customer_id');
          $table->string('customer_name');
-         $table->integer('target');
+         $table->string('target');
          $table->timestamps();
         });
     }
