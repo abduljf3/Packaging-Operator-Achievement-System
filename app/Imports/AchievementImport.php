@@ -10,9 +10,9 @@ class   AchievementImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         return new Achievement([
-            'date' => $row['date'],
-            'shift' => $row['shift'],
-            'proses' => $row['proses'],
+            'Date' => $row['date'],
+            'Shift' => $row['shift'],
+        
             'npk' => $row['npk'],
             'drw_no' => $row['drw_no'],
             'spring_lot' => $row['spring_lot'],

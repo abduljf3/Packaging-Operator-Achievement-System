@@ -18,5 +18,9 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
+        <div id="app">
+            @yield('content')
+        </div>
+        @yield('scripts')
     </body>
 </html>

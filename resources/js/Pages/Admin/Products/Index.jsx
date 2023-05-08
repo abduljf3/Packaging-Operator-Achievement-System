@@ -20,7 +20,7 @@ export default function index({ products, auth }) {
   row.product_type.toLowerCase().includes(filterText.toLowerCase()) ||
   row.customer_id.toLowerCase().includes(filterText.toLowerCase()) ||
   row.customer_name.toLowerCase().includes(filterText.toLowerCase()) ||
-row.target === parseInt(filterText, 10)
+  row.target.toLowerCase().includes(filterText.toLowerCase()) 
 
 );
 

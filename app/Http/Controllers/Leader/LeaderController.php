@@ -45,6 +45,8 @@ class LeaderController extends Controller
         $from = null;
         $to = null;
         if( $request->input('from_date')){
+            $achievements = Achievement::all();
+
             $from = $request->input('from_date');
             $to = $request->input('to_date');;
             $to = $request->input('to_date');
