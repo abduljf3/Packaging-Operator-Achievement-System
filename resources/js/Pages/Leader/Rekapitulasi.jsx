@@ -20,14 +20,14 @@ export default function Index({ achievements, from, to,auth }) {
         );
     };
 
-    const Print = () =>{
-        //console.log('print');
-        let printContents = document.getElementById('printablediv').innerHTML;
-        let originalContents = document.body.innerHTML;
-        document.body.innerHTML = printContents;
-        window.print();
-       document.body.innerHTML = originalContents;
-      }
+    // const Print = () =>{
+    //     //console.log('print');
+    //     let printContents = document.getElementById('printablediv').innerHTML;
+    //     let originalContents = document.body.innerHTML;
+    //     document.body.innerHTML = printContents;
+    //     window.print();
+    //    document.body.innerHTML = originalContents;
+    //   }
 
     const submit = (e) => {
         e.preventDefault();
@@ -91,12 +91,12 @@ export default function Index({ achievements, from, to,auth }) {
     return (
         <>
             <Head title="Report Rekapitulasi" />
-            
+
            <LeaderLayout>
-            
+
                {/* content */}
-            
-   
+
+
                <div className="w-screen">
                     <div className="flex justify-between px-10 pt-2 ">
                         <form className="flex items-center gap-2" onSubmit={submit}>
@@ -155,11 +155,11 @@ export default function Index({ achievements, from, to,auth }) {
                     </div>
                     <div  id='printablediv'>
                     <div className="px-10 pt-4">
-   
+
                        {achievements ? (
-                         
+
                             <DataTable
-                            
+
                             title="Report Rekapitulasi"
                             columns={columns}
                             data={achievements}
