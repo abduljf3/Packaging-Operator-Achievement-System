@@ -34,7 +34,17 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-Route::get('/achievements',[UserController::class,'index'])->name('achievements');
+
+
+//CHART WELCOME PAGE
+Route::get('/product',[UserController::class,'product'])->name('product');
+Route::get('/person',[UserController::class,'person'])->name('person');
+Route::get('/shift',[UserController::class,'shift'])->name('shift');
+Route::get('/weekly',[UserController::class,'weekly'])->name('weekly');
+Route::get('/monthly',[UserController::class,'monthly'])->name('monthly');
+Route::get('/daily',[UserController::class,'daily'])->name('daily');
+
+//ACHIEVEMENT CREATE ( OPERATOR )
 Route::get('/achievement/create',[AchievementCreateController::class,'create'])->name('achievementCreate');
 Route::post('/achievement/store',[AchievementCreateController::class,'store'])->name('achievementStore');
 
