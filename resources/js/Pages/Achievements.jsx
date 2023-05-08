@@ -3,7 +3,7 @@ import Highcharts from 'highcharts';
 
 const Home = ({ data }) => {
   const chartRef = React.useRef(null);
-
+  
   React.useEffect(() => {
     if (chartRef.current) {
       Highcharts.chart(chartRef.current, {
@@ -30,11 +30,13 @@ const Home = ({ data }) => {
         series: [
           {
             name: 'Total Lot',
-            data: data.map(item => ({ name: item.name, y: item.total_lot })),
+            data: data.map(item => ({ name: item.name, y: item.total_lot, })),
+           
           },
           {
-            name: 'Quantity',
-            data: data.map(item => [item.name, item.qty])
+            name: 'QTY',
+            data: data.map(item => ({ name: item.name, y: item.qty, })),
+           
           },
         ],
         responsive: {
@@ -61,6 +63,20 @@ const Home = ({ data }) => {
     <div>
       <h1>Highcharts in Laravel Example</h1>
       <div ref={chartRef}></div>
+
+      <div>
+      <h1>TARGET</h1>
+      <div>
+        {data.map(item => (
+          <div key={item.name}>
+            <span>{item.name}: </span>
+            <span>{item.qty}</span>
+          </div>
+        ))}
+      </div>
+      <div ref={chartRef}></div>
+    </div>
+    
     </div>
   );
 };

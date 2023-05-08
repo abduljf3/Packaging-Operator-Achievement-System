@@ -23,7 +23,7 @@ class ImportController extends Controller
          // Get the file from the request
          $file = $request->file('file');
      
-         // Read the file into an array, skipping the first row
+         // Reazd the file into an array, skipping the first row
          $data = Excel::toArray([], $file)[0];
          array_shift($data);
      
