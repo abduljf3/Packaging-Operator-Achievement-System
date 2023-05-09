@@ -20,14 +20,14 @@ export default function Index({ achievements, from, to,auth }) {
         );
     };
 
-    // const Print = () =>{
-    //     //console.log('print');
-    //     let printContents = document.getElementById('printablediv').innerHTML;
-    //     let originalContents = document.body.innerHTML;
-    //     document.body.innerHTML = printContents;
-    //     window.print();
-    //    document.body.innerHTML = originalContents;
-    //   }
+    const Print = () =>{
+         console.log('print');
+         let printContents = document.getElementById('printablediv').innerHTML;
+         let originalContents = document.body.innerHTML;
+         document.body.innerHTML = printContents;
+         window.print();
+    document.body.innerHTML = originalContents;
+       }
 
     const submit = (e) => {
         e.preventDefault();
@@ -63,8 +63,7 @@ export default function Index({ achievements, from, to,auth }) {
             name: 'No',
             selector: (row, index) => index + 1,
             sortable: true,
-          },
-          
+        },
         {
             name: 'Drawing Number',
             selector:  (row) => row.drw_no,
@@ -118,11 +117,7 @@ export default function Index({ achievements, from, to,auth }) {
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                                             </svg>
                                         </PrimaryButton>  
-                                        
-                                       
-  
                                         </Dropdown.Trigger>
-                                        
                                         <Dropdown.Content>
                                         <Dropdown.Link
                                             >
