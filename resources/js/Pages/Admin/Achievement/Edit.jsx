@@ -3,10 +3,28 @@ import { Inertia } from "@inertiajs/inertia";
 import ButtonGreen from "@/Components/ButtonGreen";
 import TextInput from "@/Components/TextInput";
 import InputLabel from "@/Components/InputLabel";
+import Select from "react-select";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { router, Link, Head, useForm } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function Edit({ users, achievements, products, auth }) {
+    console.log(achievements);
+    const [selectedNpk, setSelectedNpk] = useState({
+        value: achievements.user.npk,
+        label: achievements.user.npk,
+    });
+    const [fullname, setFullname] = useState(achievements.user.fullname);
+    const [group, setGroup] = useState(achievements.user.group);
+    const [selectedDrwNo, setSelectedDrwNo] = useState({
+        value: achievements.drw_no,
+        label: achievements.drw_no + "  |  " + achievements.product.customer_id,
+    });
+
+    const [productName, setProductName] = useState(
+        achievements.product.product_name
+    );
+
     const { data, setData, post } = useForm({
         id: achievements.id,
         date: achievements.date,
@@ -15,7 +33,8 @@ export default function Edit({ users, achievements, products, auth }) {
         proses: achievements.proses,
         user_id: achievements.user_id,
         npk: achievements.npk,
-
+        fullname: achievements.user.fullname,
+        customer_id: achievements.customer_id,
         drw_no: achievements.drw_no,
         product_id: achievements.product_id,
         spring_lot: achievements.spring_lot,
@@ -24,23 +43,67 @@ export default function Edit({ users, achievements, products, auth }) {
         qty: achievements.qty,
         remarks: achievements.remarks,
     });
-///////////////////////////
-useEffect(() => {
-    const fetchUser = async () => {
-      const response = await fetch(`/api/users/${achievements.npk}`);
-      const data = await response.json();
-      setUser(data);
+
+    ///////////////////////////
+    // useEffect(() => {
+    //     const fetchUser = async () => {
+    //         const response = await fetch(`/api/users/${achievements.npk}`);
+    //         const data = await response.json();
+    //         setUser(data);
+    //     };
+
+    //     fetchUser();
+    // }, [achievements.npk]);
+
+    // ///////////////////////
+    // useEffect(() => {
+    //     setData(achievements);
+    // }, [achievements]);
+
+    const optionNpk = users?.map((user) => ({
+        value: user.npk,
+        label: user.npk,
+    }));
+    const optionDrwNo = products?.map((product) => ({
+        value: product.drw_no,
+        label: product.drw_no + "  |  " + product.customer_id,
+    }));
+
+    const handleNpkChange = (selectedNpkOption) => {
+        setSelectedNpk(selectedNpkOption);
+        const user = users.find((u) => u.npk === selectedNpkOption.value);
+        setFullname(user.fullname);
+        setGroup(user.group);
+        setData((data) => ({
+            ...data,
+            npk: selectedNpkOption.value,
+            group: user.group,
+        }));
     };
-  
-    fetchUser();
-  }, [achievements.npk]);
 
+    // const handleNpkChange = (selectedNpkOption) => {
+    //     setSelectedNpk(selectedNpkOption);
+    //     const user = users.find((u) => u.npk === selectedNpkOption.value);
+    //     setFullname(user.fullname);
+    //     setGroup(user.group);
+    //     setData((data) => ({
+    //         ...data,
+    //         npk: selectedNpkOption.value,
+    //         group: user.group,
+    //     }));
+    // };
 
-
-    ///////////////////////
-    useEffect(() => {
-        setData(achievements);
-    }, [achievements]);
+    const handleDrwNoChange = (selectedDrwNo) => {
+        setSelectedDrwNo(selectedDrwNo);
+        const product = products.find((p) => p.drw_no === selectedDrwNo.value);
+        setProductName(product.product_name);
+        setGroup(product.product_name);
+        setData((data) => ({
+            ...data,
+            drw_no: selectedDrwNo.value,
+            product_name: product.product_name,
+        }));
+    };
 
     const handleChange = (e) => {
         setData(e.target.name, e.target.value);
@@ -112,7 +175,34 @@ useEffect(() => {
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-between">
                                     <div className=" mx-10 my-2">
-                                        <select
+                                        <InputLabel value="NPK" />
+
+                                        <Select
+                                            id="npk"
+                                            value={selectedNpk}
+                                            onChange={handleNpkChange}
+                                            options={
+                                                optionNpk
+                                                    ? optionNpk
+                                                    : [
+                                                          {
+                                                              value: "",
+                                                              label: "No options available",
+                                                          },
+                                                      ]
+                                            }
+                                            className="mb-5"
+                                        />
+                                        <TextInput
+                                            className="hidden"
+                                            type="text"
+                                            id="npk"
+                                            name="npk"
+                                            value={data.npk}
+                                            readOnly
+                                        />
+
+                                        {/* <select
                                             id="npk"
                                             name="npk"
                                             value={data.npk}
@@ -130,7 +220,7 @@ useEffect(() => {
                                                     {user.data.npk}
                                                 </option>
                                             ))}
-                                        </select>
+                                        </select> */}
                                         {/* <select
                                             id="npk"
                                             name="npk"
@@ -150,7 +240,7 @@ useEffect(() => {
                                             type="text"
                                             id="fullname"
                                             name="fullname"
-                                            value={data.fullname}
+                                            value={fullname}
                                             readOnly
                                         />
 
@@ -179,29 +269,27 @@ useEffect(() => {
                                                     className=""
                                                     type="text"
                                                     name="group"
-                                                    value={data.group}
+                                                    value={group}
                                                     onChange={handleChange}
                                                 />
                                             </div>
                                         </div>
                                         <InputLabel value="Drawing Number" />
-                                        <select
+                                        <Select
+                                            options={optionDrwNo}
+                                            value={selectedDrwNo}
+                                            onChange={handleDrwNoChange}
+                                            className="mb-5"
+                                        />
+
+                                        <TextInput
+                                            className="hidden"
+                                            type="text"
                                             id="drw_no"
                                             name="drw_no"
                                             value={data.drw_no}
-                                            onChange={handleChange}
-                                            className="w-1/2 mb-5 block border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                        >
-                                            <option value="">-</option>
-                                            {products?.map((product) => (
-                                                <option
-                                                    key={product.data.id}
-                                                    value={product.data.drw_no}
-                                                >
-                                                    {product.data.drw_no}
-                                                </option>
-                                            ))}
-                                        </select>
+                                            readOnly
+                                        />
                                         {/* <TextInput className="mb-5 block w-full" /> */}
                                     </div>
 
@@ -211,7 +299,10 @@ useEffect(() => {
                                             className="mb-5 block w-full"
                                             type="text"
                                             name="product_id"
-                                            value={data.product_name}
+                                            value={productName}
+                                            onChange={(e) =>
+                                                setProductName(e.target.value)
+                                            }
                                         />
 
                                         <div class="flex gap-4">
@@ -267,33 +358,9 @@ useEffect(() => {
                                             value={data.remarks}
                                             onChange={handleChange}
                                         />
-
-                                        <InputLabel value="Customer Id" />
-                                        <TextInput
-                                            className="mb-5 block"
-                                            id="customer_id"
-                                            name="customer_id"
-                                            value={data.customer_id}
-                                        />
-
-                                        <TextInput
-                                            className="mb-5 w-full block"
-                                            type="text"
-                                            name="proses"
-                                            value={data.proses}
-                                            onChange={handleChange}
-                                        />
-
-                                        <InputLabel value="Product Id" />
-                                        <TextInput
-                                            className="mb-5 w-full block"
-                                            type="text"
-                                            name="product_id"
-                                            value={data.product_id}
-                                            onChange={handleChange}
-                                        />
                                     </div>
                                 </div>
+
                                 <div className="flex justify-end gap-4 mx-10 my-2">
                                     <ButtonGreen type="submit">
                                         Update

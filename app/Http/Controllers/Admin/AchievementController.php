@@ -103,7 +103,7 @@ class AchievementController extends Controller
      */
     public function edit($id)
     {
-        $achievements = achievement::findOrFail($id);
+        $achievements = achievement::with(['user','product'])->findOrFail($id);
         return Inertia::render('Admin/Achievement/Edit',[
             'achievements' => $achievements
         ]);
