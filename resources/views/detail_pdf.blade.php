@@ -1,61 +1,55 @@
-<!-- resources/views/sales.blade.php -->
-
-@extends('layouts.app')
-
-@section('content')
-    <div class="container">
-        <h1>Sales Report</h1>
-        <canvas id="myChart"></canvas>
-    </div>
-@endsection
-
-@section('scripts')
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: {!! json_encode($labels) !!},
-                datasets: [{
-                    label: 'Sales',
-                    data: {!! json_encode($data) !!},
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-@endsection
-<!-- resources/views/layouts/app.blade.php -->
-
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Laravel App</title>
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    Laravel App
-                </a>
-            </div>
-        </nav>
-
-        <main class="py-4">
-            @yield('content')
-        </main>
-
-        <script src="{{ asset('js/app.js') }}"></script>
-        @yield('scripts')
-    </body>
+<head>
+	<title>Laporan Detail</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+	<style type="text/css">
+		table tr td,
+		table tr th{
+			font-size: 9pt;
+		}
+	</style>
+	<center>
+        <h1>Laporan Detail</h1>
+	</center>
+ 
+	<table class='table table-bordered'>
+		<thead>
+			<tr>
+				<th>No</th>
+				<th>Date</th>
+				<th>Shift</th>
+				<th>Group</th>
+				<th>Drw_no</th>
+				<th>Type</th>
+				<th>Operator_Name</th>
+				<th>Lot</th>
+				<th>Qty</th>
+				<th>Remarks</th>
+			
+			</tr>
+		</thead>
+		<tbody>
+			@php $i=1 @endphp
+			@foreach($achievements as $p)
+			<tr>
+				<td>{{ $i++ }}</td>
+				<td>{{$p->date}}</td>
+				<td>{{$p->shift}}</td>
+                <td>{{$p->user->group}}</td>
+				<td>{{$p->drw_no}}</td>
+				<td>{{$p->product->product_type}}</td>
+				<td>{{$p->user->fullname}}</td>
+				<td>{{$p->total_lot}}</td>
+				<td>{{$p->qty}}</td>
+				<td>{{$p->remarks}}</td>
+	
+			</tr>
+			@endforeach
+		</tbody>
+	</table>
+ 
+</body>
 </html>
