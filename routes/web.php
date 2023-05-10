@@ -32,13 +32,13 @@ use Inertia\Inertia;
 });
 
 
-    //CHART WELCOME PAGE 
-    Route::get('/welcome',[ChartController::class,'welcome'])->name('welcome');
+//CHART WELCOME PAGE (View Resource/js/Achievements.jsx)
+    Route::get('/data',[ChartController::class,'data'])->name('data');
 
-    //Import Excel
+//Import Excel
     Route::post('/import', [ImportController::class, 'import'])->name('import');
 
-    //ACHIEVEMENT CREATE ( OPERATOR )
+//ACHIEVEMENT CREATE ( OPERATOR )
     Route::get('/achievement/create',[AchievementCreateController::class,'create'])->name('achievementCreate');
     Route::post('/achievement/store',[AchievementCreateController::class,'store'])->name('achievementStore');
 
@@ -73,7 +73,7 @@ use Inertia\Inertia;
 
 });
 
-   
+    Route::get('/welcome',[UserController::class,'welcome'])->name('welcome');
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
         })->middleware(['auth', 'verified'])->name('dashboard');

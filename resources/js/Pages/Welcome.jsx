@@ -1,376 +1,127 @@
-import React from 'react';
-import Highcharts from 'highcharts';
-import { Inertia } from '@inertiajs/inertia';
-
-const Home = ({ data }) => {
-  const shiftChartRef = React.useRef(null);
-  const personChartRef = React.useRef(null);
-  const dailyChartRef = React.useRef(null);
-  const monthlyChartRef = React.useRef(null);
-  const weeklyChartRef = React.useRef(null);
-  const productChartRef = React.useRef(null);
-  console.log('data:', data);
-
-  React.useEffect(() => {
-    if (shiftChartRef.current) {
-      Highcharts.chart(shiftChartRef.current, {
-        chart: {
-          type: 'column',
-        },
-        title: {
-          text: 'New User Growth by Shift, 2020',
-        },
-        subtitle: {
-          text: 'Source: positronx.io',
-        },
-        xAxis: {
-          type: 'category',
-        },
-        yAxis: {
-          title: {
-            text: 'Number of New Data',
-          },
-        },
-        legend: {
-          enabled: false,
-        },
-        series: [
-          {
-            name: 'Total Lot',
-            data: Array.isArray(data.Shift) ? data.Shift.map(item => ({ name: item.name, y: item.total_lot })) : [],
-          },
-          {
-            name: 'QTY',
-            data: Array.isArray(data.Shift) ? data.Shift.map(item => ({ name: item.name, y: item.qty })) : [],
-          },
-        ],
-        
-        responsive: {
-          rules: [
-            {
-              condition: {
-                maxWidth: 500,
-              },
-              chartOptions: {
-                legend: {
-                  layout: 'horizontal',
-                  align: 'center',
-                  verticalAlign: 'bottom',
-                },
-              },
-            },
-          ],
-        },
-      });
-    }
+import Navbar from "@/Components/Navbar";
+import Footer from "@/Components/Footer";
+import { Link, Head } from "@inertiajs/react";
 
 
-    if (dailyChartRef.current) {
-      Highcharts.chart(dailyChartRef.current, {
-        chart: {
-          type: 'column',
-        },
-        title: {
-          text: 'New User Growth by Daily, 2020',
-        },
-        subtitle: {
-          text: 'Source: positronx.io',
-        },
-        xAxis: {
-          type: 'category',
-        },
-        yAxis: {
-          title: {
-            text: 'Number of New Data',
-          },
-        },
-        legend: {
-          enabled: false,
-        },
-        series: [
-          {
-            name: 'Total Lot',
-            data: Array.isArray(data.Daily) ? data.Daily.map(item => ({ name: item.name, y: item.total_lot })) : [],
-          },
-          {
-            name: 'QTY',
-            data: Array.isArray(data.Daily) ? data.Daily.map(item => ({ name: item.name, y: item.qty })) : [],
-          },
-        ],
-        
-        responsive: {
-          rules: [
-            {
-              condition: {
-                maxWidth: 500,
-              },
-              chartOptions: {
-                legend: {
-                  layout: 'horizontal',
-                  align: 'center',
-                  verticalAlign: 'bottom',
-                },
-              },
-            },
-          ],
-        },
-      });
-    }
+export default function Welcome(props) {
+    return (
+        <>
+            <Head title="Welcome" />
+            <Navbar roles />
+            {/* content */}
+            <div className="container w-full px-10 mx-auto bg-gray-100 py-14">
+                <div className="flex justify-between gap-5 mb-10">
+                    <div className="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
+                        <h1
+                            className="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75"
+                            href="#pablo"
+                        >
+                            Oil Seal
+                        </h1>
+                        <h1
+                            className="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75"
+                            href="#pablo"
+                        >
+                            5000pcs
+                        </h1>
+                    </div>
+                    <div className="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
+                        <h1
+                            className="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75"
+                            href="#pablo"
+                        >
+                            O-Ring
+                        </h1>
+                        <h1
+                            className="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75"
+                            href="#pablo"
+                        >
+                            5000pcs
+                        </h1>
+                    </div>
+                    <div className="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
+                        <h1
+                            className="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75"
+                            href="#pablo"
+                        >
+                            Rubber Part
+                        </h1>
+                        <h1
+                            className="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75"
+                            href="#pablo"
+                        >
+                            5000pcs
+                        </h1>
+                    </div>
+                    <div className="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
+                        <h1
+                            className="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75"
+                            href="#pablo"
+                        >
+                            Joint Carburator
+                        </h1>
+                        <h1
+                            className="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75"
+                            href="#pablo"
+                        >
+                            5000pcs
+                        </h1>
+                    </div>
+                    <div className="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
+                        <h1
+                            className="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75"
+                            href="#pablo"
+                        >
+                            Oil Level Gauge
+                        </h1>
+                        <h1
+                            className="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75"
+                            href="#pablo"
+                        >
+                            5000pcs
+                        </h1>
+                    </div>
+                </div>
+                <div className="flex gap-5">
+                    <div className="w-1/2">
+                        <span className="text-base font-semibold">
+                            Daily Chart
+                            <img src="grafik1.jpeg" className="w-full" />
+                        </span>
+                    </div>
+                    <div className="w-1/2">
+                        <span className="text-base font-semibold">
+                            Weekly Chart
+                            <img src="grafik1.jpeg" className="w-full" />
+                        </span>
+                    </div>
+                </div>
+                <div className="flex gap-10 py-10">
+                    <div className="w-1/2">
+                        <span className="text-base font-semibold">
+                            Monthly Chart
+                            <img src="grafik1.jpeg" className="w-full" />
+                        </span>
+                    </div>
+                    <div className="w-1/2">
+                        <span className="text-base font-semibold">
+                            Shift Chart
+                            <img src="grafik1.jpeg" className="w-full" />
+                        </span>
+                    </div>
+                </div>
+                <div className="flex gap-10 justify-center">
+                    <div className="w-1/2">
+                        <span className="text-base font-semibold">
+                            Person Chart
+                            <img src="grafik1.jpeg" className="w-full" />
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {/* content END */}
 
-
-    
-    if (weeklyChartRef.current) {
-      Highcharts.chart(weeklyChartRef.current, {
-        chart: {
-          type: 'column',
-        },
-        title: {
-          text: 'New User Growth by Weekly, 2020',
-        },
-        subtitle: {
-          text: 'Source: positronx.io',
-        },
-        xAxis: {
-          type: 'category',
-        },
-        yAxis: {
-          title: {
-            text: 'Number of New Data',
-          },
-        },
-        legend: {
-          enabled: false,
-        },
-        series: [
-          {
-            name: 'Total Lot',
-            data: Array.isArray(data.Weekly) ? data.Weekly.map(item => ({ name: item.name, y: item.total_lot })) : [],
-          },
-          {
-            name: 'QTY',
-            data: Array.isArray(data.Weekly) ? data.Weekly.map(item => ({ name: item.name, y: item.qty })) : [],
-          },
-        ],
-        
-        responsive: {
-          rules: [
-            {
-              condition: {
-                maxWidth: 500,
-              },
-              chartOptions: {
-                legend: {
-                  layout: 'horizontal',
-                  align: 'center',
-                  verticalAlign: 'bottom',
-                },
-              },
-            },
-          ],
-        },
-      });
-    }
-
-
-
-    if (monthlyChartRef.current) {
-      Highcharts.chart(monthlyChartRef.current, {
-        chart: {
-          type: 'column',
-        },
-        title: {
-          text: 'New User Growth by Monthly, 2020',
-        },
-        subtitle: {
-          text: 'Source: positronx.io',
-        },
-        xAxis: {
-          type: 'category',
-        },
-        yAxis: {
-          title: {
-            text: 'Number of New Data',
-          },
-        },
-        legend: {
-          enabled: false,
-        },
-        series: [
-          {
-            name: 'Total Lot',
-            data: Array.isArray(data.Monthly) ? data.Monthly.map(item => ({ name: item.name, y: item.total_lot })) : [],
-          },
-          {
-            name: 'QTY',
-            data: Array.isArray(data.Monthly) ? data.Monthly.map(item => ({ name: item.name, y: item.qty })) : [],
-          },
-        ],
-        
-        responsive: {
-          rules: [
-            {
-              condition: {
-                maxWidth: 500,
-              },
-              chartOptions: {
-                legend: {
-                  layout: 'horizontal',
-                  align: 'center',
-                  verticalAlign: 'bottom',
-                },
-              },
-            },
-          ],
-        },
-      });
-    }
-
-    if (personChartRef.current) {
-      Highcharts.chart(personChartRef.current, {
-        chart: {
-          type: 'column',
-        },
-        title: {
-          text: 'New User Growth by Person, 2020',
-        },
-        subtitle: {
-          text: 'Source: positronx.io',
-        },
-        xAxis: {
-          type: 'category',
-        },
-        yAxis: {
-          title: {
-            text: 'Number of New Data',
-          },
-        },
-        legend: {
-          enabled: false,
-        },
-        series: [
-          {
-            name: 'Total Lot',
-            data: Array.isArray(data.Person) ? data.Person.map(item => ({ name: item.name1, y: item.total_lot })) : [],
-          },
-          {
-            name: 'QTY',
-            data: Array.isArray(data.Person) ? data.Person.map(item => ({ name: item.name1, y: item.qty1 })) : [],
-          },
-        ],
-        
-        responsive: {
-          rules: [
-            {
-              condition: {
-                maxWidth: 500,
-              },
-              chartOptions: {
-                legend: {
-                  layout: 'horizontal',
-                  align: 'center',
-                  verticalAlign: 'bottom',
-                },
-              },
-            },
-          ],
-        },
-      });
-    }
-
-
-    if (productChartRef.current) {
-      Highcharts.chart(productChartRef.current, {
-        chart: {
-          type: 'column',
-        },
-        title: {
-          text: 'New User Growth by Product, 2020',
-        },
-        subtitle: {
-          text: 'Source: positronx.io',
-        },
-        xAxis: {
-          type: 'category',
-        },
-        yAxis: {
-          title: {
-            text: 'Number of New Data',
-          },
-        },
-        legend: {
-          enabled: false,
-        },
-        series: [
-          {
-            name: 'Total Lot',
-            data: Array.isArray(data.Product) ? data.Product.map(item => ({ name: item.name, y: item.total_lot })) : [],
-          },
-          {
-            name: 'QTY',
-            data: Array.isArray(data.Product) ? data.Product.map(item => ({ name: item.name, y: item.qty })) : [],
-          },
-        ],
-        
-        responsive: {
-          rules: [
-            {
-              condition: {
-                maxWidth: 500,
-              },
-              chartOptions: {
-                legend: {
-                  layout: 'horizontal',
-                  align: 'center',
-                  verticalAlign: 'bottom',
-                },
-              },
-            },
-          ],
-        },
-      });
-    }
-
-  }, [data]);
-
-
-
-  
-  return (
-    <div>
-      <h1>Highcharts in Laravel Example</h1>
-      <div>
-        <h2>New User Growth by Shift, 2020</h2>
-        <div ref={shiftChartRef}></div>
-      </div>
-
-      <div>
-        <h2>New User Growth by Person, 2020</h2>
-        <div ref={personChartRef}></div>
-      </div>
-
-      <div>
-        <h2>New User Growth by Daily, 2020</h2>
-        <div ref={dailyChartRef}></div>
-      </div>
-
-      <div>
-        <h2>New User Growth by Weekly, 2020</h2>
-        <div ref={weeklyChartRef}></div>
-      </div>
-      
-      <div>
-        <h2>New User Growth by Monthly, 2020</h2>
-        <div ref={monthlyChartRef}></div>
-      </div>
-
-      <div>
-        <h2>New User Growth by Product, 2020</h2>
-        <div ref={productChartRef}></div>
-      </div>
-    </div>
-
-    
-  );
-};
-
-export default Home;
+            <Footer />
+        </>
+    );
+}

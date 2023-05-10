@@ -10,7 +10,7 @@ use App\Models\Achievement;
 use Illuminate\Support\Facades\DB;                                                                            
 class   ChartController extends Controller                                                 
 {                                                                                       
-    public function welcome()
+    public function data()
 {   
     // Hitung Data Hari Ini
     $today = Carbon::now()->format('Y-m-d');
@@ -74,6 +74,6 @@ class   ChartController extends Controller
         'Monthly' => $monthlyData,
     ];
 
-    return inertia('Welcome', ['data' => $data]);
+    return inertia('Achievements', ['data' => $data]);
 }
 }                                                                                       

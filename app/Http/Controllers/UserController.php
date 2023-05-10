@@ -9,6 +9,8 @@ use Inertia\Inertia;
 use App\Models\Achievement;
 use Illuminate\Support\Facades\DB;                                                                            
 class   UserController extends Controller                                                 
-{                                                                                       
-  
+{
+    public function welcome (){
+        return inertia('Welcome');
+    }
 }                                                                                       
