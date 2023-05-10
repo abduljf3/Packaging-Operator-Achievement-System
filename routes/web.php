@@ -22,12 +22,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 
-Route::post('/import', [ExcelController::class, 'import']);
-Route::get('/export', [ExcelController::class, 'export']);
-Route::get('/home',[UserController::class,'index'])->name('home');
-
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    Route::get('/', function () {
+        return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
@@ -36,20 +32,17 @@ Route::get('/', function () {
 });
 
 
-//CHART WELCOME PAGE
-Route::get('/product',[UserController::class,'product'])->name('product');
-Route::get('/person',[UserController::class,'person'])->name('person');
-Route::get('/shift',[UserController::class,'shift'])->name('shift');
-Route::get('/weekly',[UserController::class,'weekly'])->name('weekly');
-Route::get('/monthly',[UserController::class,'monthly'])->name('monthly');
-Route::get('/daily',[UserController::class,'daily'])->name('daily');
+//CHART WELCOME PAGE (View Resource/js/Achievements.jsx)
+    Route::get('/data',[ChartController::class,'data'])->name('data');
+
+//Import Excel
+    Route::post('/import', [ImportController::class, 'import'])->name('import');
 
 //ACHIEVEMENT CREATE ( OPERATOR )
-Route::get('/achievement/create',[AchievementCreateController::class,'create'])->name('achievementCreate');
-Route::post('/achievement/store',[AchievementCreateController::class,'store'])->name('achievementStore');
+    Route::get('/achievement/create',[AchievementCreateController::class,'create'])->name('achievementCreate');
+    Route::post('/achievement/store',[AchievementCreateController::class,'store'])->name('achievementStore');
 
-
-Route::prefix('leader')->middleware(['auth'])->name('leader.')->group(function () {
+    Route::prefix('leader')->middleware(['auth'])->name('leader.')->group(function () {
     Route::get('/',[LeaderController::class,'index'])->name('dashboard');
     Route::get('/detail',[LeaderController::class,'detail'])->name('detail');
     Route::get('/rekapitulasi',[LeaderController::class,'rekapitulasi'])->name('rekapitulasi');
@@ -61,14 +54,13 @@ Route::prefix('leader')->middleware(['auth'])->name('leader.')->group(function (
 
 });
 
-
-
-Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
-   
+    Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
+    
     //Admin Achievement
     Route::resource('achievement',AchievementController::class);
     Route::get('cetak_excel', [LeaderController::class,'cetak_excel'])->name('cetak_excel');
     Route::get('cetak_pdf_detail', [LeaderController::class,'cetak_pdf_detail'])->name('cetak_pdf_detail');
+
     //Admin Employee
     Route::resource('employee',AdminEmployeeController::class);
     Route::get('cetak_pdf_employee', [AdminEmployeeController::class,'cetak_pdf_employee'])->name('cetak_pdf_employee');
@@ -80,22 +72,13 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::get('cetak_excel_product', [ProductController::class,'cetak_excel_product'])->name('cetak_excel_product');
 
 });
-Route::get('/welcome/chart', function () {
-    return view('welcome.chart');
-});
 
+    Route::get('/welcome',[UserController::class,'welcome'])->name('welcome');
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+        })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::post('/import', [ImportController::class, 'import'])->name('import');
-
-Route::get('/chart', [HighchartController::class, 'handleChart']);
-
-Route::get('/welcome',[ItemController::class,'welcome'])->name('welcome');
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-
-Route::middleware('auth')->group(function () {
+    Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

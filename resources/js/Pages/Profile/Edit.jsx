@@ -1,4 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import LeaderLayout from "@/Layouts/LeaderLayout";
 import DeleteUserForm from "./Partials/DeleteUserForm";
 import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
@@ -10,10 +11,11 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
             auth={auth}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Profile
+                    Profiles
                 </h2>
             }
         >
+            
             <Head title="Profile" />
 
             <div className="py-12">

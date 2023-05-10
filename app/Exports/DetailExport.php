@@ -48,7 +48,7 @@ class DetailExport implements FromQuery, WithHeadings, WithTitle
             'Qty',
             'Remarks',
             '',
-            'Laporan  Detail Per Tanggal '. $this->from . ' - ' . $this->to,
+            'Laporan  Achievement Detail Per Tanggal '. $this->from . ' - ' . $this->to,
         ];
         
         

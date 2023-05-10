@@ -48,7 +48,7 @@ class AdminAchievementExport implements FromQuery, WithHeadings, WithTitle
             'Qty',
             'Remarks',
             '',
-            'Laporan  Detail Per Tanggal '. $this->from . ' - ' . $this->to,
+            'Laporan  Achievement Per Tanggal '. $this->from . ' - ' . $this->to,
         ];
         
         
