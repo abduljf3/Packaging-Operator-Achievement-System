@@ -87,7 +87,7 @@ class LeaderController extends Controller
         $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
         $from = $request->input('from_date');
         $to = $request->input('to_date');
-        return Excel::download(new DetailExport($from, $to), 'Laporan_Detail - ' . $dateNow . '.xlsx');
+        return Excel::download(new DetailExport($from, $to), 'Laporan_Achievement_Detail - ' . $dateNow . '.xlsx');
     }
 
     public function cetak_excel_rekapitulasi(Request $request)
