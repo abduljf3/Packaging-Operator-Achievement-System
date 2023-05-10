@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;                                                                    
 use App\Models\Achievement;
 use Illuminate\Support\Facades\DB;                                                                            
-class   ItemController extends Controller                                                 
+class   ChartController extends Controller                                                 
 {                                                                                       
     public function welcome()
 {   
