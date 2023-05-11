@@ -149,6 +149,22 @@ class UserTableSeeder extends Seeder
             'status' => 'Manager QA',
             'password' => bcrypt('admin'),
             'roles' => 'leader',
+        ],
+        [
+            'fullname' => 'Yudi',
+            'npk' => '4545',
+            'group' => '1',
+            'status' => 'Manager Marketing',
+            'password' => bcrypt('admin'),
+            'roles' => 'leader',
+        ],
+        [
+            'fullname' => 'Yurino',
+            'npk' => '4646',
+            'group' => '1',
+            'status' => 'Manager OB',
+            'password' => bcrypt('admin'),
+            'roles' => 'leader',
         ]
             
     ]);
