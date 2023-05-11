@@ -9,7 +9,7 @@ import { router, Link, Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function Edit({ users, achievements, products, auth }) {
-    console.log(achievements);
+    console.log(products);
     const [selectedNpk, setSelectedNpk] = useState({
         value: achievements.user.npk,
         label: achievements.user.npk,
@@ -60,7 +60,7 @@ export default function Edit({ users, achievements, products, auth }) {
     //     setData(achievements);
     // }, [achievements]);
 
-    const optionNpk = users?.map((user) => ({
+    const optionNpk = users.map((user) => ({
         value: user.npk,
         label: user.npk,
     }));
@@ -179,18 +179,9 @@ export default function Edit({ users, achievements, products, auth }) {
 
                                         <Select
                                             id="npk"
-                                            value={selectedNpk}
                                             onChange={handleNpkChange}
-                                            options={
-                                                optionNpk
-                                                    ? optionNpk
-                                                    : [
-                                                          {
-                                                              value: "",
-                                                              label: "No options available",
-                                                          },
-                                                      ]
-                                            }
+                                            option={optionNpk}
+                                            value={selectedNpk}
                                             className="mb-5"
                                         />
                                         <TextInput
