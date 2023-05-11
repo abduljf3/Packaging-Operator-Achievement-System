@@ -7,6 +7,7 @@ use App\Exports\DetailExport;
 use App\Http\Controllers\Controller;
 use App\Models\achievement;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
@@ -103,9 +104,13 @@ class AchievementController extends Controller
      */
     public function edit($id)
     {
-        $achievements = achievement::findOrFail($id);
+        $users = User::all();
+        $products = Product::all();
+        $achievements = achievement::with(['user','product'])->findOrFail($id);
         return Inertia::render('Admin/Achievement/Edit',[
-            'achievements' => $achievements
+            'achievements' => $achievements,
+            'users' => $users,
+            'Products' => $products
         ]);
     }
     public function delete($id)

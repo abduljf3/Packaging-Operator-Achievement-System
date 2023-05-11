@@ -20,7 +20,6 @@ export default function Authenticated({ auth, header, children }) {
                         </div>
                     </header>
                 )}
-
                 <main>{children}</main>
             </div>
             <Footer />
