@@ -12,7 +12,7 @@ class Operator extends Model
         'date',
         'shift',
         'group',
-        'proses',
+      
         'user_id',
         'product_id',
         'spring_lot',

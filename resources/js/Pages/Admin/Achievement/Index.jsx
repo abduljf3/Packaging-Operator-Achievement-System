@@ -10,11 +10,13 @@ import ButtonOrange from "@/Components/ButtonOrange";
 import Dropdown from "@/Components/Dropdown";
 import Modal from "@/Components/Modal";
 
+
 export default function Index({ achievements, from, to, auth }) {
     console.log(achievements);
     const { data, setData, get, processing, errors, reset } = useForm({
         from_date: from,
         to_date: to,
+        
     });
     const [filterText, setFilterText] = useState("");
     const handleFilter = (event) => {
@@ -106,16 +108,17 @@ export default function Index({ achievements, from, to, auth }) {
 
     const closeModal = () => {
         setSelectingFile(false);
+        
     };
 
-    const Print = () => {
-        // console.log("print");
-        let printContents = document.getElementById("printablediv").innerHTML;
+    const Print = () =>{     
+        //console.log('print');  
+        let printContents = document.getElementById('printablediv').innerHTML;
         let originalContents = document.body.innerHTML;
         document.body.innerHTML = printContents;
         window.print();
-        document.body.innerHTML = originalContents;
-    };
+       document.body.innerHTML = originalContents; 
+      }
 
     const columns = [
         {
@@ -165,7 +168,7 @@ export default function Index({ achievements, from, to, auth }) {
                 <>
                     <a
                         href={route("admin.achievement.edit", row.id)}
-                        class="text-green-500 hover:text-green-900 duration-500 mr-5"
+                        className="text-green-500 hover:text-green-900 duration-500 mr-5"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -175,9 +178,9 @@ export default function Index({ achievements, from, to, auth }) {
                             stroke="currentColor"
                         >
                             <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                             />
                         </svg>
@@ -195,9 +198,9 @@ export default function Index({ achievements, from, to, auth }) {
                             stroke="currentColor"
                         >
                             <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                             />
                         </svg>
@@ -212,6 +215,7 @@ export default function Index({ achievements, from, to, auth }) {
             <Head title="Report Achievement" />
             <Authenticated>
                 {/* content */}
+              
                 <div className="w-screen">
                     <div className="flex justify-between px-10 pt-3 ">
                         <form
@@ -244,7 +248,7 @@ export default function Index({ achievements, from, to, auth }) {
 
                         <div className="flex mr-0">
                             <div className="flex items-center gap-3">
-                                <ButtonOrange onclick={Print}>
+                                <ButtonOrange onClick={Print}>
                                     Print
                                 </ButtonOrange>
                                 <Dropdown>
@@ -363,6 +367,7 @@ export default function Index({ achievements, from, to, auth }) {
                                         />
                                     </svg>
                                 </ButtonRed>
+                                
                                 <Modal
                                     show={selectingFile}
                                     onClose={closeModal}
@@ -419,6 +424,7 @@ export default function Index({ achievements, from, to, auth }) {
                             </div>
                         </div>
                     </div>
+                    <div  id='printablediv'>
                     <div className="pt-4 px-10  ">
                         <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
                             {achievements ? (
@@ -437,12 +443,12 @@ export default function Index({ achievements, from, to, auth }) {
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20"
                                                 fill="currentColor"
-                                                class="w-5 h-5 posistion absolute pointer-events-none ml-3 mt-3"
+                                                className="w-5 h-5 posistion absolute pointer-events-none ml-3 mt-3"
                                             >
                                                 <path
-                                                    fill-rule="evenodd"
+                                                    fillRule="evenodd"
                                                     d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                                                    clip-rule="evenodd"
+                                                    clipRule="evenodd"
                                                 />
                                             </svg>
 
@@ -463,6 +469,7 @@ export default function Index({ achievements, from, to, auth }) {
                             )}
                         </div>
                     </div>
+                </div>
                 </div>
                 {/* content END */}
             </Authenticated>

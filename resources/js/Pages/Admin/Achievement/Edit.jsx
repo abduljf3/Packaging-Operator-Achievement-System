@@ -243,8 +243,8 @@ export default function Edit({ users, achievements, products, auth }) {
                                             onChange={handleChange}
                                         />
 
-                                        <div class="flex gap-4">
-                                            <div class="mb-5">
+                                        <div className="flex gap-4">
+                                            <div className="mb-5">
                                                 <InputLabel value="Shift" />
                                                 <TextInput
                                                     className=""
@@ -254,7 +254,7 @@ export default function Edit({ users, achievements, products, auth }) {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            <div class="mb-5">
+                                            <div className="mb-5">
                                                 <InputLabel value="Group" />
                                                 <TextInput
                                                     className=""
@@ -296,8 +296,8 @@ export default function Edit({ users, achievements, products, auth }) {
                                             }
                                         />
 
-                                        <div class="flex gap-4">
-                                            <div class="mb-5">
+                                        <div className="flex gap-4">
+                                            <div className="mb-5">
                                                 <InputLabel value="Spring Lot No" />
 
                                                 <TextInput
@@ -308,7 +308,7 @@ export default function Edit({ users, achievements, products, auth }) {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            <div class="mb-5">
+                                            <div className="mb-5">
                                                 <InputLabel value="Product Lot No" />
                                                 <TextInput
                                                     className=""
@@ -319,8 +319,8 @@ export default function Edit({ users, achievements, products, auth }) {
                                                 />
                                             </div>
                                         </div>
-                                        <div class="flex gap-4">
-                                            <div class="mb-5">
+                                        <div className="flex gap-4">
+                                            <div className="mb-5">
                                                 <InputLabel value="Total Lot" />
                                                 <TextInput
                                                     className=""
@@ -330,7 +330,7 @@ export default function Edit({ users, achievements, products, auth }) {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            <div class="mb-5">
+                                            <div className="mb-5">
                                                 <InputLabel value="Qty(pcs)" />
                                                 <TextInput
                                                     className=""

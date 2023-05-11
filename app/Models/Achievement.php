@@ -12,7 +12,7 @@ class Achievement extends Model
         'date',
         'shift',
 
-        'proses',
+     
         'user_id',
         'drw_no',
         'npk',
