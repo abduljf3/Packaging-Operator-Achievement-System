@@ -30,7 +30,7 @@ const Home = ({ data }) => {
           borderColor: '#ccc', // Warna border
         },
         title: {
-          text: 'New User Growth by Shift, 2020',
+          text: 'Chart Target Per Shift',
         },
         subtitle: {
           text: 'Data Chart Terbaru',
