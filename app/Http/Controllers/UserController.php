@@ -143,5 +143,6 @@ class   UserController extends Controller
         ];
     
         return inertia('Dashboard', ['data' => $data]);
+        
     }
 }                                                                                       

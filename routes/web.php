@@ -72,7 +72,7 @@ use Inertia\Inertia;
     Route::get('cetak_excel_product', [ProductController::class,'cetak_excel_product'])->name('cetak_excel_product');
 
 });
-
+Route::get('/',[UserController::class,'welcome'])->name('');
     Route::get('/welcome',[UserController::class,'welcome'])->name('welcome');
     Route::get('/dashboard',[UserController::class,'dashboard'], function () {
         return Inertia::render('Dashboard');
