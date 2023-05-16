@@ -74,7 +74,7 @@ use Inertia\Inertia;
 });
 
     Route::get('/welcome',[UserController::class,'welcome'])->name('welcome');
-    Route::get('/dashboard', function () {
+    Route::get('/dashboard',[UserController::class,'dashboard'], function () {
         return Inertia::render('Dashboard');
         })->middleware(['auth', 'verified'])->name('dashboard');
 

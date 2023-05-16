@@ -17,7 +17,7 @@ class UserTableSeeder extends Seeder
     {
         User::insert([
             [
-            'fullname' => 'Abdul Jabar Nur Firdaus',
+            'fullname' => 'Jabar',
             'npk' => '7474',
             'group' => '1',
             'status' => 'MAGANG',

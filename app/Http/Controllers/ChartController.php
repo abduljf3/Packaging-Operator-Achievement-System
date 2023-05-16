@@ -55,11 +55,11 @@ class   ChartController extends Controller
         ->get()
         ->toArray();
 
-    //Hitung Data Per Shift
+    //Hitung Data Per Product
     $productData = DB::table('achievements')
-        ->select(DB::raw('products.product_type as name, SUM(total_lot) as total_lot, SUM(qty) as qty'))
+        ->select(DB::raw('products.product_name as name, SUM(total_lot) as total_lot, SUM(qty) as qty'))
         ->join('products', 'products.drw_no', '=', 'achievements.drw_no')
-        ->groupBy('products.product_type')
+        ->groupBy('products.product_name')
         ->get()
         ->toArray();
 
