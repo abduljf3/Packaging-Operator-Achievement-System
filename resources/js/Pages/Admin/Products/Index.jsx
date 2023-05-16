@@ -107,7 +107,7 @@ export default function index({ products, auth }) {
                 <>
                     <a
                         href={route("admin.products.edit", row.id)}
-                        class="text-green-500 hover:text-green-900 duration-500 mr-5"
+                        className="text-green-500 hover:text-green-900 duration-500 mr-5"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -117,9 +117,9 @@ export default function index({ products, auth }) {
                             stroke="currentColor"
                         >
                             <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                             />
                         </svg>
@@ -137,9 +137,9 @@ export default function index({ products, auth }) {
                             stroke="currentColor"
                         >
                             <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                             />
                         </svg>
@@ -310,12 +310,12 @@ export default function index({ products, auth }) {
                                             xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20"
                                             fill="currentColor"
-                                            class="w-5 h-5 posistion absolute pointer-events-none ml-3 mt-3"
+                                            className="w-5 h-5 posistion absolute pointer-events-none ml-3 mt-3"
                                         >
                                             <path
-                                                fill-rule="evenodd"
+                                                fillRule="evenodd"
                                                 d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                                                clip-rule="evenodd"
+                                                clipRule="evenodd"
                                             />
                                         </svg>
 
