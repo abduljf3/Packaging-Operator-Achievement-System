@@ -154,9 +154,9 @@ export default function index({ products, auth }) {
             <Authenticated>
                 <div className="">
                     <div className="flex justify-end  px-10 pt-3 gap-3 ">
-                        <ButtonOrange className="w-15 h-9" onclick={Print}>
-                            Print
-                        </ButtonOrange>
+                    <ButtonOrange onClick={Print}>
+                                    Print
+                                </ButtonOrange>
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <ButtonGreen className="w-15 h-9">
@@ -277,6 +277,7 @@ export default function index({ products, auth }) {
                     </div>
                 </div>
                 <div>
+                <div  id='printablediv'>
                     <div className="flex w-full px-10 pb-10 py-3">
                         <div className="inline-block min-w-full overflow-hidden align-middle border-b shadow sm:rounded-lg">
                             <DataTable
@@ -330,6 +331,7 @@ export default function index({ products, auth }) {
                                 className=""
                             />
                         </div>
+                    </div>
                     </div>
                 </div>
             </Authenticated>

@@ -53,14 +53,14 @@ export default function index({ users, auth }) {
         window.location.href = url;
     };
 
-    const Print = () => {
-        // console.log("print");
-        let printContents = document.getElementById("printablediv").innerHTML;
+    const Print = () =>{     
+        //console.log('print');  
+        let printContents = document.getElementById('printablediv').innerHTML;
         let originalContents = document.body.innerHTML;
         document.body.innerHTML = printContents;
         window.print();
-        document.body.innerHTML = originalContents;
-    };
+       document.body.innerHTML = originalContents; 
+      }
 
     const columns = [
         {
@@ -144,14 +144,12 @@ export default function index({ users, auth }) {
 
             <Authenticated>
                 {/* content */}
+              
                 <div className="w-screen">
                     <div className="flex justify-end px-10 pt-3 ">
                         <div className="flex mr-0">
                             <div className="flex items-center gap-3">
-                                <ButtonOrange
-                                    className="w-15 h-9"
-                                    onclick={Print}
-                                >
+                            <ButtonOrange onClick={Print}>
                                     Print
                                 </ButtonOrange>
                                 <Dropdown>
@@ -277,9 +275,12 @@ export default function index({ users, auth }) {
                                 </Link>
                             </div>
                         </div>
-                    </div>
+                    </div> 
+                    <div  id='printablediv'>
+                  
                     <div className="pt-4 pb-10 px-10  ">
                         <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
+                          
                             <DataTable
                                 title="Operator"
                                 columns={columns}
@@ -316,7 +317,7 @@ export default function index({ users, auth }) {
                             />
                         </div>
                     </div>
-                </div>
+                </div></div>
                 {/* content END */}
             </Authenticated>
             {/* <Nav roles={auth.roles}/>

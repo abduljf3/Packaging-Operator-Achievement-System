@@ -5,7 +5,7 @@ export default function Home({ users }) {
     return (
         <>
             <Navbar props={users} />
-            <h1>testtt</h1>
+          
         </>
     );
 }

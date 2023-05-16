@@ -18,7 +18,7 @@ const Home = ({ data }) => {
   console.log('data:', data);
 
   React.useEffect(() => {
-
+    
     //CODINGAN AWAL SHIFT
     if (shiftChartRef.current) {
       Highcharts.chart(shiftChartRef.current, {
@@ -30,17 +30,17 @@ const Home = ({ data }) => {
           borderColor: '#ccc', // Warna border
         },
         title: {
-          text: 'New User Growth by Shift, 2020',
+          text: 'Chart Target Per Shift',
         },
         subtitle: {
-          text: 'Source: positronx.io',
+          text: 'Data Chart Terbaru',
         },
         xAxis: {
           type: 'category',
         },
         yAxis: {
           title: {
-            text: 'Number of New Data',
+            text: 'Total Data',
           },
         },
         legend: {
@@ -88,17 +88,17 @@ const Home = ({ data }) => {
           borderColor: '#ccc', // Warna border
         },
         title: {
-          text: 'New User Growth by Daily, 2020',
+          text: 'Chart Drawing Number Harian',
         },
         subtitle: {
-          text: 'Source: positronx.io',
+          text: 'Data Chart Terbaru',
         },
         xAxis: {
           type: 'category',
         },
         yAxis: {
           title: {
-            text: 'Number of New Data',
+            text: 'Total Data',
           },
         },
         legend: {
@@ -146,17 +146,17 @@ const Home = ({ data }) => {
           borderColor: '#ccc', // Warna border
         },
         title: {
-          text: 'New User Growth by Weekly, 2020',
+          text: 'Chart Drawing Number Mingguan',
         },
         subtitle: {
-          text: 'Source: positronx.io',
+          text: 'Data Chart Terbaru',
         },
         xAxis: {
           type: 'category',
         },
         yAxis: {
           title: {
-            text: 'Number of New Data',
+            text: 'Total Data',
           },
         },
         legend: {
@@ -204,17 +204,17 @@ const Home = ({ data }) => {
           borderColor: '#ccc', // Warna border
         },
         title: {
-          text: 'New User Growth by Monthly, 2020',
+          text: 'Chart Drawing Number Bulanan',
         },
         subtitle: {
-          text: 'Source: positronx.io',
+          text: 'Data Chart Terbaru',
         },
         xAxis: {
           type: 'category',
         },
         yAxis: {
           title: {
-            text: 'Number of New Data',
+            text: 'Total Data',
           },
         },
         legend: {
@@ -262,17 +262,17 @@ const Home = ({ data }) => {
           borderColor: '#ccc', // Warna border
         },
         title: {
-          text: 'New User Growth by Person, 2020',
+          text: 'Chart Target Per Operator',
         },
         subtitle: {
-          text: 'Source: positronx.io',
+          text: 'Data Chart Terbaru',
         },
         xAxis: {
           type: 'category',
         },
         yAxis: {
           title: {
-            text: 'Number of New Data',
+            text: 'Total Data',
           },
         },
         legend: {
@@ -320,17 +320,17 @@ const Home = ({ data }) => {
           borderColor: '#ccc', // Warna border
         },
         title: {
-          text: 'New User Growth by Product, 2020',
+          text: 'Chart Target Per Product',
         },
         subtitle: {
-          text: 'Source: positronx.io',
+          text: 'Data Chart Terbaru',
         },
         xAxis: {
           type: 'category',
         },
         yAxis: {
           title: {
-            text: 'Number of New Data',
+            text: 'Total Data',
           },
         },
         legend: {
@@ -374,141 +374,72 @@ const Home = ({ data }) => {
             {/* content */}
             
             <div className="container w-full px-10 mx-auto bg-gray-100 py-14">
-                <div className="flex justify-between gap-5 mb-10">
-                    <div className="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
-                        <h1
-                            className="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75"
-                            href="#pablo"
-                        >
-                            Oil Seal
-                        </h1>
-                        <h1
-                            className="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75"
-                            href="#pablo"
-                        >
-                            5000pcs
-                        </h1>
-                    </div>
-                    
-                    <div className="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
-                        <h1
-                            className="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75"
-                            href="#pablo"
-                        >
-                            O-Ring
-                        </h1>
-                        <h1
-                            className="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75"
-                            href="#pablo"
-                        >
-                            5000pcs
-                        </h1>
-                    </div>
-                    <div className="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
-                        <h1
-                            className="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75"
-                            href="#pablo"
-                        >
-                            Rubber Part
-                        </h1>
-                        <h1
-                            className="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75"
-                            href="#pablo"
-                        >
-                            5000pcs
-                        </h1>
-                    </div>
-                    <div className="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
-                        <h1
-                            className="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75"
-                            href="#pablo"
-                        >
-                            Joint Carburator
-                        </h1>
-                        <h1
-                            className="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75"
-                            href="#pablo"
-                        >
-                            5000pcs
-                        </h1>
-                    </div>
-                    <div className="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
-                        <h1
-                            className="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75"
-                            href="#pablo"
-                        >
-                            Oil Level Gauge
-                        </h1>
-                        <h1
-                            className="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75"
-                            href="#pablo"
-                        >
-                            5000pcs
-                        </h1>
-                    </div>
-                    
-                </div>
-           
-             
-               
-            </div>
+  {Array.isArray(data.Product) ? (
+    <div className="flex justify-between gap-5 mb-10">
+      {data.Product.map(item => (
+        <div key={item.name} className="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
+          <h1 className="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75">
+            {item.name}
+          </h1>
+          <h1 className="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75">
+            {item.total_lot}pcs
+          </h1>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <div>Data Kosong</div>
+  )}
+
+
             <div className='flex justify-center justify'>
     <div>
         
-        <div className='flex gap-5'>
+        <div className='flex gap-4 mb-4'>
 
             <div>
-                <h2>New User Growth by Shift, 2020</h2>
+             
                 <div ref={shiftChartRef}></div>
             </div>
         <div>
-            <h2>New User Growth by Person, 2020</h2>
+           
             <div ref={personChartRef}></div>
         </div>
     </div>
 
-    <div className='flex gap-5'>
+    <div className='flex gap-4 mb-4'>
       <div >
-        <h2>New User Growth by Daily, 2020</h2>
+ 
           <div ref={dailyChartRef}></div>
       </div>
 
 
       <div>
-        <h2>New User Growth by Weekly, 2020</h2>
         
         <div ref={weeklyChartRef}></div>
       </div>
     </div>
 
-    {Array.isArray(data.Product) ? (
-  data.Product.map(item => (
-    <div key={item.name}>
-      <span>{item.name}: </span>
-      <span>Total Lot: {item.total_lot}, QTY: {item.qty}</span>
-    </div>
-  ))
-) : (
-  <div>No data available</div>
-)}
+  
 
 
-    <div className='flex gap-5'>
+    <div className='flex gap-4 mb-4'>
       <div>
-        <h2>New User Growth by Monthly, 2020</h2>
+  
         <div ref={monthlyChartRef}></div>
       </div>
 
       <div>
-        <h2>New User Growth by Product, 2020</h2>
-        
+       
         <div ref={productChartRef}></div>
       </div>
       
     </div>
     </div>
     </div>
-
+    
+    </div>
+    <div className="flex justify-between gap-5 mb-6"></div>
             
             {/* content END */}
 
