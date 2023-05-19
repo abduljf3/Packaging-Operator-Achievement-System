@@ -53,14 +53,14 @@ export default function index({ users, auth }) {
         window.location.href = url;
     };
 
-    const Print = () =>{     
-        //console.log('print');  
-        let printContents = document.getElementById('printablediv').innerHTML;
+    const Print = () => {
+        //console.log('print');
+        let printContents = document.getElementById("printablediv").innerHTML;
         let originalContents = document.body.innerHTML;
         document.body.innerHTML = printContents;
         window.print();
-       document.body.innerHTML = originalContents; 
-      }
+        document.body.innerHTML = originalContents;
+    };
 
     const columns = [
         {
@@ -144,12 +144,12 @@ export default function index({ users, auth }) {
 
             <Authenticated>
                 {/* content */}
-              
+
                 <div className="w-screen">
                     <div className="flex justify-end px-10 pt-3 ">
                         <div className="flex mr-0">
                             <div className="flex items-center gap-3">
-                            <ButtonOrange onClick={Print}>
+                                <ButtonOrange onClick={Print}>
                                     Print
                                 </ButtonOrange>
                                 <Dropdown>
@@ -275,49 +275,48 @@ export default function index({ users, auth }) {
                                 </Link>
                             </div>
                         </div>
-                    </div> 
-                    <div  id='printablediv'>
-                  
-                    <div className="pt-4 pb-10 px-10  ">
-                        <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
-                          
-                            <DataTable
-                                title="Operator"
-                                columns={columns}
-                                data={users}
-                                // customStyles={customStyles}
-                                pagination
-                                dense
-                                highlightOnHover
-                                actions={
-                                    <label className="w-100 h-100 mx-3 my-5 relative text-gray-400 focus-within:text-gray-600 block duration-500">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20"
-                                            fill="currentColor"
-                                            className="w-5 h-5 posistion absolute pointer-events-none ml-3 mt-3"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
+                    </div>
+                    <div id="printablediv">
+                        <div className="pt-4 pb-10 px-10  ">
+                            <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
+                                <DataTable
+                                    title="Operator"
+                                    columns={columns}
+                                    data={(users, filteredData)}
+                                    // customStyles={customStyles}
+                                    pagination
+                                    dense
+                                    highlightOnHover
+                                    actions={
+                                        <label className="w-100 h-100 mx-3 my-5 relative text-gray-400 focus-within:text-gray-600 block duration-500">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                                className="w-5 h-5 posistion absolute pointer-events-none ml-3 mt-3"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                                                    clipRule="evenodd"
+                                                />
+                                            </svg>
 
-                                        <input
-                                            type="text"
-                                            placeholder="Search..."
-                                            onChange={handleFilter}
-                                            value={filterText}
-                                            className="  bg-white placeholder-gray-400 text-black border-2 border-gray-300 duration-500 appearance-none w-full block pl-10 focus:outline-none rounded-lg "
-                                        ></input>
-                                    </label>
-                                }
-                                className=""
-                            />
+                                            <input
+                                                type="text"
+                                                placeholder="Search..."
+                                                onChange={handleFilter}
+                                                value={filterText}
+                                                className="  bg-white placeholder-gray-400 text-black border-2 border-gray-300 duration-500 appearance-none w-full block pl-10 focus:outline-none rounded-lg "
+                                            ></input>
+                                        </label>
+                                    }
+                                    className=""
+                                />
+                            </div>
                         </div>
                     </div>
-                </div></div>
+                </div>
                 {/* content END */}
             </Authenticated>
             {/* <Nav roles={auth.roles}/>
