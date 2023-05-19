@@ -483,7 +483,7 @@ const Home = ({ data }) => {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-between gap-5 mb-6"></div>
+            <div className="flex justify-between gap-5"></div>
 
             {/* content END */}
 
