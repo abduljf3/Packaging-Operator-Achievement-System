@@ -426,7 +426,7 @@ const Home = ({ data }) => {
     return (
         <>
             <Head title="Welcome" />
-            <Navbar roles />
+            <Navbar roles="login" />
             {/* content */}
 
             <div className="container w-full px-10 mx-auto bg-gray-100 py-14">

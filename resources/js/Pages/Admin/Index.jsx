@@ -5,6 +5,9 @@ import React from 'react';
 import Highcharts from 'highcharts';
 import LeaderLayout from "@/Layouts/LeaderLayout";
 
+
+
+
 const Home = ({ data }) => {
   const shiftChartRef = React.useRef(null);
   const personChartRef = React.useRef(null);
@@ -367,7 +370,7 @@ const Home = ({ data }) => {
     return (
         <>
             <Head title="Welcome" />
-            <LeaderLayout>
+            <Navbar roles />
             {/* content */}
             
             <div className="container w-full px-10 mx-auto bg-gray-100 py-14">
@@ -440,7 +443,7 @@ const Home = ({ data }) => {
             
             {/* content END */}
 
-            </LeaderLayout>
+            <Footer />
         </>
     );
 };

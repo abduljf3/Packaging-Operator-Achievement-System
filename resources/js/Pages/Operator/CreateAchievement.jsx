@@ -6,6 +6,8 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import Select from "react-select";
 import OperatorLayout from "@/Layouts/OperatorLayout";
+import Navbar from "@/Components/Navbar";
+import Footer from "@/Components/Footer";   
 import Swal from "sweetalert2";
 import { useState } from "react";
 import { Link, Head, useForm } from "@inertiajs/react";
@@ -41,7 +43,11 @@ export default function CreateAchievement({ users, products }) {
             timer: 1500,
         });
     };
+   
 
+    const handleClick1 = () => {
+        window.location.reload();
+    };
     const optionNpk = users.map((user) => ({
         value: user.npk,
         label: user.npk,
@@ -118,7 +124,7 @@ export default function CreateAchievement({ users, products }) {
     return (
         <>
             <Head title="Achievement" />
-            <OperatorLayout className="bg-white">
+            <Navbar roles="login" />
                 <div className="py-5">
                     <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
                         <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -372,7 +378,10 @@ export default function CreateAchievement({ users, products }) {
                                         /> */}
 
                                         <div className="flex justify-end gap-4  pt-5">
-                                            <ButtonRed>Reset</ButtonRed>
+                                            <ButtonRed
+                                            handleClick1={handleClick1}
+                                            disabled={submitting}
+                                            >Reset</ButtonRed>
                                             {/* <ButtonGreen
                                         // disabled={submitting}
                                         onclick="handleClick"
@@ -390,10 +399,11 @@ export default function CreateAchievement({ users, products }) {
                                     </div>
                                 </div>
                             </form>
+                            
                         </div>
                     </div>
                 </div>
-            </OperatorLayout>
+         <Footer />
         </>
     );
 }
