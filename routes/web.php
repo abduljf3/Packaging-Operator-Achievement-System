@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminExcel;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\HighchartController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ItemController;
@@ -34,7 +35,7 @@ use Inertia\Inertia;
 
 //CHART WELCOME PAGE (View Resource/js/Achievements.jsx)
     Route::get('/data',[ChartController::class,'data'])->name('data');
-
+   
 //Import Excel
     Route::post('/import', [ImportController::class, 'import'])->name('import');
 
@@ -55,7 +56,7 @@ use Inertia\Inertia;
 });
 
     Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
-    
+     
     //Admin Achievement
     Route::resource('achievement',AchievementController::class);
     Route::get('cetak_excel', [LeaderController::class,'cetak_excel'])->name('cetak_excel');
@@ -79,6 +80,7 @@ Route::get('/',[UserController::class,'welcome'])->name('');
         })->middleware(['auth', 'verified'])->name('dashboard');
 
     Route::middleware('auth')->group(function () {
+        Route::get('/profileleader', [ProfileController::class, 'editleader'])->name('profileleader.edit');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

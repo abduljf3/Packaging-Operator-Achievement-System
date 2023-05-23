@@ -12,20 +12,23 @@ import Dropdown from "@/Components/Dropdown";
 export default function index({ users, auth }) {
     console.log(auth);
     const data = {};
-    const [filterText, setFilterText] = useState();
-    const handleFilter = (event) => {
-        const value = event.target.value || "";
-        setFilterText(value);
-    };
+    const [filterText, setFilterText] = useState('');
 
-    const filteredData = users.filter(
-        (row) =>
-            row.fullname?.toLowerCase().includes(filterText?.toLowerCase()) ||
-            row.npk?.toLowerCase().includes(filterText?.toLowerCase()) ||
-            row.status?.toLowerCase().includes(filterText?.toLowerCase()) ||
-            row.group?.toLowerCase().includes(filterText?.toLowerCase()) ||
-            row.roles?.toLowerCase().includes(filterText?.toLowerCase())
-    );
+    const handleFilter = (event) => {
+      const value = event.target.value || '';
+      setFilterText(value);
+    };
+    
+    const filteredData = filterText
+      ? users.filter(
+          (row) =>
+            row.fullname?.toLowerCase().includes(filterText.toLowerCase()) ||
+            row.npk?.toLowerCase().includes(filterText.toLowerCase()) ||
+            row.status?.toLowerCase().includes(filterText.toLowerCase()) ||
+            row.group?.toLowerCase().includes(filterText.toLowerCase()) ||
+            row.roles?.toLowerCase().includes(filterText.toLowerCase())
+        )
+      : users;
 
     const [deleting, setDeleting] = useState(false);
     // handle delete action

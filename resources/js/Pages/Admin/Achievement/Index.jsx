@@ -353,7 +353,7 @@ export default function Index({ achievements, from, to, auth }) {
                                 </Dropdown>
 
                                 <ButtonRed onClick={submitImport}>
-                                    Import
+                                    Imports
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 24 24"
@@ -415,7 +415,7 @@ export default function Index({ achievements, from, to, auth }) {
                                                 </svg>
                                             </ButtonRed>
 
-                                            <ButtonOrange onclick={closeModal}>
+                                            <ButtonOrange onClick={closeModal}>
                                                 Close
                                             </ButtonOrange>
                                         </div>

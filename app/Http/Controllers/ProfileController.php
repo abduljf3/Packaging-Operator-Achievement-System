@@ -23,6 +23,13 @@ class ProfileController extends Controller
             'status' => session('status'),
         ]);
     }
+    public function editleader(Request $request): Response
+    {
+        return Inertia::render('Profile/EditLeader', [
+            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'status' => session('status'),
+        ]);
+    }
 
     /**
      * Update the user's profile information.

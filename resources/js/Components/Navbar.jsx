@@ -221,17 +221,17 @@ export default function Navbar({ roles, props, auth, header }) {
                                         <img
                                             className={`${
                                                 route().current(
-                                                    "profile.edit"
+                                                    "profileleader.edit"
                                                 ) &&
                                                 "w-10 rounded-full outline outline-red-500"
                                             } w-10 duration-100 rounded-full hover:outline outline-red-500 `}
-                                            href={route("profile.edit")}
+                                            href={route("profileleader.edit")}
                                             src="/profil.png"
                                         ></img>
                                     </Dropdown.Trigger>
                                     <Dropdown.Content>
                                         <Dropdown.Link
-                                            href={route("profile.edit")}
+                                            href={route("profileleader.edit")}
                                         >
                                             Profile
                                         </Dropdown.Link>
@@ -265,10 +265,32 @@ export default function Navbar({ roles, props, auth, header }) {
                     </div>
                     <div className="flex gap-5">
                         <ul className="flex items-center justify-between gap-5">
-                            <li className="nav-item">
-                                <a className="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar">
+                        <li className="nav-item">
+                                <a
+                                    className="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
+                                    href={route("welcome")}
+                                >
                                     {" "}
-                                    Welcome!{" "}
+                                    Dashboard{" "}
+                                </a>
+                            </li>
+                            <li className="nav-item">
+                                <a
+                                    className="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
+                                    href={route("achievementCreate")}
+                                >
+                                    {" "}
+                                    Achievement{" "}
+                                </a>
+                            </li>
+
+                            <li className="nav-item">
+                                <a
+                                    className="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
+                                    href={route("login")}
+                                >
+                                    {" "}
+                                    Login{" "}
                                 </a>
                             </li>
                         </ul>
@@ -295,10 +317,10 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li className="nav-item">
                                 <a
                                     className={`${
-                                        route().current("welcome") &&
+                                        route().current("dashboard") &&
                                         "text-red-600 underline underline-offset-4 decoration-2"
                                     } flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
-                                    href={route("welcome")}
+                                    href={route("dashboard")}
                                 >
                                     {" "}
                                     Dashboard{" "}
@@ -307,10 +329,12 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li className="nav-item">
                                 <a
                                     className={`${
-                                        route().current("achievementCreate") &&
+                                        route().current(
+                                            "admin.achievement.*"
+                                        ) &&
                                         "text-red-600 underline underline-offset-4 decoration-2"
                                     } flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
-                                    href={route("achievementCreate")}
+                                    href={route("admin.achievement.index")}
                                 >
                                     {" "}
                                     Achievement{" "}
@@ -319,12 +343,57 @@ export default function Navbar({ roles, props, auth, header }) {
 
                             <li className="nav-item">
                                 <a
-                                    className="flex items-center px-3 py-2 font-bold leading-snug duration-500  text-navbar hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4"
-                                    href={route("login")}
+                                    className={`${
+                                        route().current("admin.employee.*") &&
+                                        "text-red-600 underline underline-offset-4 decoration-2"
+                                    } flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
+                                    href={route("admin.employee.index")}
                                 >
                                     {" "}
-                                    Login{" "}
+                                    Operator{" "}
                                 </a>
+                            </li>
+
+                            <li className="nav-item">
+                                <a
+                                    className={`${
+                                        route().current("admin.products.*") &&
+                                        "text-red-600 underline underline-offset-4 decoration-2"
+                                    } flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
+                                    href={route("admin.products.index")}
+                                >
+                                    {" "}
+                                    Product{" "}
+                                </a>
+                            </li>
+                            <li>
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <img
+                                            className={`${
+                                                route().current(
+                                                    "profile.edit"
+                                                ) &&
+                                                "w-10 rounded-full outline outline-red-500"
+                                            } w-10 duration-100 rounded-full hover:outline outline-red-500 `}
+                                            href={route("profile.edit")}
+                                            src="/profil.png"
+                                        ></img>
+                                    </Dropdown.Trigger>
+                                    <Dropdown.Content>
+                                        <Dropdown.Link
+                                            href={route("profile.edit")}
+                                        >
+                                            Profile
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
+                                            method="post"
+                                            href={route("logout")}
+                                        >
+                                            Logout
+                                        </Dropdown.Link>
+                                    </Dropdown.Content>
+                                </Dropdown>
                             </li>
                         </ul>
                     </div>
