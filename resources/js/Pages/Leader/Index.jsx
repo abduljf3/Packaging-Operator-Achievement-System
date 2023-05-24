@@ -371,25 +371,33 @@ const Home = ({ data }) => {
             {/* content */}
             
             <div className="container w-full px-10 mx-auto bg-gray-100 py-14">
-  {Array.isArray(data.Product) ? (
-    <div className="flex justify-between gap-5 mb-10">
-      {data.Product.map(item => (
-        <div key={item.name} className="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl">
-          <h1 className="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75">
-            {item.name}
-          </h1>
-          <h1 className="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75">
-            {item.total_lot}pcs
-          </h1>
-        </div>
-      ))}
-    </div>
-  ) : (
-    <div>Data Kosong</div>
-  )}
+            {Array.isArray(data.Product) ? (
+  <div className="flex justify-between gap-5 mb-10 flex-wrap">
+    {data.Product.map((item, index) => (
+      <div
+        key={item.name}
+        className="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl"
+      >
+        <h1 className="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75">
+          {item.name}
+        </h1>
+        <h1 className="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75">
+          {item.total_lot}pcs
+        </h1>
+        {index % 5 === 4 && index !== data.Product.length - 1 && (
+          <div className="w-full h-0" />
+        )}
+      </div>
+    ))}
+  </div>
+) : (
+  <div>Data Kosong</div>
+)}
 
 
-            <div className='flex justify-center justify'>
+
+
+            <div className='w-full flex justify-center justify'>
     <div>
         
         <div className='flex gap-4 mb-4'>
