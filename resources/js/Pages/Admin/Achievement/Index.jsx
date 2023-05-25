@@ -8,7 +8,9 @@ import { Inertia } from "@inertiajs/inertia";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import ButtonOrange from "@/Components/ButtonOrange";
 import Dropdown from "@/Components/Dropdown";
-
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function Index({ achievements, from, to, auth }) {
@@ -75,36 +77,53 @@ export default function Index({ achievements, from, to, auth }) {
             new URLSearchParams(data).toString();
         window.location.href = url;
     };
-
-    const [selectingFile, setSelectingFile] = useState(false);
-
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [fileInputKey, setFileInputKey] = useState(0);
+    
     const handleFileInput = (e) => {
-        e.preventDefault();
-        setSelectingFile(e.target.files[0]);
+      setSelectedFile(e.target.files[0]);
     };
+    
     const handleImport = async () => {
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-
-        try {
-            const response = await axios.post("/import", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-            console.log(response.data);
-            // handle response data here
-        } catch (error) {
-            console.error(error);
-            // handle error here
-        }
+      if (!selectedFile) {
+        toast.error('No file selected!', {
+          position: toast.POSITION.TOP_RIGHT
+        });
+        return;
+      }
+    
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+    
+      try {
+        const response = await axios.post('/import', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        console.log(response.data);
+        // handle response data here
+    
+        // Show success message
+        toast.error('Import successful!/ERROR', {
+          position: toast.POSITION.TOP_RIGHT
+        });
+      } catch (error) {
+        console.error(error);
+        // handle error here
+    
+        // Show error message
+        toast.success('Import successful!', {
+          position: toast.POSITION.TOP_RIGHT
+        });
+      }
+    
+      // Reset the selected file and file input key regardless of success or error
+      setSelectedFile(null);
+      setFileInputKey((prevKey) => prevKey + 1);
     };
+    
 
-    const submitImport = (e) => {
-        setSelectingFile(true);
-        e.preventDefault();
-        props.onRequestClose();
-    };
 
     
 
@@ -349,21 +368,39 @@ export default function Index({ achievements, from, to, auth }) {
                                     </Dropdown.Content>
                                 </Dropdown>
 
-                                <ButtonRed onClick={submitImport}>
-                                    Imports
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill="currentColor"
-                                        className="w-4 h-4 ml-1"
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
-                                            clipRule="evenodd"
-                                        />
-                                    </svg>
-                                </ButtonRed>
+                                <div>
+  <form className="flex items-center">
+    <label className="relative overflow-hidden rounded-md">
+      <input
+        type="file"
+        key={fileInputKey}
+        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+        onChange={handleFileInput}
+      />
+      <span className="inline-block px-4 py-2 text-white bg-red-600 rounded-md cursor-pointer hover:bg-red-700">
+        Browse
+      </span>
+    </label>
+    <button
+      type="button"
+      className="ml-4 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+      onClick={handleImport}
+    >
+      Import
+    </button>
+    {selectedFile && (
+      <span className="ml-4 text-gray-600">
+        Selected file: {selectedFile.name}
+      </span>
+    )}
+  </form>
+
+  {/* Add the ToastContainer component */}
+  <ToastContainer />
+</div>
+
+
+
                               
                             </div>
                         </div>

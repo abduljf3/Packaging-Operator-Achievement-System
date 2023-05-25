@@ -32,14 +32,13 @@ class ImportController extends Controller
              Achievement::create([
                  'date' => $row[0],
                  'shift' => $row[1],
-                 'proses' => $row[2],
-                 'npk' => $row[3],
-                 'drw_no' => $row[4],
-                 'spring_lot' => $row[5],
-                 'product_lot' => $row[6],
-                 'total_lot' => $row[7],
-                 'qty' => $row[8],
-                 'remarks' => $row[9],
+                 'npk' => $row[2],
+                 'drw_no' => $row[3],
+                 'spring_lot' => $row[4],
+                 'product_lot' => $row[5],
+                 'total_lot' => $row[6],
+                 'qty' => $row[7],
+                 'remarks' => $row[8],
                
              ]);
          
