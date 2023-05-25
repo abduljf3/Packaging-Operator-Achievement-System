@@ -188,15 +188,14 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li>
                                 <Dropdown>
                                     <Dropdown.Trigger>
-                                        <a
-                                            className={`${
-                                                route().current(
-                                                    "leader.detail && leader.rekapitulasi"
-                                                ) &&
-                                                "text-red-600 underline underline-offset-4 decoration-2"
-                                            } flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
-                                            href="#"
-                                        >
+                                    <a
+  className={`${
+    (route().current("leader.detail") || route().current("leader.rekapitulasi")) &&
+    "text-red-600 underline underline-offset-4 decoration-2"
+  } flex items-center px-3 py-2 font-bold leading-snug duration-500 hover:text-red-600 hover:underline hover:decoration-2 hover:underline-offset-4`}
+  href="#"
+>
+
                                             {" "}
                                             Report{" "}
                                         </a>
