@@ -1,5 +1,5 @@
 import TextInput from "@/Components/TextInput";
-import { Head, useForm, Link } from "@inertiajs/react";
+import { Head, useForm, Link, router } from "@inertiajs/react";
 import ButtonRed from "@/Components/ButtonRed";
 import ButtonGreen from "@/Components/ButtonGreen";
 import { useState, userRef } from "react";
@@ -11,7 +11,6 @@ import Dropdown from "@/Components/Dropdown";
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 export default function Index({ achievements, from, to, auth }) {
     console.log(achievements);
@@ -38,6 +37,7 @@ export default function Index({ achievements, from, to, auth }) {
             row.total_lot.toLowerCase().includes(filterText.toLowerCase()) ||
             row.qty.toLowerCase().includes(filterText.toLowerCase())
     );
+    
 
     const [deleting, setDeleting] = useState(false);
 
@@ -94,31 +94,35 @@ export default function Index({ achievements, from, to, auth }) {
     
       const formData = new FormData();
       formData.append('file', selectedFile);
+      router.post('/import',formData);
+      toast.success('Import successful!', {
+        position: toast.POSITION.TOP_RIGHT
+    });
     
-      try {
-        const response = await axios.post('/import', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        console.log(response.data);
-        // handle response data here
+    //   try {
+    //     const response = await Inertia.post('/import', formData, {
+    //       headers: {
+    //         'Content-Type': 'multipart/form-data',
+    //       },
+    //     });
+    //     console.log(response.data);
+    //     // handle response data here
     
-        // Show success message
-        toast.error('Import successful!/ERROR', {
-          position: toast.POSITION.TOP_RIGHT
-        });
-      } catch (error) {
-        console.error(error);
-        // handle error here
+    //     // Show success message
+    //     toast.error('Import successful!/ERROR', {
+    //       position: toast.POSITION.TOP_RIGHT
+    //     });
+    //   } catch (error) {
+    //     console.error(error);
+    //     // handle error here
     
-        // Show error message
-        toast.success('Import successful!', {
-          position: toast.POSITION.TOP_RIGHT
-        });
-      }
+    //     // Show error message
+    //     toast.success('Import successful!', {
+    //       position: toast.POSITION.TOP_RIGHT
+    //     });
+    //   }
     
-      // Reset the selected file and file input key regardless of success or error
+    //   // Reset the selected file and file input key regardless of success or error
       setSelectedFile(null);
       setFileInputKey((prevKey) => prevKey + 1);
     };
@@ -240,7 +244,7 @@ export default function Index({ achievements, from, to, auth }) {
                         >
                             <TextInput
                                 type="date"
-                                value={from}
+                                value={data.from_date}
                                 name="from_date"
                                 onChange={handleOnChange}
                                 className="w-34"
@@ -248,7 +252,7 @@ export default function Index({ achievements, from, to, auth }) {
                             <h1>-</h1>
                             <TextInput
                                 type="date"
-                                value={to}
+                                value={data.to_date}
                                 name="to_date"
                                 onChange={handleOnChange}
                                 className="w-34"
@@ -370,28 +374,33 @@ export default function Index({ achievements, from, to, auth }) {
 
                                 <div>
   <form className="flex items-center">
-    <label className="relative overflow-hidden rounded-md">
-      <input
-        type="file"
-        key={fileInputKey}
-        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-        onChange={handleFileInput}
-      />
-      <span className="inline-block px-6 py-1 text-white bg-red-600 rounded-md cursor-pointer hover:bg-red-700">
-        Browse
-      </span>
-    </label>
-    <button
-      type="button"
-      className="ml-4 px-6 py-1 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-      onClick={handleImport}
-    >
-      Import
-    </button>
+    {!selectedFile && (
+        <label className="relative overflow-hidden rounded-md">
+        <input
+          type="file"
+          key={fileInputKey}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          onChange={handleFileInput}
+        />
+        <span className="inline-block px-6 py-1 text-white bg-red-600 rounded-md cursor-pointer hover:bg-red-700">
+          Browse
+        </span>
+      </label>
+    )}
+    
     {selectedFile && (
-      <span className="ml-4 text-gray-600">
+       <div className="relative ">
+         <button
+        type="button"
+        className="px-6 py-1 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+        onClick={handleImport}
+      >
+        Import
+      </button>
+      <span className="text-xs font-light text-gray-600">
         Selected file: {selectedFile.name}
       </span>
+       </div>
     )}
   </form>
 

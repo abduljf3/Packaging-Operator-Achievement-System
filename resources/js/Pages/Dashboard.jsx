@@ -29,8 +29,7 @@ Highcharts.setOptions({
             Highcharts.chart(shiftChartRef.current, {
                 chart: {
                     type: "column",
-                    width: "500", // Lebar grafik dalam piksel
-                    height: "300", // Tinggi grafik dalam piksel
+                    
                     borderWidth: 3, // Lebar border dalam piksel
                     borderColor: "#ccc", // Warna border
                 },
@@ -98,8 +97,7 @@ Highcharts.setOptions({
             Highcharts.chart(dailyChartRef.current, {
                 chart: {
                     type: "column",
-                    width: "500", // Lebar grafik dalam piksel
-                    height: "300", // Tinggi grafik dalam piksel
+                    
                     borderWidth: 3, // Lebar border dalam piksel
                     borderColor: "#ccc", // Warna border
                 },
@@ -166,8 +164,7 @@ Highcharts.setOptions({
             Highcharts.chart(weeklyChartRef.current, {
                 chart: {
                     type: "column",
-                    width: "500", // Lebar grafik dalam piksel
-                    height: "300", // Tinggi grafik dalam piksel
+                    
                     borderWidth: 3, // Lebar border dalam piksel
                     borderColor: "#ccc", // Warna border
                 },
@@ -234,8 +231,7 @@ Highcharts.setOptions({
             Highcharts.chart(monthlyChartRef.current, {
                 chart: {
                     type: "column",
-                    width: "500", // Lebar grafik dalam piksel
-                    height: "300", // Tinggi grafik dalam piksel
+                
                     borderWidth: 3, // Lebar border dalam piksel
                     borderColor: "#ccc", // Warna border
                 },
@@ -302,8 +298,7 @@ Highcharts.setOptions({
             Highcharts.chart(personChartRef.current, {
                 chart: {
                     type: "column",
-                    width: "500", // Lebar grafik dalam piksel
-                    height: "300", // Tinggi grafik dalam piksel
+                   
                     borderWidth: 3, // Lebar border dalam piksel
                     borderColor: "#ccc", // Warna border
                 },
@@ -370,10 +365,8 @@ Highcharts.setOptions({
             Highcharts.chart(productChartRef.current, {
                 chart: {
                     type: "column",
-                    width: "500", // Lebar grafik dalam piksel
-                    height: "300", // Tinggi grafik dalam piksel
-                    borderWidth: 3, // Lebar border dalam piksel
-                    borderColor: "#ccc", // Warna border
+                    
+                    
                 },
                 title: {
                     text: "Chart Target Per Product",
@@ -440,60 +433,35 @@ Highcharts.setOptions({
             {/* content */}
 
             <div className="container w-full px-10 mx-auto bg-gray-100 py-14">
-            {Array.isArray(data.Product) ? (
-  <div className="flex justify-between gap-5 mb-10 flex-wrap">
-    {data.Product.map((item, index) => (
-      <div
-        key={item.name}
-        className="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl"
-      >
-        <h1 className="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75">
-          {item.name}
-        </h1>
-        <h1 className="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75">
-          {item.total_lot}pcs
-        </h1>
-        {index % 5 === 4 && index !== data.Product.length - 1 && (
-          <div className="w-full h-0" />
-        )}
-      </div>
-    ))}
-  </div>
-) : (
-  <div>Data Kosong</div>
-)}
-
-                <div className="flex justify-center justify">
-                    <div>
-                        <div className="flex gap-4 mb-4">
-                            <div>
-                                <div ref={shiftChartRef}></div>
-                            </div>
-                            <div>
-                                <div ref={personChartRef}></div>
-                            </div>
+                {Array.isArray(data.Product) ? (
+                    <div className="grid grid-cols-5 gap-6 mb-6">
+                        {data.Product.map((item, index) => (
+                        <div className="w-full shadow-md bg-white rounded-md p-6 hover:bg-rose-500 group cursor-pointer">
+                            <div className="text-gray-500 group-hover:text-white">{item.name}</div>
+                            <div className="text-red-600 font-semibold text-2xl group-hover:text-white">{item.qty} Pcs</div>
                         </div>
-
-                        <div className="flex gap-4 mb-4">
-                            <div>
-                                <div ref={dailyChartRef}></div>
-                            </div>
-
-                            <div>
-                                <div ref={weeklyChartRef}></div>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-4 mb-4">
-                            <div>
-                                <div ref={monthlyChartRef}></div>
-                            </div>
-
-                            <div>
-                                <div ref={productChartRef}></div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
+                ) : (
+                    <div>Data Kosong</div>
+                )}
+
+                <div className="grid grid-cols-2 gap-6">
+                    
+                        
+                    <div className="w-full" ref={shiftChartRef}></div>
+                
+                    <div className="w-full"  ref={personChartRef}></div>
+                
+            
+                    <div className="w-full"  ref={dailyChartRef}></div>
+                
+                    <div className="w-full" ref={weeklyChartRef}></div>
+                
+                    <div className="w-full"  ref={monthlyChartRef}></div>
+                
+                    <div className="w-full shadow-md"  ref={productChartRef}></div>
+                            
                 </div>
             </div>
             <div className="flex justify-between gap-5 mb-6"></div>

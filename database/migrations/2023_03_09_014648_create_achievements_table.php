@@ -15,16 +15,16 @@ return new class extends Migration
     {
         Schema::create('achievements', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
-            $table->integer('shift');
+            $table->date('date')->nullable();
+            $table->integer('shift')->nullable();
        
-            $table->string('npk');
-            $table->string('drw_no');
-            $table->string('spring_lot');
-            $table->string('product_lot');
-            $table->string('total_lot');
-            $table->string('qty');
-            $table->string('remarks');
+            $table->string('npk')->nullable();
+            $table->string('drw_no')->nullable();
+            $table->string('spring_lot')->nullable();
+            $table->string('product_lot')->nullable();
+            $table->string('total_lot')->nullable();
+            $table->string('qty')->nullable();
+            $table->string('remarks')->nullable();
             $table->timestamps();
         });
     }
