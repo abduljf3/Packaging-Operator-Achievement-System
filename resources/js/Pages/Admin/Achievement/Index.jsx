@@ -377,13 +377,13 @@ export default function Index({ achievements, from, to, auth }) {
         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
         onChange={handleFileInput}
       />
-      <span className="inline-block px-4 py-2 text-white bg-red-600 rounded-md cursor-pointer hover:bg-red-700">
+      <span className="inline-block px-6 py-1 text-white bg-red-600 rounded-md cursor-pointer hover:bg-red-700">
         Browse
       </span>
     </label>
     <button
       type="button"
-      className="ml-4 px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+      className="ml-4 px-6 py-1 text-white bg-blue-500 rounded-md hover:bg-blue-600"
       onClick={handleImport}
     >
       Import

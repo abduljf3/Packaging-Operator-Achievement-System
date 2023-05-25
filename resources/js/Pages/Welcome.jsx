@@ -4,6 +4,7 @@ import { Link, Head } from "@inertiajs/react";
 import React from "react";
 import Highcharts from "highcharts";
 import LeaderLayout from "@/Layouts/LeaderLayout";
+import accessibility from 'highcharts/modules/accessibility';
 
 const Home = ({ data }) => {
     const shiftChartRef = React.useRef(null);
@@ -13,6 +14,13 @@ const Home = ({ data }) => {
     const weeklyChartRef = React.useRef(null);
     const productChartRef = React.useRef(null);
     console.log("data:", data);
+
+    accessibility(Highcharts);
+    Highcharts.setOptions({
+      accessibility: {
+        enabled: false
+      }
+    });
 
     React.useEffect(() => {
         //CODINGAN AWAL SHIFT
