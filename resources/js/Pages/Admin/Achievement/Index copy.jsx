@@ -8,7 +8,7 @@ import { Inertia } from "@inertiajs/inertia";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import ButtonOrange from "@/Components/ButtonOrange";
 import Dropdown from "@/Components/Dropdown";
-
+import Modal from "@/Components/Modal";
 
 
 export default function Index({ achievements, from, to, auth }) {
@@ -106,7 +106,10 @@ export default function Index({ achievements, from, to, auth }) {
         props.onRequestClose();
     };
 
-    
+    const closeModal = () => {
+        setSelectingFile(false);
+        
+    };
 
     const Print = () =>{     
         //console.log('print');  
@@ -364,7 +367,60 @@ export default function Index({ achievements, from, to, auth }) {
                                         />
                                     </svg>
                                 </ButtonRed>
-                              
+                                
+                                <Modal
+                                    show={selectingFile}
+                                    onClose={closeModal}
+                                >
+                                    <form
+                                        action="
+                                            
+                                        "
+                                    >
+                                        <div className=" bg-gray-200 rounded-lg pb-4 mt-6 mx-5 px-5">
+                                            <div className=" flex justify-center">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24"
+                                                    fill="#2b2b2b"
+                                                    className="w-20 h-20 mt-5 mb-1 my-5 justify-center"
+                                                >
+                                                    <path d="M9.97.97a.75.75 0 011.06 0l3 3a.75.75 0 01-1.06 1.06l-1.72-1.72v3.44h-1.5V3.31L8.03 5.03a.75.75 0 01-1.06-1.06l3-3zM9.75 6.75v6a.75.75 0 001.5 0v-6h3a3 3 0 013 3v7.5a3 3 0 01-3 3h-7.5a3 3 0 01-3-3v-7.5a3 3 0 013-3h3z" />
+                                                    <path d="M7.151 21.75a2.999 2.999 0 002.599 1.5h7.5a3 3 0 003-3v-7.5c0-1.11-.603-2.08-1.5-2.599v7.099a4.5 4.5 0 01-4.5 4.5H7.151z" />
+                                                </svg>
+                                            </div>
+
+                                            <div className="flex justify-center ">
+                                                <TextInput
+                                                    type="file"
+                                                    name="selectingFile"
+                                                    onChange={handleFileInput}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-center gap-5 mx-5 my-5">
+                                            <ButtonRed onClick={handleImport}>
+                                                Import
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24"
+                                                    fill="currentColor"
+                                                    className="w-4 h-4 ml-1"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                            </ButtonRed>
+
+                                            <ButtonOrange onClick={closeModal}>
+                                                Close
+                                            </ButtonOrange>
+                                        </div>
+                                    </form>
+                                </Modal>
                             </div>
                         </div>
                     </div>
