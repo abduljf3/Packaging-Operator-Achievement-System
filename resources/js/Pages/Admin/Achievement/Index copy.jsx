@@ -1,5 +1,5 @@
 import TextInput from "@/Components/TextInput";
-import { Head, useForm, Link, router } from "@inertiajs/react";
+import { Head, useForm, Link } from "@inertiajs/react";
 import ButtonRed from "@/Components/ButtonRed";
 import ButtonGreen from "@/Components/ButtonGreen";
 import { useState, userRef } from "react";
@@ -8,9 +8,8 @@ import { Inertia } from "@inertiajs/inertia";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import ButtonOrange from "@/Components/ButtonOrange";
 import Dropdown from "@/Components/Dropdown";
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Modal from "@/Components/Modal";
+
 
 export default function Index({ achievements, from, to, auth }) {
     console.log(achievements);
@@ -37,7 +36,6 @@ export default function Index({ achievements, from, to, auth }) {
             row.total_lot.toLowerCase().includes(filterText.toLowerCase()) ||
             row.qty.toLowerCase().includes(filterText.toLowerCase())
     );
-    
 
     const [deleting, setDeleting] = useState(false);
 
@@ -77,59 +75,41 @@ export default function Index({ achievements, from, to, auth }) {
             new URLSearchParams(data).toString();
         window.location.href = url;
     };
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [fileInputKey, setFileInputKey] = useState(0);
-    
+
+    const [selectingFile, setSelectingFile] = useState(false);
+
     const handleFileInput = (e) => {
-      setSelectedFile(e.target.files[0]);
+        e.preventDefault();
+        setSelectingFile(e.target.files[0]);
     };
-    
     const handleImport = async () => {
-      if (!selectedFile) {
-        toast.error('No file selected!', {
-          position: toast.POSITION.TOP_RIGHT
-        });
-        return;
-      }
-    
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-      router.post('/import',formData);
-      toast.success('Import successful!', {
-        position: toast.POSITION.TOP_RIGHT
-    });
-    
-    //   try {
-    //     const response = await Inertia.post('/import', formData, {
-    //       headers: {
-    //         'Content-Type': 'multipart/form-data',
-    //       },
-    //     });
-    //     console.log(response.data);
-    //     // handle response data here
-    
-    //     // Show success message
-    //     toast.error('Import successful!/ERROR', {
-    //       position: toast.POSITION.TOP_RIGHT
-    //     });
-    //   } catch (error) {
-    //     console.error(error);
-    //     // handle error here
-    
-    //     // Show error message
-    //     toast.success('Import successful!', {
-    //       position: toast.POSITION.TOP_RIGHT
-    //     });
-    //   }
-    
-    //   // Reset the selected file and file input key regardless of success or error
-      setSelectedFile(null);
-      setFileInputKey((prevKey) => prevKey + 1);
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+
+        try {
+            const response = await axios.post("/import", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            console.log(response.data);
+            // handle response data here
+        } catch (error) {
+            console.error(error);
+            // handle error here
+        }
     };
-    
 
+    const submitImport = (e) => {
+        setSelectingFile(true);
+        e.preventDefault();
+        props.onRequestClose();
+    };
 
-    
+    const closeModal = () => {
+        setSelectingFile(false);
+        
+    };
 
     const Print = () =>{     
         //console.log('print');  
@@ -244,7 +224,7 @@ export default function Index({ achievements, from, to, auth }) {
                         >
                             <TextInput
                                 type="date"
-                                value={data.from_date}
+                                value={from}
                                 name="from_date"
                                 onChange={handleOnChange}
                                 className="w-34"
@@ -252,7 +232,7 @@ export default function Index({ achievements, from, to, auth }) {
                             <h1>-</h1>
                             <TextInput
                                 type="date"
-                                value={data.to_date}
+                                value={to}
                                 name="to_date"
                                 onChange={handleOnChange}
                                 className="w-34"
@@ -372,45 +352,75 @@ export default function Index({ achievements, from, to, auth }) {
                                     </Dropdown.Content>
                                 </Dropdown>
 
-                                <div>
-  <form className="flex items-center">
-    {!selectedFile && (
-        <label className="relative overflow-hidden rounded-md">
-        <input
-          type="file"
-          key={fileInputKey}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-          onChange={handleFileInput}
-        />
-        <span className="inline-block px-6 py-1 text-white bg-red-600 rounded-md cursor-pointer hover:bg-red-700">
-          Browse
-        </span>
-      </label>
-    )}
-    
-    {selectedFile && (
-       <div className="relative ">
-         <button
-        type="button"
-        className="px-6 py-1 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-        onClick={handleImport}
-      >
-        Import
-      </button>
-      <span className="text-xs font-light text-gray-600">
-        Selected file: {selectedFile.name}
-      </span>
-       </div>
-    )}
-  </form>
+                                <ButtonRed onClick={submitImport}>
+                                    Imports
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                        className="w-4 h-4 ml-1"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                </ButtonRed>
+                                
+                                <Modal
+                                    show={selectingFile}
+                                    onClose={closeModal}
+                                >
+                                    <form
+                                        action="
+                                            
+                                        "
+                                    >
+                                        <div className=" bg-gray-200 rounded-lg pb-4 mt-6 mx-5 px-5">
+                                            <div className=" flex justify-center">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24"
+                                                    fill="#2b2b2b"
+                                                    className="w-20 h-20 mt-5 mb-1 my-5 justify-center"
+                                                >
+                                                    <path d="M9.97.97a.75.75 0 011.06 0l3 3a.75.75 0 01-1.06 1.06l-1.72-1.72v3.44h-1.5V3.31L8.03 5.03a.75.75 0 01-1.06-1.06l3-3zM9.75 6.75v6a.75.75 0 001.5 0v-6h3a3 3 0 013 3v7.5a3 3 0 01-3 3h-7.5a3 3 0 01-3-3v-7.5a3 3 0 013-3h3z" />
+                                                    <path d="M7.151 21.75a2.999 2.999 0 002.599 1.5h7.5a3 3 0 003-3v-7.5c0-1.11-.603-2.08-1.5-2.599v7.099a4.5 4.5 0 01-4.5 4.5H7.151z" />
+                                                </svg>
+                                            </div>
 
-  {/* Add the ToastContainer component */}
-  <ToastContainer />
-</div>
+                                            <div className="flex justify-center ">
+                                                <TextInput
+                                                    type="file"
+                                                    name="selectingFile"
+                                                    onChange={handleFileInput}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-center gap-5 mx-5 my-5">
+                                            <ButtonRed onClick={handleImport}>
+                                                Import
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24"
+                                                    fill="currentColor"
+                                                    className="w-4 h-4 ml-1"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                            </ButtonRed>
 
-
-
-                              
+                                            <ButtonOrange onClick={closeModal}>
+                                                Close
+                                            </ButtonOrange>
+                                        </div>
+                                    </form>
+                                </Modal>
                             </div>
                         </div>
                     </div>

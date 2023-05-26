@@ -198,12 +198,12 @@ export default function CreateAchievement({ users, products }) {
                                             className="mb-5 block w-full"
                                             value={data.date}
                                             onChange={handleChange}
-                                            disabled="true"
+                                            disabled={true}
                                         />
                                         <InputError message={errors.date} />
 
-                                        <div class="flex gap-4">
-                                            <div class="mb-5">
+                                        <div className="flex gap-4">
+                                            <div className="mb-5">
                                                 <InputLabel value="Shift" />
                                                 <TextInput
                                                     className=""
@@ -216,7 +216,7 @@ export default function CreateAchievement({ users, products }) {
                                                     message={errors.shift}
                                                 />
                                             </div>
-                                            <div class="mb-5">
+                                            <div className="mb-5">
                                                 <InputLabel value="Group" />
                                                 <TextInput
                                                     className=""
@@ -284,8 +284,8 @@ export default function CreateAchievement({ users, products }) {
                                         <InputError
                                             message={errors.product_name}
                                         />
-                                        <div class="flex gap-4">
-                                            <div class="mb-5">
+                                        <div className="flex gap-4">
+                                            <div className="mb-5">
                                                 <InputLabel value="Spring Lot No" />
 
                                                 <TextInput
@@ -299,7 +299,7 @@ export default function CreateAchievement({ users, products }) {
                                                     message={errors.spring_lot}
                                                 />
                                             </div>
-                                            <div class="mb-5">
+                                            <div className="mb-5">
                                                 <InputLabel value="Product Lot No" />
                                                 <TextInput
                                                     className=""
@@ -313,8 +313,8 @@ export default function CreateAchievement({ users, products }) {
                                                 />
                                             </div>
                                         </div>
-                                        <div class="flex gap-4">
-                                            <div class="mb-5">
+                                        <div className="flex gap-4">
+                                            <div className="mb-5">
                                                 <InputLabel value="Total Lot" />
                                                 <TextInput
                                                     className=""
@@ -327,7 +327,7 @@ export default function CreateAchievement({ users, products }) {
                                                     message={errors.total_lot}
                                                 />
                                             </div>
-                                            <div class="mb-5">
+                                            <div className="mb-5">
                                                 <InputLabel value="Qty(pcs)" />
                                                 <TextInput
                                                     className=""
@@ -379,7 +379,7 @@ export default function CreateAchievement({ users, products }) {
 
                                         <div className="flex justify-end gap-4  pt-5">
                                             <ButtonRed
-                                            handleClick1={handleClick1}
+                                            onClick={handleClick1}
                                             disabled={submitting}
                                             >Reset</ButtonRed>
                                             {/* <ButtonGreen
@@ -390,7 +390,7 @@ export default function CreateAchievement({ users, products }) {
                                     </ButtonGreen> */}
 
                                             <ButtonGreen
-                                                handleClick={handleClick}
+                                                onClick={handleClick}
                                                 disabled={submitting}
                                             >
                                                 save

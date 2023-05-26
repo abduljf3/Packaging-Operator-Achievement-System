@@ -25,8 +25,8 @@ class AchievementController extends Controller
     {
     
         $achievements = null;
-        $from = null;
-        $to = null;
+        $from = '';
+        $to = '';
         if( $request->input('from_date')){
             $from = $request->input('from_date');
             $to = $request->input('to_date');
