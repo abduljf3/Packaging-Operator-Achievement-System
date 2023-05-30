@@ -195,68 +195,63 @@ const Home = ({ data }) => {
         });
     }
     // CODINGAN AHIR WEEKLY
- //CODINGAN AWAL SHIFT
-if (shiftChartRef.current) {
+  //CODINGAN AWAL SHIFT
+  if (shiftChartRef.current) {
     Highcharts.chart(shiftChartRef.current, {
-      chart: {
-        type: "column",
-      },
-      title: {
-        text: "Chart Target Per Shift",
-      },
-      subtitle: {
-        text: "Data Chart Terbaru",
-      },
-      xAxis: {
-        type: "category",
-      },
-      yAxis: {
+        chart: {
+            type: "column",
+            
+         
+        },
         title: {
-          text: "Total Data",
+            text: "Chart Target Per Shift",
         },
-      },
-      legend: {
-        enabled: false,
-      },
-      series: [
-        {
-          name: "QTY",
-          data: Array.isArray(data.Shift)
-            ? data.Shift
-                .sort((a, b) => {
-                  // Sort by shift number in ascending order
-                  const shiftNumA = parseInt(a.name);
-                  const shiftNumB = parseInt(b.name);
-                  return shiftNumA - shiftNumB;
-                })
-                .map((item) => ({
-                  name: item.name,
-                  y: item.qty,
-                }))
-            : [],
+        subtitle: {
+            text: "Data Chart Terbaru",
         },
-      ],
-  
-      responsive: {
-        rules: [
-          {
-            condition: {
-              maxWidth: 500,
+        xAxis: {
+            type: "category",
+        },
+        yAxis: {
+            title: {
+                text: "Total Data",
             },
-            chartOptions: {
-              legend: {
-                layout: "horizontal",
-                align: "center",
-                verticalAlign: "bottom",
-              },
+        },
+        legend: {
+            enabled: false,
+        },
+        series: [
+        
+            {
+                name: "QTY",
+                data: Array.isArray(data.Shift)
+                    ? data.Shift.map((item) => ({
+                          name: item.name,
+                          y: item.qty,
+                      }))
+                    : [],
             },
-          },
         ],
-      },
+
+        responsive: {
+            rules: [
+                {
+                    condition: {
+                        maxWidth: 500,
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: "horizontal",
+                            align: "center",
+                            verticalAlign: "bottom",
+                        },
+                    },
+                },
+            ],
+        },
     });
-  }
-  //CODINGAN AHIR SHIFT
-  
+}
+//CODINGAN AHIR SHIFT
   //CODINGAN AWAL PRODUCT
   if (productChartRef.current) {
     Highcharts.chart(productChartRef.current, {
@@ -319,7 +314,7 @@ if (shiftChartRef.current) {
     return (
         <>
             <Head title="Welcome" />
-            <Navbar roles="login" />
+            <Navbar roles="admin" />
             {/* content */}
             <div className="container w-full px-10 mx-auto bg-gray-100 py-14">
                 {Array.isArray(data.Product) ? (

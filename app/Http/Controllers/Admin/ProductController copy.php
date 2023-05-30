@@ -45,21 +45,22 @@ class ProductController extends Controller
      */
     
      public function store(Request $request)
-     {
+     {  $customers = Product::get();
          $validatedData = $request->validate([
-             'customer_id' => 'required', 
-             'customer_name' => 'required', 
-             'drw_no' => 'required', 
-             'product_name' => 'required',
+            'customer_id' => 'required', 
+            'customer_name' => 'required', 
+            'drw_no' => 'required', 
+            'product_name' => 'required',
              'product_type' => 'required',
              'target' => 'required',
+           
+        
+
          ]);
      
          $products = Product::create($validatedData);
      
-         $customers = Customer::all(); // Retrieve all customers from the "customers" table
-     
-         return redirect()->route('products.index')->with('customers', $customers);
+         return redirect()->route('products.index');
      }
 
     /**
