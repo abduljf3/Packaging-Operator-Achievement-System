@@ -4,9 +4,20 @@ import ButtonGreen from "@/Components/ButtonGreen";
 import TextInput from "@/Components/TextInput";
 import InputLabel from "@/Components/InputLabel";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
+import Select from "react-select";
 import { Link, Head, useForm } from "@inertiajs/react";
+import { set } from "lodash";
 
 export default function Edit({ products, auth }) {
+    const [selectedProductType, setSelectedProductType] = useState({
+        value: products.product_type,
+        label: products.product_type,
+    });
+    const [selectedCustomerName, setSelectedCustomerName] = useState({
+        value: products.customer_name,
+        label: products.customer_name,
+    });
+
     const [state, setState] = useState({
         id: products.id,
         customer_id: products.customer_id,
@@ -26,11 +37,63 @@ export default function Edit({ products, auth }) {
         setState({ ...state, [name]: value });
     };
 
+    const optionProductType = [
+        { value: "Joint Carburator", label: "Joint Carburator" },
+        { value: "Oil Level Gauge", label: "Oil Level Gauge" },
+        { value: "O-Ring", label: "O-Ring" },
+        { value: "Oil Seals", label: "Oil Seals" },
+        { value: "Rubber Part", label: "Rubber Part" },
+    ];
+
+    const OptionCustomerName = [
+        { value: "Astra Honda Motor", label: "Astra Honda Motor" },
+        {
+            value: "Yamaha Indonesia Motor Manufacturing",
+            label: "Yamaha Indonesia Motor Manufacturing",
+        },
+        {
+            value: "Suzuki Indomobil Motor",
+            label: "Suzuki Indomobil Motor",
+        },
+        {
+            value: "Kawasaki Motor Indonesia",
+            label: "Kawasaki Motor Indonesia",
+        },
+        {
+            value: "TVS Motor Company Indonesia",
+            label: "TVS Motor Company Indonesia",
+        },
+        {
+            value: "Kymco Motor Indonesia",
+            label: "Kymco Motor Indonesia",
+        },
+        {
+            value: "Suzuki Indomobil Sales",
+            label: "Suzuki Indomobil Sales",
+        },
+    ];
+
+    const handleChangeProductType = (selectedOption) => {
+        setSelectedProductType(selectedOption);
+        setState((prevState) => ({
+            ...prevState,
+            product_type: selectedOption.value,
+        }));
+    };
+
+    const handleChangeCustomerName = (selectedOption) => {
+        setSelectedCustomerName(selectedOption);
+        setState((prevState) => ({
+            ...prevState,
+            customer_name: selectedOption.value,
+        }));
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const url = route("admin.products.index") ;
+        const url = route("admin.products.index");
         window.location.href = url;
-        Inertia.put(`/admin/products/${state.id}`, state)      
+        Inertia.put(`/admin/products/${state.id}`, state);
     };
 
     return (
@@ -58,14 +121,12 @@ export default function Edit({ products, auth }) {
 
                                         <InputLabel value="Customer Name" />
 
-                                        <TextInput
+                                        <Select
                                             className="mb-5 block w-full "
-                                            type="text"
-                                            name="customer_name"
-                                            value={state.customer_name}
-                                            onChange={handleChange}
+                                            options={OptionCustomerName}
+                                            value={selectedCustomerName}
+                                            onChange={handleChangeCustomerName}
                                         />
-
                                         <InputLabel value="Drawing Number" />
 
                                         <TextInput
@@ -88,16 +149,20 @@ export default function Edit({ products, auth }) {
                                         />
 
                                         <InputLabel value="Product Type" />
-
-                                        <TextInput
+                                        <Select
+                                            className="mb-5 block w-full "
+                                            options={optionProductType}
+                                            value={selectedProductType}
+                                            onChange={handleChangeProductType}
+                                        />
+                                        {/* <TextInput
                                             className="mb-5 block w-full "
                                             type="text"
                                             name="product_type"
                                             value={state.product_type}
                                             onChange={handleChange}
-                                        />
+                                        /> */}
 
-                                        
                                         <InputLabel value="Target" />
 
                                         <TextInput
@@ -111,7 +176,6 @@ export default function Edit({ products, auth }) {
                                             <ButtonGreen
                                                 type="submit"
                                                 className=""
-                                                
                                             >
                                                 Update
                                             </ButtonGreen>

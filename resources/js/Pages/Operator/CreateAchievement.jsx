@@ -7,10 +7,11 @@ import InputLabel from "@/Components/InputLabel";
 import Select from "react-select";
 import OperatorLayout from "@/Layouts/OperatorLayout";
 import Navbar from "@/Components/Navbar";
-import Footer from "@/Components/Footer";   
-import Swal from "sweetalert2";
+import Footer from "@/Components/Footer";
 import { useState } from "react";
 import { Link, Head, useForm } from "@inertiajs/react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function CreateAchievement({ users, products }) {
     const [selectedNpk, setSelectedNpk] = useState();
@@ -36,14 +37,8 @@ export default function CreateAchievement({ users, products }) {
     });
 
     const handleClick = () => {
-        Swal.fire({
-            icon: "success",
-            title: "Achievement berhasil ditambah",
-            showConfirmButton: false,
-            timer: 1500,
-        });
+        toast.success("Achievement Berhasil Ditambahkan");
     };
-   
 
     const handleClick1 = () => {
         window.location.reload();
@@ -116,6 +111,7 @@ export default function CreateAchievement({ users, products }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        e.target.reset();
         // const url = route("achievementCreate");
         // window.location.href = url;
         post(route("achievementStore"), data);
@@ -125,31 +121,31 @@ export default function CreateAchievement({ users, products }) {
         <>
             <Head title="Achievement" />
             <Navbar roles="login" />
-                <div className="py-5">
-                    <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
-                        <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                            <div className="mb-6 font-extrabold">
-                                <h1>Create Achievement</h1>
-                            </div>
-                            {/* {flashMessage?.message && (
+            <div className="py-5">
+                <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
+                    <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                        <div className="mb-6 font-extrabold">
+                            <h1>Create Achievement</h1>
+                        </div>
+                        {/* {flashMessage?.message && (
                                 <FlashMessage message={flashMesage.message} />
                             )} */}
 
-                            <form onSubmit={handleSubmit}>
-                                <div className="flex justify-between">
-                                    <div className=" mx-10 my-2">
-                                        <InputLabel value="NPK" />
+                        <form onSubmit={handleSubmit}>
+                            <div className="flex justify-between">
+                                <div className=" mx-10 my-2">
+                                    <InputLabel value="NPK" />
 
-                                        <Select
-                                            id="npk"
-                                            value={selectedNpk}
-                                            onChange={handleNpkChange}
-                                            options={optionNpk}
-                                            className="mb-5"
-                                        />
-                                        <InputError message={errors.npk} />
+                                    <Select
+                                        id="npk"
+                                        value={selectedNpk}
+                                        onChange={handleNpkChange}
+                                        options={optionNpk}
+                                        className="mb-5"
+                                    />
+                                    <InputError message={errors.npk} />
 
-                                        {/* <select
+                                    {/* <select
                                             id="npk"
                                             name="npk"
                                             value={data.npk}
@@ -169,87 +165,87 @@ export default function CreateAchievement({ users, products }) {
                                             ))}
                                         </select> */}
 
-                                        <TextInput
-                                            className="hidden"
-                                            type="text"
-                                            id="npk"
-                                            name="npk"
-                                            value={data.npk}
-                                            readOnly
-                                        />
+                                    <TextInput
+                                        className="hidden"
+                                        type="text"
+                                        id="npk"
+                                        name="npk"
+                                        value={data.npk}
+                                        readOnly
+                                    />
 
-                                        <InputLabel value="Name" />
-                                        <TextInput
-                                            className="mb-5 block w-full"
-                                            type="text"
-                                            id="fullname"
-                                            onChange={(e) =>
-                                                setFullname(e.target.value)
-                                            }
-                                            name="fullname"
-                                            value={fullname}
-                                            readOnly
-                                        />
-                                        <InputError message={errors.fullname} />
+                                    <InputLabel value="Name" />
+                                    <TextInput
+                                        className="mb-5 block w-full"
+                                        type="text"
+                                        id="fullname"
+                                        onChange={(e) =>
+                                            setFullname(e.target.value)
+                                        }
+                                        name="fullname"
+                                        value={fullname}
+                                        readOnly
+                                    />
+                                    <InputError message={errors.fullname} />
 
-                                        <InputLabel value="Date" />
-                                        <TextInput
-                                            type="date"
-                                            className="mb-5 block w-full"
-                                            value={data.date}
-                                            onChange={handleChange}
-                                            disabled={true}
-                                        />
-                                        <InputError message={errors.date} />
+                                    <InputLabel value="Date" />
+                                    <TextInput
+                                        type="date"
+                                        className="mb-5 block w-full"
+                                        value={data.date}
+                                        onChange={handleChange}
+                                        disabled={true}
+                                    />
+                                    <InputError message={errors.date} />
 
-                                        <div className="flex gap-4">
-                                            <div className="mb-5">
-                                                <InputLabel value="Shift" />
-                                                <TextInput
-                                                    className=""
-                                                    type="text"
-                                                    name="shift"
-                                                    value={data.shift}
-                                                    onChange={handleChange}
-                                                />
-                                                <InputError
-                                                    message={errors.shift}
-                                                />
-                                            </div>
-                                            <div className="mb-5">
-                                                <InputLabel value="Group" />
-                                                <TextInput
-                                                    className=""
-                                                    type="text"
-                                                    name="group"
-                                                    value={group}
-                                                    onChange={(e) =>
-                                                        setGroup(e.target.value)
-                                                    }
-                                                />
-                                                <InputError
-                                                    message={errors.group}
-                                                />
-                                            </div>
+                                    <div className="flex gap-4">
+                                        <div className="mb-5">
+                                            <InputLabel value="Shift" />
+                                            <TextInput
+                                                className=""
+                                                type="text"
+                                                name="shift"
+                                                value={data.shift}
+                                                onChange={handleChange}
+                                            />
+                                            <InputError
+                                                message={errors.shift}
+                                            />
                                         </div>
-                                        <InputLabel value="Drawing Number" />
-                                        <Select
-                                            options={optionDrwNo}
-                                            value={selectedDrwNo}
-                                            onChange={handleDrwNoChange}
-                                            className="mb-5"
-                                        />
+                                        <div className="mb-5">
+                                            <InputLabel value="Group" />
+                                            <TextInput
+                                                className=""
+                                                type="text"
+                                                name="group"
+                                                value={group}
+                                                onChange={(e) =>
+                                                    setGroup(e.target.value)
+                                                }
+                                            />
+                                            <InputError
+                                                message={errors.group}
+                                            />
+                                        </div>
+                                    </div>
+                                    <InputLabel value="Drawing Number" />
+                                    <Select
+                                        options={optionDrwNo}
+                                        value={selectedDrwNo}
+                                        onChange={handleDrwNoChange}
+                                        className="mb-5"
+                                    />
 
-                                        <TextInput
-                                            className="hidden"
-                                            type="text"
-                                            id="drw_no"
-                                            name="drw_no"
-                                            value={data.drw_no}
-                                            readOnly
-                                        />
+                                    <TextInput
+                                        className="hidden"
+                                        type="text"
+                                        id="drw_no"
+                                        name="drw_no"
+                                        value={data.drw_no}
+                                        readOnly
+                                    />
 
-                                        {/* <select
+                                    {/* <select
                                             id="drw_no"
                                             name="drw_no"
                                             value={data.drw_no}
@@ -267,91 +263,87 @@ export default function CreateAchievement({ users, products }) {
                                                 </option>
                                             ))}
                                         </select> */}
-                                        {/* <TextInput className="mb-5 block w-full" /> */}
+                                    {/* <TextInput className="mb-5 block w-full" /> */}
+                                </div>
+
+                                <div className="mx-10 my-2">
+                                    <InputLabel value="Product Name" />
+                                    <TextInput
+                                        className="mb-5 block w-full"
+                                        type="text"
+                                        name="product_id"
+                                        value={productName}
+                                        onChange={(e) =>
+                                            setProductName(e.target.value)
+                                        }
+                                    />
+                                    <InputError message={errors.product_name} />
+                                    <div className="flex gap-4">
+                                        <div className="mb-5">
+                                            <InputLabel value="Spring Lot No" />
+
+                                            <TextInput
+                                                className=""
+                                                type="text"
+                                                name="spring_lot"
+                                                value={data.spring_lot}
+                                                onChange={handleChange}
+                                            />
+                                            <InputError
+                                                message={errors.spring_lot}
+                                            />
+                                        </div>
+                                        <div className="mb-5">
+                                            <InputLabel value="Product Lot No" />
+                                            <TextInput
+                                                className=""
+                                                type="text"
+                                                name="product_lot"
+                                                value={data.product_lot}
+                                                onChange={handleChange}
+                                            />
+                                            <InputError
+                                                message={errors.product_lot}
+                                            />
+                                        </div>
                                     </div>
-
-                                    <div className="mx-10 my-2">
-                                        <InputLabel value="Product Name" />
-                                        <TextInput
-                                            className="mb-5 block w-full"
-                                            type="text"
-                                            name="product_id"
-                                            value={productName}
-                                            onChange={(e) =>
-                                                setProductName(e.target.value)
-                                            }
-                                        />
-                                        <InputError
-                                            message={errors.product_name}
-                                        />
-                                        <div className="flex gap-4">
-                                            <div className="mb-5">
-                                                <InputLabel value="Spring Lot No" />
-
-                                                <TextInput
-                                                    className=""
-                                                    type="text"
-                                                    name="spring_lot"
-                                                    value={data.spring_lot}
-                                                    onChange={handleChange}
-                                                />
-                                                <InputError
-                                                    message={errors.spring_lot}
-                                                />
-                                            </div>
-                                            <div className="mb-5">
-                                                <InputLabel value="Product Lot No" />
-                                                <TextInput
-                                                    className=""
-                                                    type="text"
-                                                    name="product_lot"
-                                                    value={data.product_lot}
-                                                    onChange={handleChange}
-                                                />
-                                                <InputError
-                                                    message={errors.product_lot}
-                                                />
-                                            </div>
+                                    <div className="flex gap-4">
+                                        <div className="mb-5">
+                                            <InputLabel value="Total Lot" />
+                                            <TextInput
+                                                className=""
+                                                type="text"
+                                                name="total_lot"
+                                                value={data.total_lot}
+                                                onChange={handleChange}
+                                            />
+                                            <InputError
+                                                message={errors.total_lot}
+                                            />
                                         </div>
-                                        <div className="flex gap-4">
-                                            <div className="mb-5">
-                                                <InputLabel value="Total Lot" />
-                                                <TextInput
-                                                    className=""
-                                                    type="text"
-                                                    name="total_lot"
-                                                    value={data.total_lot}
-                                                    onChange={handleChange}
-                                                />
-                                                <InputError
-                                                    message={errors.total_lot}
-                                                />
-                                            </div>
-                                            <div className="mb-5">
-                                                <InputLabel value="Qty(pcs)" />
-                                                <TextInput
-                                                    className=""
-                                                    type="text"
-                                                    name="qty"
-                                                    value={data.qty}
-                                                    onChange={handleChange}
-                                                />
-                                                <InputError
-                                                    message={errors.qty}
-                                                />
-                                            </div>
+                                        <div className="mb-5">
+                                            <InputLabel value="Qty(pcs)" />
+                                            <TextInput
+                                                className=""
+                                                type="text"
+                                                name="qty"
+                                                value={data.qty}
+                                                onChange={handleChange}
+                                            />
+                                            <InputError message={errors.qty} />
                                         </div>
-                                        <InputLabel value="Remarks" />
-                                        <TextInput
-                                            className="mb-5 block w-full"
-                                            type="text"
-                                            name="remarks"
-                                            value={data.remarks}
-                                            onChange={handleChange}
-                                        />
-                                        <InputError message={errors.remarks} />
+                                    </div>
+                                    <InputLabel value="Remarks" />
+                                    <TextInput
+                                        className="mb-5 block w-full"
+                                        type="text"
+                                        name="remarks"
+                                        value={data.remarks}
+                                        onChange={handleChange}
+                                    />
+                                    <InputError message={errors.remarks} />
 
-                                        {/* <InputLabel value="Customer Id" />
+                                    {/* <InputLabel value="Customer Id" />
                                         <TextInput
                                             className="mb-5 block"
                                             id="customer_id"
@@ -377,33 +369,43 @@ export default function CreateAchievement({ users, products }) {
                                             onChange={handleChange}
                                         /> */}
 
-                                        <div className="flex justify-end gap-4  pt-5">
-                                            <ButtonRed
-                                            onClick={handleClick1}
-                                            disabled={submitting}
-                                            >Reset</ButtonRed>
-                                            {/* <ButtonGreen
+                                    <div className="flex justify-end gap-4  pt-5">
+                                        {/* <ButtonGreen
                                         // disabled={submitting}
                                         onclick="handleClick"
                                     >
                                         save
                                     </ButtonGreen> */}
+                                        <ButtonRed
+                                            onClick={handleClick1}
+                                            disabled={submitting}
+                                        >
+                                            Reset
+                                        </ButtonRed>
+                                        <ButtonGreen onClick={handleClick}>
+                                            save
+                                        </ButtonGreen>
 
-                                            <ButtonGreen
-                                                onClick={handleClick}
-                                                disabled={submitting}
-                                            >
-                                                save
-                                            </ButtonGreen>
-                                        </div>
+                                        <ToastContainer
+                                            position="top-right"
+                                            autoClose={5000}
+                                            hideProgressBar={false}
+                                            newestOnTop={false}
+                                            closeOnClick
+                                            rtl={false}
+                                            pauseOnFocusLoss
+                                            draggable
+                                            pauseOnHover
+                                            theme="light"
+                                        />
                                     </div>
                                 </div>
-                            </form>
-                            
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-         <Footer />
+            </div>
+            <Footer />
         </>
     );
 }
