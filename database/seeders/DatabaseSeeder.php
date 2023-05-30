@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             ProductsTableSeeder::class,
             UserTableSeeder::class,
             AchievementsTableSeeder::class,
+            CustomerTableSeeder::class,
         ]);
     }
 }
