@@ -25,7 +25,7 @@ class AdminProductExport implements FromCollection, WithHeadings
             'Drawing No',
             'Product Name',
             'Product Type',
-            'Customer Id',
+            'Customer Code',
             'Target'
         ];
     }

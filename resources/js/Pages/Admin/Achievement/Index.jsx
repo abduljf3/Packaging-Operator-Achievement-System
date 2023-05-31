@@ -1,5 +1,6 @@
 import TextInput from "@/Components/TextInput";
 import { Head, useForm, Link, router } from "@inertiajs/react";
+import ButtonRed from "@/Components/ButtonRed";
 import ButtonGreen from "@/Components/ButtonGreen";
 import { useState, userRef } from "react";
 import DataTable from "react-data-table-component";
@@ -7,14 +8,16 @@ import { Inertia } from "@inertiajs/inertia";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import ButtonOrange from "@/Components/ButtonOrange";
 import Dropdown from "@/Components/Dropdown";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Index({ achievements, from, to, auth }) {
     console.log(achievements);
     const { data, setData, get, processing, errors, reset } = useForm({
         from_date: from,
         to_date: to,
+        
     });
     const [filterText, setFilterText] = useState("");
     const handleFilter = (event) => {
@@ -34,6 +37,7 @@ export default function Index({ achievements, from, to, auth }) {
             row.total_lot.toLowerCase().includes(filterText.toLowerCase()) ||
             row.qty.toLowerCase().includes(filterText.toLowerCase())
     );
+    
 
     const [deleting, setDeleting] = useState(false);
 
@@ -75,62 +79,66 @@ export default function Index({ achievements, from, to, auth }) {
     };
     const [selectedFile, setSelectedFile] = useState(null);
     const [fileInputKey, setFileInputKey] = useState(0);
-
+    
     const handleFileInput = (e) => {
-        setSelectedFile(e.target.files[0]);
+      setSelectedFile(e.target.files[0]);
     };
-
+    
     const handleImport = async () => {
-        if (!selectedFile) {
-            toast.error("No file selected!", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-        router.post("/import", formData);
-        toast.success("Import successful!", {
-            position: toast.POSITION.TOP_RIGHT,
+      if (!selectedFile) {
+        toast.error('No file selected!', {
+          position: toast.POSITION.TOP_RIGHT
         });
-
-        //   try {
-        //     const response = await Inertia.post('/import', formData, {
-        //       headers: {
-        //         'Content-Type': 'multipart/form-data',
-        //       },
-        //     });
-        //     console.log(response.data);
-        //     // handle response data here
-
-        //     // Show success message
-        //     toast.error('Import successful!/ERROR', {
-        //       position: toast.POSITION.TOP_RIGHT
-        //     });
-        //   } catch (error) {
-        //     console.error(error);
-        //     // handle error here
-
-        //     // Show error message
-        //     toast.success('Import successful!', {
-        //       position: toast.POSITION.TOP_RIGHT
-        //     });
-        //   }
-
-        //   // Reset the selected file and file input key regardless of success or error
-        setSelectedFile(null);
-        setFileInputKey((prevKey) => prevKey + 1);
+        return;
+      }
+    
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      router.post('/import',formData);
+      toast.success('Import successful!', {
+        position: toast.POSITION.TOP_RIGHT
+    });
+    
+    //   try {
+    //     const response = await Inertia.post('/import', formData, {
+    //       headers: {
+    //         'Content-Type': 'multipart/form-data',
+    //       },
+    //     });
+    //     console.log(response.data);
+    //     // handle response data here
+    
+    //     // Show success message
+    //     toast.error('Import successful!/ERROR', {
+    //       position: toast.POSITION.TOP_RIGHT
+    //     });
+    //   } catch (error) {
+    //     console.error(error);
+    //     // handle error here
+    
+    //     // Show error message
+    //     toast.success('Import successful!', {
+    //       position: toast.POSITION.TOP_RIGHT
+    //     });
+    //   }
+    
+    //   // Reset the selected file and file input key regardless of success or error
+      setSelectedFile(null);
+      setFileInputKey((prevKey) => prevKey + 1);
     };
+    
 
-    const Print = () => {
-        //console.log('print');
-        let printContents = document.getElementById("printablediv").innerHTML;
+
+    
+
+    const Print = () =>{     
+        //console.log('print');  
+        let printContents = document.getElementById('printablediv').innerHTML;
         let originalContents = document.body.innerHTML;
         document.body.innerHTML = printContents;
         window.print();
-        document.body.innerHTML = originalContents;
-    };
+       document.body.innerHTML = originalContents; 
+      }
 
     const columns = [
         {
@@ -227,7 +235,7 @@ export default function Index({ achievements, from, to, auth }) {
             <Head title="Report Achievement" />
             <Authenticated>
                 {/* content */}
-
+              
                 <div className="w-screen">
                     <div className="flex justify-between px-10 pt-3 ">
                         <form
@@ -401,81 +409,58 @@ export default function Index({ achievements, from, to, auth }) {
   <ToastContainer />
 </div>
 
-                                                <span className="inline-block px-6 py-1 text-white">
-                                                    Browse
-                                                </span>
-                                            </label>
-                                        )}
 
-                                        {selectedFile && (
-                                            <div className="relative ">
-                                                <button
-                                                    type="button"
-                                                    className="px-6 py-1 text-white bg-blue-500 rounded-md hover:bg-blue-600 duration-500"
-                                                    onClick={handleImport}
-                                                >
-                                                    Import
-                                                </button>
-                                                <span className="text-xs font-light text-gray-600">
-                                                    Selected file:{" "}
-                                                    {selectedFile.name}
-                                                </span>
-                                            </div>
-                                        )}
-                                    </form>
 
-                                    {/* Add the ToastContainer component */}
-                                    <ToastContainer />
-                                </div>
+                              
                             </div>
                         </div>
                     </div>
-                    <div id="printablediv">
-                        <div className="pt-4 px-10  ">
-                            <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
-                                {achievements ? (
-                                    <DataTable
-                                        title="Achievement"
-                                        columns={columns}
-                                        data={(achievements, filteredData)}
-                                        // customStyles={customStyles}
-                                        pagination
-                                        dense
-                                        highlightOnHover
-                                        className=""
-                                        actions={
-                                            <label className="w-100 h-100 mx-3 my-5 relative text-gray-400 focus-within:text-gray-600 block duration-500">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                    className="w-5 h-5 posistion absolute pointer-events-none ml-3 mt-3"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
+                    <div  id='printablediv'>
+                    <div className="pt-4 px-10  ">
+                        <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
+                            {achievements ? (
+                                <DataTable
+                                    title="Achievement"
+                                    columns={columns}
+                                    data={(achievements, filteredData)}
+                                    // customStyles={customStyles}
+                                    pagination
+                                    dense
+                                    highlightOnHover
+                                    className=""
+                                    actions={
+                                        <label className="w-100 h-100 mx-3 my-5 relative text-gray-400 focus-within:text-gray-600 block duration-500">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                                className="w-5 h-5 posistion absolute pointer-events-none ml-3 mt-3"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                                                    clipRule="evenodd"
+                                                />
+                                            </svg>
 
-                                                <input
-                                                    type="text"
-                                                    placeholder="Search..."
-                                                    onChange={handleFilter}
-                                                    value={filterText}
-                                                    className="  bg-white placeholder-gray-400 text-black border-2 border-gray-300 duration-500 appearance-none w-full block pl-10 focus:outline-none rounded-lg "
-                                                ></input>
-                                            </label>
-                                        }
-                                    />
-                                ) : (
-                                    <p className="w-full py-6 text-center bg-red-500 text-white">
-                                        Filter terlebih dahulu
-                                    </p>
-                                )}
-                            </div>
+                                            <input
+                                                type="text"
+                                                placeholder="Search..."
+                                                onChange={handleFilter}
+                                                value={filterText}
+                                                className="  bg-white placeholder-gray-400 text-black border-2 border-gray-300 duration-500 appearance-none w-full block pl-10 focus:outline-none rounded-lg "
+                                            ></input>
+                                        </label>
+                                    }
+                                />
+                            ) : (
+                                <p className="w-full py-6 text-center bg-red-500 text-white">
+                                    Filter terlebih dahulu
+                                </p>
+                            )}
                         </div>
                     </div>
+                </div>
                 </div>
                 {/* content END */}
             </Authenticated>

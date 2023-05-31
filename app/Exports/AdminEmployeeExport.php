@@ -26,7 +26,7 @@ class AdminEmployeeExport implements FromCollection, WithHeadings
             'Npk',
             'Group',
             'Status',
-            'roles'
+            'Roles'
         ];
     }
 }
