@@ -121,6 +121,17 @@ export default function Navbar({ roles, props, auth, header }) {
                                     {" "}
                                     Product{" "}
                                 </a>
+                            </li>  <li className="nav-item">
+                                <a
+                                    className={`${
+                                        route().current("admin.customers.*") &&
+                                        "text-red-600 underline underline-offset-4 decoration-2"
+                                    } flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
+                                    href={route("admin.customers.index")}
+                                >
+                                    {" "}
+                                    Customer{" "}
+                                </a>
                             </li>
                             <li>
                                 <Dropdown>

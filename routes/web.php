@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\AdminExcel;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\FormController;
-use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\HighchartController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ItemController;
@@ -71,7 +71,12 @@ use Inertia\Inertia;
     Route::resource('products',ProductController::class);
     Route::get('cetak_pdf_product', [ProductController::class,'cetak_pdf_product'])->name('cetak_pdf_product');
     Route::get('cetak_excel_product', [ProductController::class,'cetak_excel_product'])->name('cetak_excel_product');
-
+   
+    //Admin Customer
+   Route::resource('customers',CustomerController::class);
+   Route::get('cetak_excel_customer', [CustomerController::class,'cetak_excel_customer'])->name('cetak_excel_customer');
+   Route::get('cetak_pdf_customer', [CustomerController::class,'cetak_pdf_customer'])->name('cetak_pdf_customer');
+ 
 });
 Route::get('/',[UserController::class,'welcome'])->name('');
     Route::get('/welcome',[UserController::class,'welcome'])->name('welcome');
