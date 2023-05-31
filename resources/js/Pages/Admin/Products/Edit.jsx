@@ -109,7 +109,7 @@ export default function Edit({ products, auth }) {
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-center gap-20">
                                     <div className=" mx-10 my-2">
-                                        <InputLabel value="Customer Id" />
+                                        <InputLabel value="Customer Code" />
 
                                         <TextInput
                                             className="mb-5 w-full block"

@@ -22,7 +22,7 @@ class AdminCustomerExport implements FromCollection, WithHeadings
     {
         return [
             'Id',
-            'Customer Id',
+            'Customer Code',
             'Customer Name',
         
         ];

@@ -70,7 +70,7 @@ export default function index({ customers, auth }) {
             sortable: true,
         },
         {
-            name: "Customer Id",
+            name: "Customer Code",
             selector: (row) => row.customer_id,
             sortable: true,
         },

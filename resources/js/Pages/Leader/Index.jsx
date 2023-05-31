@@ -1,458 +1,352 @@
 import Navbar from "@/Components/Navbar";
 import Footer from "@/Components/Footer";
 import { Link, Head } from "@inertiajs/react";
-import React from 'react';
-import Highcharts from 'highcharts';
-import LeaderLayout from "@/Layouts/LeaderLayout";
+import React, { useEffect, useRef } from "react";
+import Highcharts from "highcharts";
 import accessibility from 'highcharts/modules/accessibility';
+import LeaderLayout from "@/Layouts/LeaderLayout";
 
 const Home = ({ data }) => {
-  const shiftChartRef = React.useRef(null);
-  const personChartRef = React.useRef(null);
-  const dailyChartRef = React.useRef(null);
-  const monthlyChartRef = React.useRef(null);
-  const weeklyChartRef = React.useRef(null);
-  const productChartRef = React.useRef(null);
-  console.log('data:', data);
+    const shiftChartRef = useRef(null);
+    const personChartRef = useRef(null);
+    const dailyChartRef = useRef(null);
+    const monthlyChartRef = useRef(null);
+    const weeklyChartRef = useRef(null);
+    const productChartRef = useRef(null);
+    console.log("data:", data);
 
-  accessibility(Highcharts);
-  Highcharts.setOptions({
-    accessibility: {
-      enabled: false
-    }
-  });
-  React.useEffect(() => {
-    
-    //CODINGAN AWAL SHIFT
-    if (shiftChartRef.current) {
-      Highcharts.chart(shiftChartRef.current, {
+    accessibility(Highcharts);
+    Highcharts.setOptions({
+        accessibility: {
+            enabled: false
+        }
+    });
+
+    useEffect(() => {
+        // CODINGAN AWAL MONTHLY
+        if (monthlyChartRef.current) {
+            const sortedMonthlyData = Array.isArray(data.Monthly)
+                ? data.Monthly.sort((a, b) => a.month - b.month)
+                : [];
+
+            Highcharts.chart(monthlyChartRef.current, {
+                chart: {
+                    type: "column",
+                },
+                title: {
+                    text: "Chart Drawing Number Bulanan",
+                },
+                subtitle: {
+                    text: "Data Chart Terbaru",
+                },
+                xAxis: {
+                    type: "category",
+                    categories: sortedMonthlyData.map((item) => item.month_name),
+                },
+                yAxis: {
+                    title: {
+                        text: "Total Data",
+                    },
+                },
+                legend: {
+                    enabled: false,
+                },
+                series: [
+                    {
+                        name: "QTY",
+                        data: sortedMonthlyData.map((item) => ({
+                            name: item.month_name,
+                            y: item.qty,
+                            key: `qty_${item.month}`,
+                        })),
+                    },
+                ],
+                responsive: {
+                    rules: [
+                        {
+                            condition: {
+                                maxWidth: 500,
+                            },
+                            chartOptions: {
+                                legend: {
+                                    layout: "horizontal",
+                                    align: "center",
+                                    verticalAlign: "bottom",
+                                },
+                            },
+                        },
+                    ],
+                },
+            });
+        }
+        // CODINGAN AHIR MONTHLY
+ // CODINGAN AWAL DAILY
+ if (dailyChartRef.current) {
+    const sortedDailyData = Array.isArray(data.Daily)
+        ? data.Daily.sort((a, b) => a.day - b.day)
+        : [];
+
+    Highcharts.chart(dailyChartRef.current, {
         chart: {
-          type: 'column',
-          width: '500', // Lebar grafik dalam piksel
-          height: '300', // Tinggi grafik dalam piksel
-          borderWidth: 3, // Lebar border dalam piksel
-          borderColor: '#ccc', // Warna border
+            type: "column",
         },
         title: {
-          text: 'Chart Target Per Shift',
+            text: "Chart Drawing Number Harian",
         },
         subtitle: {
-          text: 'Data Chart Terbaru',
+            text: "Data Chart Terbaru",
         },
         xAxis: {
-          type: 'category',
+            type: "category",
+            categories: sortedDailyData.map((item) => ` ${item.day}`),
         },
         yAxis: {
-          title: {
-            text: 'Total Data',
-          },
+            title: {
+                text: "Total Data",
+            },
         },
         legend: {
-          enabled: false,
+            enabled: false,
         },
         series: [
-          {
-            name: 'Total Lot',
-            data: Array.isArray(data.Shift) ? data.Shift.map(item => ({ name: item.name, y: item.total_lot })) : [],
-          },
-          {
-            name: 'QTY',
-            data: Array.isArray(data.Shift) ? data.Shift.map(item => ({ name: item.name, y: item.qty })) : [],
-          },
-        ],
-
-        responsive: {
-          rules: [
+           
             {
-              condition: {
-                maxWidth: 500,
-              },
-              chartOptions: {
-                legend: {
-                  layout: 'horizontal',
-                  align: 'center',
-                  verticalAlign: 'bottom',
-                },
-              },
+                name: "QTY",
+                data: sortedDailyData.map((item) => ({
+                    name: `Day ${item.day}`,
+                    y: item.qty,
+                    key: `qty_${item.day}`,
+                })),
             },
-          ],
-        },
-      });
-    }
-      //CODINGAN AHIR SHIFT
-
-      //CODINGAN AWAL DAILY
-    if (dailyChartRef.current) {
-      Highcharts.chart(dailyChartRef.current, {
-        chart: {
-          type: 'column',
-          width: '500', // Lebar grafik dalam piksel
-          height: '300', // Tinggi grafik dalam piksel
-          borderWidth: 3, // Lebar border dalam piksel
-          borderColor: '#ccc', // Warna border
-        },
-        title: {
-          text: 'Chart Drawing Number Harian',
-        },
-        subtitle: {
-          text: 'Data Chart Terbaru',
-        },
-        xAxis: {
-          type: 'category',
-        },
-        yAxis: {
-          title: {
-            text: 'Total Data',
-          },
-        },
-        legend: {
-          enabled: false,
-        },
-        series: [
-          {
-            name: 'Total Lot',
-            data: Array.isArray(data.Daily) ? data.Daily.map(item => ({ name: item.name, y: item.total_lot })) : [],
-          },
-          {
-            name: 'QTY',
-            data: Array.isArray(data.Daily) ? data.Daily.map(item => ({ name: item.name, y: item.qty })) : [],
-          },
         ],
-
         responsive: {
-          rules: [
-            {
-              condition: {
-                maxWidth: 500,
-              },
-              chartOptions: {
-                legend: {
-                  layout: 'horizontal',
-                  align: 'center',
-                  verticalAlign: 'bottom',
+            rules: [
+                {
+                    condition: {
+                        maxWidth: 500,
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: "horizontal",
+                            align: "center",
+                            verticalAlign: "bottom",
+                        },
+                    },
                 },
-              },
-            },
-          ],
+            ],
         },
-      });
-    }
-      //CODINGAN AHIR DAILY
-
-      //CODINGAN AWAL WEEKLY
+    });
+}
+// CODINGAN AHIR DAILY
+         // CODINGAN AWAL WEEKLY
     if (weeklyChartRef.current) {
-      Highcharts.chart(weeklyChartRef.current, {
-        chart: {
-          type: 'column',
-          width: '500', // Lebar grafik dalam piksel
-          height: '300', // Tinggi grafik dalam piksel
-          borderWidth: 3, // Lebar border dalam piksel
-          borderColor: '#ccc', // Warna border
-        },
-        title: {
-          text: 'Chart Drawing Number Mingguan',
-        },
-        subtitle: {
-          text: 'Data Chart Terbaru',
-        },
-        xAxis: {
-          type: 'category',
-        },
-        yAxis: {
-          title: {
-            text: 'Total Data',
-          },
-        },
-        legend: {
-          enabled: false,
-        },
-        series: [
-          {
-            name: 'Total Lot',
-            data: Array.isArray(data.Weekly) ? data.Weekly.map(item => ({ name: item.name, y: item.total_lot })) : [],
-          },
-          {
-            name: 'QTY',
-            data: Array.isArray(data.Weekly) ? data.Weekly.map(item => ({ name: item.name, y: item.qty })) : [],
-          },
-        ],
+        const sortedWeeklyData = Array.isArray(data.Weekly)
+            ? data.Weekly.sort((a, b) => a.week - b.week)
+            : [];
 
-        responsive: {
-          rules: [
-            {
-              condition: {
-                maxWidth: 500,
-              },
-              chartOptions: {
-                legend: {
-                  layout: 'horizontal',
-                  align: 'center',
-                  verticalAlign: 'bottom',
+        Highcharts.chart(weeklyChartRef.current, {
+            chart: {
+                type: "column",
+            },
+            title: {
+                text: "Chart Drawing Number Mingguan",
+            },
+            subtitle: {
+                text: "Data Chart Terbaru",
+            },
+            xAxis: {
+                type: "category",
+                categories: sortedWeeklyData.map((item) => `Week ${item.week}`),
+            },
+            yAxis: {
+                title: {
+                    text: "Total Data",
                 },
+            },
+            legend: {
+                enabled: false,
+            },
+            series: [
+               
+                {
+                    name: "QTY",
+                    data: sortedWeeklyData.map((item) => ({
+                        name: `Week ${item.week}`,
+                        y: item.qty,
+                        key: `qty_${item.week}`,
+                    })),
+                },
+            ],
+            responsive: {
+                rules: [
+                    {
+                        condition: {
+                            maxWidth: 500,
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: "horizontal",
+                                align: "center",
+                                verticalAlign: "bottom",
+                            },
+                        },
+                    },
+                ],
+            },
+        });
+    }
+    // CODINGAN AHIR WEEKLY
+ //CODINGAN AWAL SHIFT
+if (shiftChartRef.current) {
+    Highcharts.chart(shiftChartRef.current, {
+      chart: {
+        type: "column",
+      },
+      title: {
+        text: "Chart Target Per Shift",
+      },
+      subtitle: {
+        text: "Data Chart Terbaru",
+      },
+      xAxis: {
+        type: "category",
+      },
+      yAxis: {
+        title: {
+          text: "Total Data",
+        },
+      },
+      legend: {
+        enabled: false,
+      },
+      series: [
+        {
+          name: "QTY",
+          data: Array.isArray(data.Shift)
+            ? data.Shift
+                .sort((a, b) => {
+                  // Sort by shift number in ascending order
+                  const shiftNumA = parseInt(a.name);
+                  const shiftNumB = parseInt(b.name);
+                  return shiftNumA - shiftNumB;
+                })
+                .map((item) => ({
+                  name: item.name,
+                  y: item.qty,
+                }))
+            : [],
+        },
+      ],
+  
+      responsive: {
+        rules: [
+          {
+            condition: {
+              maxWidth: 500,
+            },
+            chartOptions: {
+              legend: {
+                layout: "horizontal",
+                align: "center",
+                verticalAlign: "bottom",
               },
             },
-          ],
-        },
-      });
-    }
-  //CODINGAN AHIR WEEKLY
-
-  //CODINGAN AWAL MONTHLY
-    if (monthlyChartRef.current) {
-      Highcharts.chart(monthlyChartRef.current, {
-        chart: {
-          type: 'column',
-          width: '500', // Lebar grafik dalam piksel
-          height: '300', // Tinggi grafik dalam piksel
-          borderWidth: 3, // Lebar border dalam piksel
-          borderColor: '#ccc', // Warna border
-        },
-        title: {
-          text: 'Chart Drawing Number Bulanan',
-        },
-        subtitle: {
-          text: 'Data Chart Terbaru',
-        },
-        xAxis: {
-          type: 'category',
-        },
-        yAxis: {
-          title: {
-            text: 'Total Data',
-          },
-        },
-        legend: {
-          enabled: false,
-        },
-        series: [
-          {
-            name: 'Total Lot',
-            data: Array.isArray(data.Monthly) ? data.Monthly.map(item => ({ name: item.name, y: item.total_lot })) : [],
-          },
-          {
-            name: 'QTY',
-            data: Array.isArray(data.Monthly) ? data.Monthly.map(item => ({ name: item.name, y: item.qty })) : [],
           },
         ],
-
-        responsive: {
-          rules: [
-            {
-              condition: {
-                maxWidth: 500,
-              },
-              chartOptions: {
-                legend: {
-                  layout: 'horizontal',
-                  align: 'center',
-                  verticalAlign: 'bottom',
-                },
-              },
-            },
-          ],
-        },
-      });
-    }
-  //CODINGAN AHIR MONTHLY
-
-    //CODINGAN AWAL PERSON
-    if (personChartRef.current) {
-      Highcharts.chart(personChartRef.current, {
-        chart: {
-          type: 'column',
-          width: '500', // Lebar grafik dalam piksel
-          height: '300', // Tinggi grafik dalam piksel
-          borderWidth: 3, // Lebar border dalam piksel
-          borderColor: '#ccc', // Warna border
-        },
-        title: {
-          text: 'Chart Target Per Operator',
-        },
-        subtitle: {
-          text: 'Data Chart Terbaru',
-        },
-        xAxis: {
-          type: 'category',
-        },
-        yAxis: {
-          title: {
-            text: 'Total Data',
-          },
-        },
-        legend: {
-          enabled: false,
-        },
-        series: [
-          {
-            name: 'Total Lot',
-            data: Array.isArray(data.Person) ? data.Person.map(item => ({ name: item.name1, y: item.total_lot })) : [],
-          },
-          {
-            name: 'QTY',
-            data: Array.isArray(data.Person) ? data.Person.map(item => ({ name: item.name1, y: item.qty1 })) : [],
-          },
-        ],
-
-        responsive: {
-          rules: [
-            {
-              condition: {
-                maxWidth: 500,
-              },
-              chartOptions: {
-                legend: {
-                  layout: 'horizontal',
-                  align: 'center',
-                  verticalAlign: 'bottom',
-                },
-              },
-            },
-          ],
-        },
-      });
-    }
-  //CODINGAN AHIR PERSON
-
+      },
+    });
+  }
+  //CODINGAN AHIR SHIFT
+  
   //CODINGAN AWAL PRODUCT
-    if (productChartRef.current) {
-      Highcharts.chart(productChartRef.current, {
+  if (productChartRef.current) {
+    Highcharts.chart(productChartRef.current, {
         chart: {
-          type: 'column',
-          width: '500', // Lebar grafik dalam piksel
-          height: '300', // Tinggi grafik dalam piksel
-          borderWidth: 3, // Lebar border dalam piksel
-          borderColor: '#ccc', // Warna border
+            type: "column",
+            
+            
         },
         title: {
-          text: 'Chart Target Per Product',
+            text: "Chart Target Per Product",
         },
         subtitle: {
-          text: 'Data Chart Terbaru',
+            text: "Data Chart Terbaru",
         },
         xAxis: {
-          type: 'category',
+            type: "category",
         },
         yAxis: {
-          title: {
-            text: 'Total Data',
-          },
+            title: {
+                text: "Total Data",
+            },
         },
         legend: {
-          enabled: false,
+            enabled: false,
         },
         series: [
-          {
-            name: 'Total Lot',
-            data: Array.isArray(data.Product) ? data.Product.map(item => ({ name: item.name, y: item.total_lot })) : [],
-          },
-          {
-            name: 'QTY',
-            data: Array.isArray(data.Product) ? data.Product.map(item => ({ name: item.name, y: item.qty })) : [],
-          },
+           
+            {
+                name: "QTY",
+                data: Array.isArray(data.Product)
+                    ? data.Product.map((item) => ({
+                          name: item.name,
+                          y: item.qty,
+                      }))
+                    : [],
+            },
         ],
 
         responsive: {
-          rules: [
-            {
-              condition: {
-                maxWidth: 500,
-              },
-              chartOptions: {
-                legend: {
-                  layout: 'horizontal',
-                  align: 'center',
-                  verticalAlign: 'bottom',
+            rules: [
+                {
+                    condition: {
+                        maxWidth: 500,
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: "horizontal",
+                            align: "center",
+                            verticalAlign: "bottom",
+                        },
+                    },
                 },
-              },
-            },
-          ],
+            ],
         },
-      });
-    }
-    //CODINGAN AHIR PRODUCT
-  }, [data]);
+    });
+}
+//CODINGAN AHIR PRODUCT
+    }, [data]);
+
     return (
         <>
             <Head title="Welcome" />
             <LeaderLayout>
-            {/* content */}
-            
             <div className="container w-full px-10 mx-auto bg-gray-100 py-14">
-            {Array.isArray(data.Product) ? (
-  <div className="flex justify-between gap-5 mb-10 flex-wrap">
-    {data.Product.map((item, index) => (
-      <div
-        key={item.name}
-        className="w-40 bg-white border-2 border-gray-200 h-30 rounded-xl"
-      >
-        <h1 className="px-3 py-2 text-sm font-bold leading-snug text-center text-black hover:opacity-75">
-          {item.name}
-        </h1>
-        <h1 className="px-3 py-2 text-2xl italic font-bold leading-snug text-center text-red-600 hover:opacity-75">
-          {item.total_lot}pcs
-        </h1>
-        {index % 5 === 4 && index !== data.Product.length - 1 && (
-          <div className="w-full h-0" />
-        )}
-      </div>
-    ))}
-  </div>
-) : (
-  <div>Data Kosong</div>
-)}
+                {Array.isArray(data.Product) ? (
+                    <div className="grid grid-cols-5 gap-6 mb-6">
+                        {data.Product.map((item, index) => (
+                            <div
+                                key={`product_${index}`}
+                                className="w-full shadow-md bg-white rounded-md p-6 hover:bg-rose-500 group cursor-pointer"
+                            >
+                                <div className="text-gray-500 group-hover:text-white">{item.name}</div>
+                                <div className="text-red-600 font-semibold text-2xl group-hover:text-white">{item.qty.toLocaleString('en')} Pcs</div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div>Data Kosong</div>
+                )}
 
-
-
-
-            <div className='w-full flex justify-center justify'>
-    <div>
-        
-        <div className='flex gap-4 mb-4'>
-
-            <div>
-             
-                <div ref={shiftChartRef}></div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="w-full shadow-md" ref={monthlyChartRef}></div>
+                    <div className="w-full shadow-md" ref={productChartRef}></div>
+                    <div className="w-full shadow-md" ref={weeklyChartRef}></div>
+                    <div className="w-full shadow-md" ref={shiftChartRef}></div>
+                    <div className="w-full h-full shadow-md md:col-span-2" ref={dailyChartRef}></div>
+                </div>
             </div>
-        <div>
-           
-            <div ref={personChartRef}></div>
-        </div>
-    </div>
-
-    <div className='flex gap-4 mb-4'>
-      <div >
- 
-          <div ref={dailyChartRef}></div>
-      </div>
-
-
-      <div>
-        
-        <div ref={weeklyChartRef}></div>
-      </div>
-    </div>
-
-  
-
-
-    <div className='flex gap-4 mb-4'>
-      <div>
-  
-        <div ref={monthlyChartRef}></div>
-      </div>
-
-      <div>
-       
-        <div ref={productChartRef}></div>
-      </div>
-      
-    </div>
-    </div>
-    </div>
-    
-    </div>
-    <div className="flex justify-between gap-5"></div>
-            
+            <div className="flex justify-between gap-5 "></div>
             {/* content END */}
 
             </LeaderLayout>
