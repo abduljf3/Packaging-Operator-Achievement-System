@@ -10,8 +10,7 @@ import Navbar from "@/Components/Navbar";
 import Footer from "@/Components/Footer";
 import { useState } from "react";
 import { Link, Head, useForm } from "@inertiajs/react";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
 export default function CreateAchievement({ users, products }) {
     const [selectedNpk, setSelectedNpk] = useState();
@@ -21,6 +20,7 @@ export default function CreateAchievement({ users, products }) {
     const [selectedDrwNo, setSelectedDrwNo] = useState("");
     const [productName, setProductName] = useState("");
     const [submitting, setSubmitting] = useState(false);
+    const [formError, SetFormError] = useState(false);
     const [date, setDate] = useState();
 
     const { data, setData, post, errors } = useForm({
@@ -36,12 +36,17 @@ export default function CreateAchievement({ users, products }) {
         remarks: "",
     });
 
-    const handleClick = () => {
-        toast.success("Achievement Berhasil Ditambahkan");
-    };
-
     const handleClick1 = () => {
         window.location.reload();
+    };
+
+    const handleClick = () => {
+        Swal.fire({
+            icon: "success",
+            title: "Sukses!",
+            text: "Achievement Berhasil Ditambahkan",
+            showConfirmButton: false,
+        });
     };
     const optionNpk = users.map((user) => ({
         value: user.npk,
@@ -77,56 +82,41 @@ export default function CreateAchievement({ users, products }) {
     const handleChange = (e) => {
         const key = e.target.name;
         const value = e.target.value;
-
-        if (key === "npk") {
-            // Look up the corresponding fullname from the users array
-            const user = users.find((user) => user.npk === value);
-            const fullname = user ? user.fullname : "";
-            const shift = user ? user.shift : "";
-            const group = user ? user.group : "";
-            setData((data) => ({
-                ...data,
-                npk: value,
-                fullname,
-                shift,
-                group,
-            }));
-        } else if (key === "drw_no") {
-            // Look up the corresponding product name from the products array
-            const product = products.find(
-                (product) => product.drw_no === value
-            );
-            const product_name = product ? product.product_name : "";
-            const customer_id = product ? product.customer_id : "";
-            setData((data) => ({
-                ...data,
-                drw_no: value,
-                product_name,
-                customer_id,
-            }));
-        } else {
-            setData((data) => ({ ...data, [key]: value }));
-        }
+        setData((data) => ({ ...data, [key]: value }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        e.target.reset();
-        // const url = route("achievementCreate");
-        // window.location.href = url;
-        post(route("achievementStore"), data);
+        const form = e.target;
+        const isEmpty = Array.from(form.elements).some((element) => {
+            return element.tagName === "INPUT" && element.value === "";
+        });
+        if (isEmpty) {
+            setFormError(true);
+        } else {
+            setFormError(false);
+
+            const url = route("achievementCreate");
+            window.location.href = url;
+            post(route("achievementStore"), data);
+        }
     };
 
     return (
         <>
             <Head title="Achievement" />
             <Navbar roles="login" />
-            <div className="py-5">
+            <div className="py-5 bg-gray-100">
                 <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                         <div className="mb-6 font-extrabold">
                             <h1>Create Achievement</h1>
                         </div>
+                        {formError && (
+                            <div className="text-red-500 mb-2">
+                                Isi semua form achievement terlebih dahulu
+                            </div>
+                        )}
                         {/* {flashMessage?.message && (
                                 <FlashMessage message={flashMesage.message} />
                             )} */}
@@ -164,7 +154,6 @@ export default function CreateAchievement({ users, products }) {
                                                 </option>
                                             ))}
                                         </select> */}
-
                                     <TextInput
                                         className="hidden"
                                         type="text"
@@ -173,7 +162,6 @@ export default function CreateAchievement({ users, products }) {
                                         value={data.npk}
                                         readOnly
                                     />
-
                                     <InputLabel value="Name" />
                                     <TextInput
                                         className="mb-5 block w-full"
@@ -385,19 +373,6 @@ export default function CreateAchievement({ users, products }) {
                                         <ButtonGreen onClick={handleClick}>
                                             save
                                         </ButtonGreen>
-
-                                        <ToastContainer
-                                            position="top-right"
-                                            autoClose={5000}
-                                            hideProgressBar={false}
-                                            newestOnTop={false}
-                                            closeOnClick
-                                            rtl={false}
-                                            pauseOnFocusLoss
-                                            draggable
-                                            pauseOnHover
-                                            theme="light"
-                                        />
                                     </div>
                                 </div>
                             </div>
