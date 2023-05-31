@@ -373,41 +373,15 @@ export default function Index({ achievements, from, to, auth }) {
                                 </Dropdown>
 
                                 <div>
-  <form className="flex items-center">
-    {!selectedFile && (
-        <label className="relative overflow-hidden rounded-md">
-        <input
-          type="file"
-          key={fileInputKey}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-          onChange={handleFileInput}
-        />
-        <span className="inline-block px-6 py-1 text-white bg-red-600 rounded-md cursor-pointer hover:bg-red-700">
-          Browse
-        </span>
-      </label>
-    )}
-    
-    {selectedFile && (
-       <div className="relative ">
-         <button
-        type="button"
-        className="px-6 py-1 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-        onClick={handleImport}
-      >
-        Import
-      </button>
-      <span className="text-xs font-light text-gray-600">
-        Selected file: {selectedFile.name}
-      </span>
-      
-       </div>
-    )}
-  </form>
-
-  {/* Add the ToastContainer component */}
-  <ToastContainer />
-</div>
+                                    <form className="flex items-center">
+                                        {!selectedFile && (
+                                            <label className="relative overflow-hidden rounded-md  bg-red-600 rounded-md cursor-pointer hover:bg-opacity-70 duration-500">
+                                                <input
+                                                    type="file"
+                                                    key={fileInputKey}
+                                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                                    onChange={handleFileInput}
+                                                />
 
 
 
