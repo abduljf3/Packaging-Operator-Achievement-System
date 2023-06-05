@@ -20,4 +20,7 @@ class Product extends Model
     {
         return $this->hasMany(Achievement::class);
     }
+    public function customer(){
+        return $this->belongsto(Customer::class);
+    }
 }

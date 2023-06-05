@@ -6,9 +6,8 @@ import InputLabel from "@/Components/InputLabel";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import Select from "react-select";
 import { Link, Head, useForm } from "@inertiajs/react";
-import { set } from "lodash";
 
-export default function Edit({ products, auth }) {
+export default function Edit({ products, customers, auth }) {
     const [selectedProductType, setSelectedProductType] = useState({
         value: products.product_type,
         label: products.product_type,
@@ -17,6 +16,7 @@ export default function Edit({ products, auth }) {
         value: products.customer_name,
         label: products.customer_name,
     });
+    const [customerCode, setCustomerCode] = useState(products.customer_id);
 
     const [state, setState] = useState({
         id: products.id,
@@ -45,33 +45,10 @@ export default function Edit({ products, auth }) {
         { value: "Rubber Part", label: "Rubber Part" },
     ];
 
-    const OptionCustomerName = [
-        { value: "Astra Honda Motor", label: "Astra Honda Motor" },
-        {
-            value: "Yamaha Indonesia Motor Manufacturing",
-            label: "Yamaha Indonesia Motor Manufacturing",
-        },
-        {
-            value: "Suzuki Indomobil Motor",
-            label: "Suzuki Indomobil Motor",
-        },
-        {
-            value: "Kawasaki Motor Indonesia",
-            label: "Kawasaki Motor Indonesia",
-        },
-        {
-            value: "TVS Motor Company Indonesia",
-            label: "TVS Motor Company Indonesia",
-        },
-        {
-            value: "Kymco Motor Indonesia",
-            label: "Kymco Motor Indonesia",
-        },
-        {
-            value: "Suzuki Indomobil Sales",
-            label: "Suzuki Indomobil Sales",
-        },
-    ];
+    const optionCustomerName = customers.map((customer) => ({
+        value: customer.customer_name,
+        label: customer.customer_name,
+    }));
 
     const handleChangeProductType = (selectedOption) => {
         setSelectedProductType(selectedOption);
@@ -81,11 +58,16 @@ export default function Edit({ products, auth }) {
         }));
     };
 
-    const handleChangeCustomerName = (selectedOption) => {
+    const handleChangeOptionCustomerName = (selectedOption) => {
         setSelectedCustomerName(selectedOption);
+        const customer = customers.find(
+            (u) => u.customer_name === selectedOption.value
+        );
+        setCustomerCode(customer.customer_id);
         setState((prevState) => ({
             ...prevState,
             customer_name: selectedOption.value,
+            customer_id: customer.customer_id,
         }));
     };
 
@@ -109,24 +91,26 @@ export default function Edit({ products, auth }) {
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-center gap-20">
                                     <div className=" mx-10 my-2">
+                                        <InputLabel value="Customer Name" />
+
+                                        <Select
+                                            className="mb-5 block w-full "
+                                            options={optionCustomerName}
+                                            value={selectedCustomerName}
+                                            onChange={
+                                                handleChangeOptionCustomerName
+                                            }
+                                        />
                                         <InputLabel value="Customer Code" />
 
                                         <TextInput
                                             className="mb-5 w-full block"
                                             type="text"
                                             name="customer_id"
-                                            value={state.customer_id}
+                                            value={customerCode}
                                             onChange={handleChange}
                                         />
 
-                                        <InputLabel value="Customer Name" />
-
-                                        <Select
-                                            className="mb-5 block w-full "
-                                            options={OptionCustomerName}
-                                            value={selectedCustomerName}
-                                            onChange={handleChangeCustomerName}
-                                        />
                                         <InputLabel value="Drawing Number" />
 
                                         <TextInput
@@ -155,13 +139,6 @@ export default function Edit({ products, auth }) {
                                             value={selectedProductType}
                                             onChange={handleChangeProductType}
                                         />
-                                        {/* <TextInput
-                                            className="mb-5 block w-full "
-                                            type="text"
-                                            name="product_type"
-                                            value={state.product_type}
-                                            onChange={handleChange}
-                                        /> */}
 
                                         <InputLabel value="Target" />
 
@@ -173,10 +150,7 @@ export default function Edit({ products, auth }) {
                                             onChange={handleChange}
                                         />
                                         <div className="flex justify-center mt-6">
-                                            <ButtonGreen
-                                                type="submit"
-                                                className=""
-                                            >
+                                            <ButtonGreen type="submit">
                                                 Update
                                             </ButtonGreen>
                                         </div>
@@ -187,68 +161,6 @@ export default function Edit({ products, auth }) {
                     </div>
                 </div>
             </Authenticated>
-
-            {/* <Nav roles={auth.roles} />
-
-            <h1>Edit Product</h1>
-
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="customer_id">customer_id:</label>
-                    <input
-                        type="text"
-                        id="customer_id"
-                        name="customer_id"
-                        value={state.customer_id}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="customer_name">customer_name:</label>
-                    <input
-                        type="text"
-                        id="customer_name"
-                        name="customer_name"
-                        value={state.customer_name}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="drw_no">drw_no:</label>
-                    <input
-                        type="text"
-                        id="drw_no"
-                        name="drw_no"
-                        value={state.drw_no}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="product_name">product_name:</label>
-                    <input
-                        type="text"
-                        id="product_name"
-                        name="product_name"
-                        value={state.product_name}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="product_type">product_type:</label>
-                    <input
-                        type="text"
-                        id="product_type"
-                        name="product_type"
-                        value={state.product_type}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <button type="submit">Update</button>
-            </form> */}
         </>
     );
 }

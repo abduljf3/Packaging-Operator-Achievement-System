@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import ButtonGreen from "@/Components/ButtonGreen";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import Select from "react-select";
-import { useState } from "react";
-import { Link, Head, useForm } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 
-export default function Create({ auth }) {
+export default function Create({ customers }) {
     const { data, setData, post, errors } = useForm({
         id: "",
         customer_id: "",
@@ -19,6 +18,10 @@ export default function Create({ auth }) {
         product_type: "",
     });
 
+    const [selectedCustomerName, setSelectedCustomerName] = useState("");
+    const [customerCode, setCustomerCode] = useState("");
+    const [submitting, setSubmitting] = useState(false);
+
     const optionProductType = [
         { value: "Joint Carburator", label: "Joint Carburator" },
         { value: "Oil Level Gauge", label: "Oil Level Gauge" },
@@ -27,34 +30,10 @@ export default function Create({ auth }) {
         { value: "Rubber Part", label: "Rubber Part" },
     ];
 
-    const OptionCustomerName = [
-        { value: "Astra Honda Motor", label: "Astra Honda Motor" },
-        {
-            value: "Yamaha Indonesia Motor Manufacturing",
-            label: "Yamaha Indonesia Motor Manufacturing",
-        },
-        {
-            value: "Suzuki Indomobil Motor",
-            label: "Suzuki Indomobil Motor",
-        },
-        {
-            value: "Kawasaki Motor Indonesia",
-            label: "Kawasaki Motor Indonesia",
-        },
-        {
-            value: "TVS Motor Company Indonesia",
-            label: "TVS Motor Company Indonesia",
-        },
-        {
-            value: "Kymco Motor Indonesia",
-            label: "Kymco Motor Indonesia",
-        },
-        {
-            value: "Suzuki Indomobil Sales",
-            label: "Suzuki Indomobil Sales",
-        },
-    ];
-    const [submitting, setSubmitting] = useState(false);
+    const optionCustomerName = customers.map((customer) => ({
+        value: customer.customer_name,
+        label: customer.customer_name,
+    }));
 
     const handleChange = (e) => {
         const key = e.target.name;
@@ -73,14 +52,21 @@ export default function Create({ auth }) {
     };
 
     const handleChangeOptionCustomerName = (selectedOption) => {
+        setSelectedCustomerName(selectedOption);
+        const customer = customers.find(
+            (u) => u.customer_name === selectedOption.value
+        );
+        setCustomerCode(customer.customer_id);
         setData((data) => ({
             ...data,
             customer_name: selectedOption.value,
+            customer_id: customer.customer_id,
         }));
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitting(true);
+
         const url = route("admin.products.index");
         window.location.href = url;
         await post("/admin/products", {
@@ -102,8 +88,20 @@ export default function Create({ auth }) {
                             </div>
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-center gap-20">
-                                    <div className=" mx-10 my-2">
-                                        <InputLabel value="Customer Id" />
+                                    <div className="mx-10 my-2">
+                                        <InputLabel value="Customer Name" />
+                                        <InputError
+                                            message={errors.customer_name}
+                                        />
+                                        <Select
+                                            className="mb-5 block w-full absolute"
+                                            options={optionCustomerName}
+                                            onChange={
+                                                handleChangeOptionCustomerName
+                                            }
+                                            value={selectedCustomerName}
+                                        />
+                                        <InputLabel value="Customer Code" />
                                         <InputError
                                             message={errors.customer_id}
                                         />
@@ -111,37 +109,15 @@ export default function Create({ auth }) {
                                             className="mb-5 w-full block"
                                             type="text"
                                             name="customer_id"
-                                            value={data.customer_id}
-                                            onChange={handleChange}
-                                        />
-
-                                        <InputLabel value="Customer Name" />
-                                        <InputError
-                                            message={errors.product_name}
-                                        />
-                                        <Select
-                                            className="mb-5 block w-full absolute"
-                                            options={OptionCustomerName}
-                                            onChange={
-                                                handleChangeOptionCustomerName
+                                            value={customerCode}
+                                            onChange={(e) =>
+                                                setCustomerCode(e.target.value)
                                             }
-                                            value={OptionCustomerName.find(
-                                                (option) =>
-                                                    option.value ===
-                                                    data.customer_name
-                                            )}
                                         />
-                                        {/* <TextInput
-                                            className="mb-5 block w-full "
-                                            type="text"
-                                            name="customer_name"
-                                            value={data.customer_name}
-                                            onChange={handleChange}
-                                        /> */}
                                         <InputLabel value="Drawing Number" />
                                         <InputError message={errors.drw_no} />
                                         <TextInput
-                                            className="mb-5 block w-full "
+                                            className="mb-5 block w-full"
                                             type="text"
                                             name="drw_no"
                                             value={data.drw_no}
@@ -154,7 +130,7 @@ export default function Create({ auth }) {
                                             message={errors.product_name}
                                         />
                                         <TextInput
-                                            className="mb-5 block w-full "
+                                            className="mb-5 block w-full"
                                             type="text"
                                             name="product_name"
                                             value={data.product_name}
@@ -175,16 +151,9 @@ export default function Create({ auth }) {
                                             )}
                                             onChange={handleChangeOption}
                                         />
-                                        {/* <TextInput
-                                            className="mb-5 block w-full "
-                                            type="text"
-                                            name="product_type"
-                                            value={data.product_type}
-                                            onChange={handleChange}
-                                        />{" "} */}
                                         <InputLabel value="Target" />
                                         <TextInput
-                                            className="mb-5 block w-full "
+                                            className="mb-5 block w-full"
                                             type="text"
                                             name="target"
                                             value={data.target}

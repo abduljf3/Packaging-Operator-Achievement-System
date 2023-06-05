@@ -13,10 +13,8 @@ export default function Create({ auth }) {
         id: "",
         customer_id: "",
         customer_name: "",
-       
     });
 
-   
     const [submitting, setSubmitting] = useState(false);
 
     const handleChange = (e) => {
@@ -66,7 +64,7 @@ export default function Create({ auth }) {
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-center gap-20">
                                     <div className=" mx-10 my-2">
-                                        <InputLabel value="Customer Id" />
+                                        <InputLabel value="Customer Code" />
                                         <InputError
                                             message={errors.customer_id}
                                         />
@@ -78,7 +76,7 @@ export default function Create({ auth }) {
                                             onChange={handleChange}
                                         />
 
-                                            <InputLabel value="Customer Name" />
+                                        <InputLabel value="Customer Name" />
                                         <InputError
                                             message={errors.customer_name}
                                         />

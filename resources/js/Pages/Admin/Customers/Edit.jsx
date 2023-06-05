@@ -9,13 +9,10 @@ import { Link, Head, useForm } from "@inertiajs/react";
 import { set } from "lodash";
 
 export default function Edit({ customers, auth }) {
-   
-
     const [state, setState] = useState({
         id: customers.id,
         customer_id: customers.customer_id,
         customer_name: customers.customer_name,
-     
     });
 
     useEffect(() => {
@@ -26,9 +23,6 @@ export default function Edit({ customers, auth }) {
         const { name, value } = e.target;
         setState({ ...state, [name]: value });
     };
-
-  
-    
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -59,9 +53,6 @@ export default function Edit({ customers, auth }) {
                                             value={state.customer_id}
                                             onChange={handleChange}
                                         />
-
-                                      
-                                       
                                     </div>
                                     <div className="mx-10 my-2">
                                         <InputLabel value="Customer Name" />
@@ -74,7 +65,6 @@ export default function Edit({ customers, auth }) {
                                             onChange={handleChange}
                                         />
 
-                                      
                                         {/* <TextInput
                                             className="mb-5 block w-full "
                                             type="text"
