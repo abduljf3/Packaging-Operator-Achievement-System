@@ -87,19 +87,10 @@ export default function CreateAchievement({ users, products }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const form = e.target;
-        const isEmpty = Array.from(form.elements).some((element) => {
-            return element.tagName === "INPUT" && element.value === "";
-        });
-        if (isEmpty) {
-            setFormError(true);
-        } else {
-            setFormError(false);
 
-            const url = route("achievementCreate");
-            window.location.href = url;
-            post(route("achievementStore"), data);
-        }
+        const url = route("achievementCreate");
+        window.location.href = url;
+        post(route("achievementStore"), data);
     };
 
     return (

@@ -18,8 +18,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(){
         $products= Product::get();
         return Inertia::render('Admin/Products/Index',[
             'products'=>$products
@@ -33,8 +32,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-    
-        return Inertia::render('Admin/Products/Create');
+        $customers = Customer::get();
+        return Inertia::render('Admin/Products/Create',[
+            
+        'customers'=>$customers]);
     }
 
     /**
@@ -80,11 +81,12 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        $products = Product::findOrFail($id);
-
+    {   
+        $products = Product::with('customer')->findOrFail($id);
+        $customers = Customer::all();
         return Inertia::render('Admin/Products/Edit', [
             'products' => $products,
+            'customers' => $customers,
         ]);
     }
 
@@ -95,8 +97,8 @@ class ProductController extends Controller
             'customer_name' => 'required', 
             'drw_no' => 'required', 
             'product_name' => 'required',
-             'product_type' => 'required',
-             'target' => 'required',
+            'product_type' => 'required',
+            'target' => 'required',
            
         ]);
     
