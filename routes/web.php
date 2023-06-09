@@ -46,6 +46,7 @@ use Inertia\Inertia;
     Route::prefix('leader')->middleware(['auth'])->name('leader.')->group(function () {
     Route::get('/',[LeaderController::class,'index'])->name('dashboard');
     Route::get('/detail',[LeaderController::class,'detail'])->name('detail');
+    Route::get('/printData',[LeaderController::class,'printData'])->name('printData');
     Route::get('/rekapitulasi',[LeaderController::class,'rekapitulasi'])->name('rekapitulasi');
     Route::get('/cetak_pdf', [LeaderController::class,'cetak_pdf'])->name('cetak_pdf');
     Route::get('/cetak_pdf_detail', [LeaderController::class,'cetak_pdf_detail'])->name('cetak_pdf_detail');

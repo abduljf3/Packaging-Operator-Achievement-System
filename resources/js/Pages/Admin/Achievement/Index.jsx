@@ -124,13 +124,12 @@ export default function Index({ achievements, from, to, auth }) {
     };
 
     const Print = () => {
-        //console.log('print');
-        let printContents = document.getElementById("printablediv").innerHTML;
-        let originalContents = document.body.innerHTML;
-        document.body.innerHTML = printContents;
-        window.print();
-        document.body.innerHTML = originalContents;
-    };
+        window.open('/leader/printData', '_blank');
+      };
+      
+      
+      
+      
 
     const columns = [
         {
@@ -404,7 +403,7 @@ export default function Index({ achievements, from, to, auth }) {
                             </div>
                         </div>
                     </div>
-                    <div id="printablediv">
+                  
                         <div className="pt-4 px-10  ">
                             <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
                                 {achievements ? (
@@ -447,7 +446,7 @@ export default function Index({ achievements, from, to, auth }) {
                                         Filter terlebih dahulu
                                     </p>
                                 )}
-                            </div>
+                       
                         </div>
                     </div>
                 </div>
