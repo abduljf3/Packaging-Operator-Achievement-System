@@ -5,6 +5,7 @@ import TextInput from "@/Components/TextInput";
 import InputLabel from "@/Components/InputLabel";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import Select from "react-select";
+import Swal from "sweetalert2";
 import { Link, Head, useForm } from "@inertiajs/react";
 import { set } from "lodash";
 
@@ -26,6 +27,12 @@ export default function Edit({ customers, auth }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Data berhasil diupdate",
+            showConfirmButton: false,
+        });
         const url = route("admin.customers.index");
         window.location.href = url;
         Inertia.put(`/admin/customers/${state.id}`, state);
@@ -65,14 +72,6 @@ export default function Edit({ customers, auth }) {
                                             onChange={handleChange}
                                         />
 
-                                        {/* <TextInput
-                                            className="mb-5 block w-full "
-                                            type="text"
-                                            name="product_type"
-                                            value={state.product_type}
-                                            onChange={handleChange}
-                                        /> */}
-
                                         <div className="flex justify-center mt-6">
                                             <ButtonGreen
                                                 type="submit"
@@ -88,68 +87,6 @@ export default function Edit({ customers, auth }) {
                     </div>
                 </div>
             </Authenticated>
-
-            {/* <Nav roles={auth.roles} />
-
-            <h1>Edit Product</h1>
-
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="customer_id">customer_id:</label>
-                    <input
-                        type="text"
-                        id="customer_id"
-                        name="customer_id"
-                        value={state.customer_id}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="customer_name">customer_name:</label>
-                    <input
-                        type="text"
-                        id="customer_name"
-                        name="customer_name"
-                        value={state.customer_name}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="drw_no">drw_no:</label>
-                    <input
-                        type="text"
-                        id="drw_no"
-                        name="drw_no"
-                        value={state.drw_no}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="product_name">product_name:</label>
-                    <input
-                        type="text"
-                        id="product_name"
-                        name="product_name"
-                        value={state.product_name}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="product_type">product_type:</label>
-                    <input
-                        type="text"
-                        id="product_type"
-                        name="product_type"
-                        value={state.product_type}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <button type="submit">Update</button>
-            </form> */}
         </>
     );
 }
