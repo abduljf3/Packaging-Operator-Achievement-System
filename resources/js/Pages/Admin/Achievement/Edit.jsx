@@ -7,6 +7,7 @@ import Select from "react-select";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { router, Link, Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function Edit({ users, achievements, products, auth }) {
     console.log(products);
@@ -44,22 +45,6 @@ export default function Edit({ users, achievements, products, auth }) {
         remarks: achievements.remarks,
     });
 
-    ///////////////////////////
-    // useEffect(() => {
-    //     const fetchUser = async () => {
-    //         const response = await fetch(`/api/users/${achievements.npk}`);
-    //         const data = await response.json();
-    //         setUser(data);
-    //     };
-
-    //     fetchUser();
-    // }, [achievements.npk]);
-
-    // ///////////////////////
-    // useEffect(() => {
-    //     setData(achievements);
-    // }, [achievements]);
-
     const optionNpk = users.map((user) => ({
         value: user.npk,
         label: user.npk,
@@ -80,18 +65,6 @@ export default function Edit({ users, achievements, products, auth }) {
             group: user.group,
         }));
     };
-
-    // const handleNpkChange = (selectedNpkOption) => {
-    //     setSelectedNpk(selectedNpkOption);
-    //     const user = users.find((u) => u.npk === selectedNpkOption.value);
-    //     setFullname(user.fullname);
-    //     setGroup(user.group);
-    //     setData((data) => ({
-    //         ...data,
-    //         npk: selectedNpkOption.value,
-    //         group: user.group,
-    //     }));
-    // };
 
     const handleDrwNoChange = (selectedDrwNo) => {
         setSelectedDrwNo(selectedDrwNo);
@@ -139,32 +112,24 @@ export default function Edit({ users, achievements, products, auth }) {
         }
     };
 
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setdata({ ...data, [name]: value });
-    // };
-
     const handleSubmit = (e) => {
         e.preventDefault();
+        Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Data berhasil diupdate",
+            showConfirmButton: false,
+        });
         router.post(route("admin.achievement.update", achievements.id), {
             _method: "PUT",
             ...data,
         });
     };
-    console.log(handleSubmit);
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     Inertia.put(route("admin.achievement.update", achievements.id), data);
-    // };
 
     return (
         <>
             <Head title="Edit Achievement" />
             <Authenticated className="bg-white">
-                {/* <div className="flex container justify-start w-full px-10 mx-auto mb-5 bg-white py-3 font-bold">
-                    <h1>Edit Achievement </h1>
-                </div> */}
                 <div className="py-5">
                     <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
                         <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -192,38 +157,6 @@ export default function Edit({ users, achievements, products, auth }) {
                                             value={data.npk}
                                             readOnly
                                         />
-
-                                        {/* <select
-                                            id="npk"
-                                            name="npk"
-                                            value={data.npk}
-                                            onChange={handleChange}
-                                            className="w-full mb-5 block border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                        >
-                                            <option className="" value="">
-                                                -
-                                            </option>
-                                            {users?.map((user) => (
-                                                <option
-                                                    key={user.data.id}
-                                                    value={user.data.npk}
-                                                >
-                                                    {user.data.npk}
-                                                </option>
-                                            ))}
-                                        </select> */}
-                                        {/* <select
-                                            id="npk"
-                                            name="npk"
-                                            value={data.npk}
-                                            onChange={handleChange}
-                                            className="w-full mb-5 block border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                        >
-                                            <option
-                                                className=""
-                                                value={data.npk}
-                                            ></option>
-                                        </select> */}
 
                                         <InputLabel value="Name" />
                                         <TextInput
@@ -281,7 +214,6 @@ export default function Edit({ users, achievements, products, auth }) {
                                             value={data.drw_no}
                                             readOnly
                                         />
-                                        {/* <TextInput className="mb-5 block w-full" /> */}
                                     </div>
 
                                     <div className="mx-10 my-2">
@@ -362,132 +294,6 @@ export default function Edit({ users, achievements, products, auth }) {
                     </div>
                 </div>
             </Authenticated>
-
-            {/* 
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="date">Date:</label>
-                    <input
-                        type="date"
-                        id="date"
-                        name="date"
-                        value={data.date}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="shift">Shift:</label>
-                    <input
-                        type="text"
-                        id="shift"
-                        name="shift"
-                        value={data.shift}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="group">Group:</label>
-                    <input
-                        type="text"
-                        id="group"
-                        name="group"
-                        value={data.group}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="proses">Proses:</label>
-                    <input
-                        type="text"
-                        id="proses"
-                        name="proses"
-                        value={data.proses}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="user_id">User ID:</label>
-                    <input
-                        type="text"
-                        id="user_id"
-                        name="user_id"
-                        value={data.user_id}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="product_id">User Product:</label>
-                    <input
-                        type="text"
-                        id="product_id"
-                        name="product_id"
-                        value={data.product_id}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="spring_lot">Spring Lot:</label>
-                    <input
-                        type="text"
-                        id="spring_lot"
-                        name="spring_lot"
-                        value={data.spring_lot}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="product_lot">Product Lot:</label>
-                    <input
-                        type="text"
-                        id="product_lot"
-                        name="product_lot"
-                        value={data.product_lot}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="total_lot">Total Lot:</label>
-                    <input
-                        type="text"
-                        id="total_lot"
-                        name="total_lot"
-                        value={data.total_lot}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="qty">Qty:</label>
-                    <input
-                        type="text"
-                        id="qty"
-                        name="qty"
-                        value={data.qty}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="remarks">Remarks:</label>
-                    <input
-                        type="text"
-                        id="remarks"
-                        name="remarks"
-                        value={data.remarks}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <button type="submit">Update</button>
-            </form> */}
         </>
     );
 }

@@ -4,9 +4,9 @@ import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import Select from "react-select";
 import { useState } from "react";
-import { Link, Head, useForm } from "@inertiajs/react";
+import Swal from "sweetalert2";
+import { Head, useForm } from "@inertiajs/react";
 
 export default function Create({ auth }) {
     const { data, setData, post, errors } = useForm({
@@ -41,19 +41,35 @@ export default function Create({ auth }) {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitting(true);
-        const url = route("admin.customers.index");
-        window.location.href = url;
-        await post("/admin/customers", {
-            data,
-            preserveScroll: true,
-        });
-        setSubmitting(false);
+        if (data.customer_id == "" || data.customer_name == "") {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Isi semua kolom terlebih dahulu!",
+                showConfirmButton: false,
+                timer: 2000,
+            });
+        } else {
+            setSubmitting(true);
+            Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: "Data berhasil ditambahkan!",
+                showConfirmButton: false,
+            });
+            const url = route("admin.customers.index");
+            window.location.href = url;
+            await post("/admin/customers", {
+                data,
+                preserveScroll: true,
+            });
+            setSubmitting(false);
+        }
     };
 
     return (
         <>
-            <Head title="Add Product" />
+            <Head title="Add Customers" />
             <Authenticated className="bg-white">
                 <div className="py-5 mx-20">
                     <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">

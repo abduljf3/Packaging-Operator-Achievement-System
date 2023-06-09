@@ -6,6 +6,7 @@ import InputLabel from "@/Components/InputLabel";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import Select from "react-select";
 import { Head, useForm } from "@inertiajs/react";
+import Swal from "sweetalert2";
 
 export default function Create({ customers }) {
     const { data, setData, post, errors } = useForm({
@@ -66,14 +67,37 @@ export default function Create({ customers }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const url = route("admin.products.index");
-        window.location.href = url;
-        await post("/admin/products", {
-            data,
-            preserveScroll: true,
-        });
-        setSubmitting(false);
+        if (
+            data.customer_id == "" ||
+            data.customer_name == "" ||
+            data.drw_no == "" ||
+            data.product_name == "" ||
+            data.target == "" ||
+            data.product_type == ""
+        ) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Isi semua kolom terlebih dahulu!",
+                showConfirmButton: false,
+                timer: 2000,
+            });
+        } else {
+            setSubmitting(true);
+            Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: "Data berhasil ditambahkan!",
+                showConfirmButton: false,
+            });
+            const url = route("admin.products.index");
+            window.location.href = url;
+            await post("/admin/products", {
+                data,
+                preserveScroll: true,
+            });
+            setSubmitting(false);
+        }
     };
 
     return (

@@ -1,8 +1,8 @@
 import TextInput from "@/Components/TextInput";
 import { Head, useForm, Link, router } from "@inertiajs/react";
 import ButtonGreen from "@/Components/ButtonGreen";
-import { useState, userRef } from "react";
-import DataTable from "react-data-table-component";
+import { useState, useRef } from "react";
+import DataTable, { createTheme } from "react-data-table-component";
 import { Inertia } from "@inertiajs/inertia";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import ButtonOrange from "@/Components/ButtonOrange";
@@ -95,30 +95,6 @@ export default function Index({ achievements, from, to, auth }) {
             position: toast.POSITION.TOP_RIGHT,
         });
 
-        //   try {
-        //     const response = await Inertia.post('/import', formData, {
-        //       headers: {
-        //         'Content-Type': 'multipart/form-data',
-        //       },
-        //     });
-        //     console.log(response.data);
-        //     // handle response data here
-
-        //     // Show success message
-        //     toast.error('Import successful!/ERROR', {
-        //       position: toast.POSITION.TOP_RIGHT
-        //     });
-        //   } catch (error) {
-        //     console.error(error);
-        //     // handle error here
-
-        //     // Show error message
-        //     toast.success('Import successful!', {
-        //       position: toast.POSITION.TOP_RIGHT
-        //     });
-        //   }
-
-        //   // Reset the selected file and file input key regardless of success or error
         setSelectedFile(null);
         setFileInputKey((prevKey) => prevKey + 1);
     };
@@ -221,6 +197,32 @@ export default function Index({ achievements, from, to, auth }) {
         },
     ];
 
+    createTheme(
+        "solarized",
+        {
+            text: {
+                primary: "#268bd2",
+                secondary: "#2aa198",
+            },
+            background: {
+                default: "#002b36",
+            },
+            context: {
+                background: "#cb4b16",
+                text: "#FFFFFF",
+            },
+            divider: {
+                default: "#073642",
+            },
+            action: {
+                button: "rgba(0,0,0,.54)",
+                hover: "rgba(0,0,0,.08)",
+                disabled: "rgba(0,0,0,.12)",
+            },
+        },
+        "dark"
+    );
+
     return (
         <>
             <Head title="Report Achievement" />
@@ -249,12 +251,6 @@ export default function Index({ achievements, from, to, auth }) {
                                 className="w-34"
                             />
                             <ButtonGreen>Filter</ButtonGreen>
-                            {/* <form>
-                                <input type="file" onChange={handleFileInput} />
-                                <button type="button" onClick={handleImport}>
-                                    Import
-                                </button>
-                            </form> */}
                         </form>
 
                         <div className="flex mr-0">

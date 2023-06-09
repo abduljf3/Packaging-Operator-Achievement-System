@@ -274,10 +274,6 @@ export default function index({ users, auth }) {
                                         </svg>
                                         Add Employee
                                     </ButtonRed>
-
-                                    {/* <Link href={route("employee.leader")}>
-                                        leader
-                                    </Link> */}
                                 </Link>
                             </div>
                         </div>
@@ -289,7 +285,6 @@ export default function index({ users, auth }) {
                                     title="Operator"
                                     columns={columns}
                                     data={(users, filteredData)}
-                                    // customStyles={customStyles}
                                     pagination
                                     dense
                                     highlightOnHover
@@ -325,37 +320,6 @@ export default function index({ users, auth }) {
                 </div>
                 {/* content END */}
             </Authenticated>
-            {/* <Nav roles={auth.roles}/>
-
-         <ul>ADMIN users INDEX</ul>
-          <Link href={route('employee.create')}>Create New Product</Link>
-    
-         
-            {users.map((user) => (
-            <li key={user.id} className="flex gap-3">
-
-                <p>{user.id}</p>
-                <p>{user.date}</p>
-                <p>{user.shift}</p>
-                <p>{user.group}</p>
-                <p>{user.proses}</p>
-                <p>{user.user_id}</p>
-                <p>{user.product_id}</p>
-                <p>{user.spring_lot}</p>
-                <p>{user.product_lot}</p>
-                <p>{user.total_lot}</p>
-                <p>{user.qty}</p>
-                <p>{user.remarks}</p>
-                
-
-              <button disabled={deleting} onClick={() => handleDelete(user.id)}>
-            {deleting ? 'Deleting...' : 'Delete'}
-          </button>                 
-                <Link href={route('employee.edit',user.id)}>Edit</Link>
-               
-                
-                </li>
-        ))} */}
         </>
     );
 }
