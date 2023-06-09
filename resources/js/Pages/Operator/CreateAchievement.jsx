@@ -12,9 +12,8 @@ import { useState } from "react";
 import { Link, Head, useForm } from "@inertiajs/react";
 import Swal from "sweetalert2";
 
-export default function CreateAchievement({ users, products }) {
+export default function CreateAchievement({ users, products, massage, props }) {
     const [selectedNpk, setSelectedNpk] = useState();
-
     const [fullname, setFullname] = useState("");
     const [group, setGroup] = useState("");
     const [selectedDrwNo, setSelectedDrwNo] = useState("");
@@ -87,10 +86,30 @@ export default function CreateAchievement({ users, products }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        const url = route("achievementCreate");
-        window.location.href = url;
-        post(route("achievementStore"), data);
+        if (
+            data.shift === "" ||
+            data.group === "" ||
+            data.npk === "" ||
+            data.date === "" ||
+            data.drw_no === "" ||
+            data.spring_lot === "" ||
+            data.product_lot === "" ||
+            data.total_lot === "" ||
+            data.qty === "" ||
+            data.remarks === ""
+        ) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Isi semua form achievement terlebih dahulu",
+                showConfirmButton: false,
+                timer: 2000,
+            });
+        } else {
+            const url = route("achievementCreate");
+            window.location.href = url;
+            post(route("achievementStore"), data);
+        }
     };
 
     return (

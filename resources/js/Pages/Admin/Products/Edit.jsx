@@ -5,6 +5,7 @@ import TextInput from "@/Components/TextInput";
 import InputLabel from "@/Components/InputLabel";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import Select from "react-select";
+import Swal from "sweetalert2";
 import { Link, Head, useForm } from "@inertiajs/react";
 
 export default function Edit({ products, customers, auth }) {
@@ -73,6 +74,12 @@ export default function Edit({ products, customers, auth }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Data berhasil diupdate",
+            showConfirmButton: false,
+        });
         const url = route("admin.products.index");
         window.location.href = url;
         Inertia.put(`/admin/products/${state.id}`, state);
