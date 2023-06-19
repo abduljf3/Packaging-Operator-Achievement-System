@@ -158,6 +158,7 @@ export default function Create({ customers }) {
                                             value={data.product_name}
                                             onChange={handleChange}
                                         />
+                                        
                                         <InputLabel value="Product Type" />
                                         <InputError
                                             message={errors.product_type}
