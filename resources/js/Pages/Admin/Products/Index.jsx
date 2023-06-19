@@ -68,7 +68,7 @@ export default function index({ products, auth }) {
     const columns = [
         {
             name: "No",
-            selector: (row) => row.id,
+            selector: (_, index) => index + 1,
             sortable: true,
         },
         {
