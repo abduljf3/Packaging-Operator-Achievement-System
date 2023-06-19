@@ -6,9 +6,10 @@ import InputLabel from "@/Components/InputLabel";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { useState } from "react";
 import Swal from "sweetalert2";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Create({ auth }) {
+    const [passwordDisabled, setPasswordDisabled] = useState('false');
     const { data, setData, post, errors } = useForm({
         fullname: "",
         npk: "",
@@ -25,6 +26,18 @@ export default function Create({ auth }) {
         const value = e.target.value;
         setData((data) => ({ ...data, [key]: value }));
     };
+
+    const roleChange =(e) => {
+        setData({
+            ...data,
+            roles : e.target.value
+        });
+        if(data.roles === 'User'){
+            setPasswordDisabled(true)
+        }else{
+            setPasswordDisabled(false)
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -70,8 +83,16 @@ export default function Create({ auth }) {
                                 <h1>Create Operator</h1>
                             </div>
                             <form onSubmit={handleSubmit}>
-                                <div className="flex justify-center gap-20">
-                                    <div className=" mx-10 my-2">
+                                <div className="flex justify-center gap-3 md:gap-6">
+                                    <div className="w-full md:w-1/2">
+                                    <InputLabel value="Roles" />
+                                        <InputError message={errors.npk} />
+                                        <select onChange={roleChange}>
+                                            <option>Pilih</option>
+                                            <option value='User'>User</option>
+                                            <option>Admin</option>
+                                            <option>Leader</option>
+                                        </select>
                                         <InputLabel value="NPK" />
                                         <InputError message={errors.npk} />
                                         <TextInput
@@ -102,7 +123,7 @@ export default function Create({ auth }) {
                                             onChange={handleChange}
                                         />
                                     </div>
-                                    <div className="mx-10 my-2">
+                                    <div className="w-full md:w-1/2">
                                         <InputLabel value="Status" />
                                         <InputError message={errors.status} />
                                         <TextInput
@@ -121,6 +142,7 @@ export default function Create({ auth }) {
                                             name="password"
                                             value={data.password}
                                             onChange={handleChange}
+                                            disabled={!passwordDisabled}
                                         />
 
                                         <InputLabel value="Roles" />
@@ -132,7 +154,8 @@ export default function Create({ auth }) {
                                             value={data.roles}
                                             onChange={handleChange}
                                         />
-                                        <div className="flex justify-center mt-6">
+                                        <div className="flex justify-center mt-6 gap-3">
+                                            <Link href={route('admin.employee.index')} className="px-6 py-2 bg-gray-600 text-white rounded hover:bg-gray-800">Cancel</Link>
                                             <ButtonGreen
                                                 type="submit"
                                                 disabled={submitting}
@@ -150,6 +173,6 @@ export default function Create({ auth }) {
                     </div>
                 </div>
             </Authenticated>
-        </>
-    );
+        </>
+    );
 }
