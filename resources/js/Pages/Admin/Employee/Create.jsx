@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Create({ auth }) {
-    const [passwordDisabled, setPasswordDisabled] = useState('false');
+    const [passwordDisabled, setPasswordDisabled] = useState("false");
     const { data, setData, post, errors } = useForm({
         fullname: "",
         npk: "",
@@ -27,17 +27,17 @@ export default function Create({ auth }) {
         setData((data) => ({ ...data, [key]: value }));
     };
 
-    const roleChange =(e) => {
+    const roleChange = (e) => {
         setData({
             ...data,
-            roles : e.target.value
+            roles: e.target.value,
         });
-        if(data.roles === 'User'){
-            setPasswordDisabled(true)
-        }else{
-            setPasswordDisabled(false)
+        if (data.roles === "User") {
+            setPasswordDisabled(true);
+        } else {
+            setPasswordDisabled(false);
         }
-    }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -80,16 +80,16 @@ export default function Create({ auth }) {
                     <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
                         <div className="p-4 mx-20 sm:p-8 bg-white shadow sm:rounded-lg">
                             <div className="mb-6 font-extrabold">
-                                <h1>Create Operator</h1>
+                                <h1>Add Employee</h1>
                             </div>
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-center gap-3 md:gap-6">
                                     <div className="w-full md:w-1/2">
-                                    <InputLabel value="Roles" />
+                                        <InputLabel value="Roles" />
                                         <InputError message={errors.npk} />
                                         <select onChange={roleChange}>
                                             <option>Pilih</option>
-                                            <option value='User'>User</option>
+                                            <option value="User">User</option>
                                             <option>Admin</option>
                                             <option>Leader</option>
                                         </select>
@@ -155,7 +155,14 @@ export default function Create({ auth }) {
                                             onChange={handleChange}
                                         />
                                         <div className="flex justify-center mt-6 gap-3">
-                                            <Link href={route('admin.employee.index')} className="px-6 py-2 bg-gray-600 text-white rounded hover:bg-gray-800">Cancel</Link>
+                                            <Link
+                                                href={route(
+                                                    "admin.employee.index"
+                                                )}
+                                                className="px-6 py-2 bg-gray-600 text-white rounded hover:bg-gray-800"
+                                            >
+                                                Cancel
+                                            </Link>
                                             <ButtonGreen
                                                 type="submit"
                                                 disabled={submitting}
@@ -173,6 +180,7 @@ export default function Create({ auth }) {
                     </div>
                 </div>
             </Authenticated>
-        </>
-    );
+                
+        </>
+    );
 }
