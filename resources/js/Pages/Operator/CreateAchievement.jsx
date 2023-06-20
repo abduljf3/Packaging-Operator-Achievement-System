@@ -96,7 +96,7 @@ export default function CreateAchievement({ users, products, massage, props }) {
             data.product_lot === "" ||
             data.total_lot === "" ||
             data.qty === "" ||
-            data.remarks === ""
+            data.remarks
         ) {
             Swal.fire({
                 icon: "error",
@@ -119,7 +119,7 @@ export default function CreateAchievement({ users, products, massage, props }) {
             <div className="py-5 bg-gray-100">
                 <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                        <div className="mb-6 font-extrabold">
+                        <div className="mb-6 font-extrabold pl-10">
                             <h1>Create Achievement</h1>
                         </div>
                         {formError && (
@@ -127,15 +127,10 @@ export default function CreateAchievement({ users, products, massage, props }) {
                                 Isi semua form achievement terlebih dahulu
                             </div>
                         )}
-                        {/* {flashMessage?.message && (
-                                <FlashMessage message={flashMesage.message} />
-                            )} */}
-
                         <form onSubmit={handleSubmit}>
                             <div className="flex justify-between">
                                 <div className=" mx-10 my-2">
                                     <InputLabel value="NPK" />
-
                                     <Select
                                         id="npk"
                                         value={selectedNpk}
@@ -144,26 +139,6 @@ export default function CreateAchievement({ users, products, massage, props }) {
                                         className="mb-5"
                                     />
                                     <InputError message={errors.npk} />
-
-                                    {/* <select
-                                            id="npk"
-                                            name="npk"
-                                            value={data.npk}
-                                            onChange={handleChange}
-                                            className="w-full mb-5 block border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                        >
-                                            <option className="" value="">
-                                                -
-                                            </option>
-                                            {users.map((user) => (
-                                                <option
-                                                    key={user.id}
-                                                    value={user.npk}
-                                                >
-                                                    {user.npk}
-                                                </option>
-                                            ))}
-                                        </select> */}
                                     <TextInput
                                         className="hidden"
                                         type="text"
@@ -174,7 +149,7 @@ export default function CreateAchievement({ users, products, massage, props }) {
                                     />
                                     <InputLabel value="Name" />
                                     <TextInput
-                                        className="mb-5 block w-full"
+                                        className="mb-5 block bg-gray-100 w-full"
                                         type="text"
                                         id="fullname"
                                         onChange={(e) =>
@@ -183,19 +158,18 @@ export default function CreateAchievement({ users, products, massage, props }) {
                                         name="fullname"
                                         value={fullname}
                                         readOnly
+                                        disabled={true}
                                     />
                                     <InputError message={errors.fullname} />
-
                                     <InputLabel value="Date" />
                                     <TextInput
                                         type="date"
-                                        className="mb-5 block w-full"
+                                        className="mb-5 block w-full bg-gray-100"
                                         value={data.date}
                                         onChange={handleChange}
                                         disabled={true}
                                     />
                                     <InputError message={errors.date} />
-
                                     <div className="flex gap-4">
                                         <div className="mb-5">
                                             <InputLabel value="Shift" />
@@ -225,61 +199,45 @@ export default function CreateAchievement({ users, products, massage, props }) {
                                                 message={errors.group}
                                             />
                                         </div>
-                                    </div>
-                                    <InputLabel value="Drawing Number" />
-                                    <Select
-                                        options={optionDrwNo}
-                                        value={selectedDrwNo}
-                                        onChange={handleDrwNoChange}
-                                        className="mb-5"
-                                    />
-
-                                    <TextInput
-                                        className="hidden"
-                                        type="text"
-                                        id="drw_no"
-                                        name="drw_no"
-                                        value={data.drw_no}
-                                        readOnly
-                                    />
-
-                                    {/* <select
-                                            id="drw_no"
-                                            name="drw_no"
-                                            value={data.drw_no}
-                                            onChange={handleChange}
-                                            className="w-1/2 mb-5 block border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                        >
-                                            <option value="">-</option>
-                                            {products.map((product) => (
-                                                <option
-                                                    key={product.id}
-                                                    value={product.drw_no}
-                                                >
-                                                    {product.drw_no} |{" "}
-                                                    {product.customer_id}
-                                                </option>
-                                            ))}
-                                        </select> */}
-                                    {/* <TextInput className="mb-5 block w-full" /> */}
+                                    </div>      
                                 </div>
-
                                 <div className="mx-10 my-2">
-                                    <InputLabel value="Product Name" />
-                                    <TextInput
-                                        className="mb-5 block w-full"
-                                        type="text"
-                                        name="product_id"
-                                        value={productName}
-                                        onChange={(e) =>
-                                            setProductName(e.target.value)
-                                        }
-                                    />
-                                    <InputError message={errors.product_name} />
+                                    <div className="flex gap-4">
+                                        <div className="mb-5">
+                                            <InputLabel value="Drawing Number" />
+                                            <Select
+                                                options={optionDrwNo}
+                                                value={selectedDrwNo}
+                                                onChange={handleDrwNoChange}
+                                                className=""
+                                            />
+                                            <TextInput
+                                                className="hidden"
+                                                type="text"
+                                                id="drw_no"
+                                                name="drw_no"
+                                                value={data.drw_no}
+                                                readOnly                                       
+                                            />
+                                        </div>
+                                        <div className="">
+                                            <InputLabel value="Product Name" />
+                                            <TextInput
+                                                className="block w-full bg-gray-100"
+                                                type="text"
+                                                name="product_id"
+                                                value={productName}
+                                                onChange={(e) =>
+                                                    setProductName(e.target.value)
+                                                }
+                                                readOnly 
+                                            />
+                                            <InputError message={errors.product_name} />
+                                        </div>
+                                    </div>
                                     <div className="flex gap-4">
                                         <div className="mb-5">
                                             <InputLabel value="Spring Lot No" />
-
                                             <TextInput
                                                 className=""
                                                 type="text"
@@ -340,49 +298,13 @@ export default function CreateAchievement({ users, products, massage, props }) {
                                         onChange={handleChange}
                                     />
                                     <InputError message={errors.remarks} />
-
-                                    {/* <InputLabel value="Customer Id" />
-                                        <TextInput
-                                            className="mb-5 block"
-                                            id="customer_id"
-                                            name="customer_id"
-                                            value={data.customer_id}
-                                        />
-                                        <InputLabel value="Proses" />
-                                        <TextInput
-                                            className="mb-5 w-full block"
-                                            type="text"
-                                            name="proses"
-                                            value={data.proses}
-                                            onChange={handleChange}
-                                        />
-                                        <InputError message={errors.proses} />
-
-                                        <InputLabel value="Product Id" />
-                                        <TextInput
-                                            className="mb-5 w-full block"
-                                            type="text"
-                                            name="product_id"
-                                            value={data.product_id}
-                                            onChange={handleChange}
-                                        /> */}
-
                                     <div className="flex justify-end gap-4  pt-5">
-                                        {/* <ButtonGreen
-                                        // disabled={submitting}
-                                        onclick="handleClick"
-                                    >
-                                        save
-                                    </ButtonGreen> */}
-                                        <ButtonRed
-                                            onClick={handleClick1}
-                                            disabled={submitting}
-                                        >
-                                            Reset
+                                    {/* <Link href={route('operator')} 
+                                        className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-800"
+                                        >Cancel</Link> */}
+                                        <ButtonRed onClick={handleClick}>
+                                            Save
                                         </ButtonRed>
-                                        <ButtonGreen onClick={handleClick}>
-                                            save
-                                        </ButtonGreen>
                                     </div>
                                 </div>
                             </div>
