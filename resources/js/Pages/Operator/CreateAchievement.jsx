@@ -95,8 +95,7 @@ export default function CreateAchievement({ users, products, massage, props }) {
             data.spring_lot === "" ||
             data.product_lot === "" ||
             data.total_lot === "" ||
-            data.qty === "" ||
-            data.remarks
+            data.qty === ""
         ) {
             Swal.fire({
                 icon: "error",

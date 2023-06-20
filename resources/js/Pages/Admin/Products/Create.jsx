@@ -130,13 +130,11 @@ export default function Create({ customers }) {
                                             message={errors.customer_id}
                                         />
                                         <TextInput
-                                            className="mb-5 w-full block"
+                                            className="mb-5 w-full block bg-gray-200"
                                             type="text"
                                             name="customer_id"
                                             value={customerCode}
-                                            onChange={(e) =>
-                                                setCustomerCode(e.target.value)
-                                            }
+                                            readonly={true}
                                         />
                                         <InputLabel value="Drawing Number" />
                                         <InputError message={errors.drw_no} />
@@ -160,6 +158,7 @@ export default function Create({ customers }) {
                                             value={data.product_name}
                                             onChange={handleChange}
                                         />
+                                        
                                         <InputLabel value="Product Type" />
                                         <InputError
                                             message={errors.product_type}
@@ -201,6 +200,6 @@ export default function Create({ customers }) {
                     </div>
                 </div>
             </Authenticated>
-        </>
-    );
+        </>
+    );
 }
