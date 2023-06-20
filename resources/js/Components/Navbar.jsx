@@ -13,7 +13,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             className="h-14"
                         />
                         <h1 className="text-xl font-bold text-black">
-                            Packaging Operator<br></br>Achievement System
+                            Self Service<br></br>Achievement Packaging
                         </h1>
                     </div>
                     <div className="flex gap-5">
@@ -65,7 +65,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             className="h-14"
                         />
                         <h1 className="text-xl font-bold text-black">
-                            Packaging Operator<br></br>Achievement System
+                            Self Service<br></br>Achievement Packaging
                         </h1>
                     </div>
                     <div className="flex gap-5">
@@ -96,7 +96,6 @@ export default function Navbar({ roles, props, auth, header }) {
                                     Achievement{" "}
                                 </a>
                             </li>
-
                             <li className="nav-item">
                                 <a
                                     className={`${
@@ -109,7 +108,6 @@ export default function Navbar({ roles, props, auth, header }) {
                                     Operator{" "}
                                 </a>
                             </li>
-
                             <li className="nav-item">
                                 <a
                                     className={`${
@@ -121,7 +119,8 @@ export default function Navbar({ roles, props, auth, header }) {
                                     {" "}
                                     Product{" "}
                                 </a>
-                            </li>  <li className="nav-item">
+                            </li>{" "}
+                            <li className="nav-item">
                                 <a
                                     className={`${
                                         route().current("admin.customers.*") &&
@@ -178,7 +177,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             className="h-14"
                         />
                         <h1 className="text-xl font-bold text-black">
-                            Packaging Operator<br></br>Achievement System
+                            Self Service<br></br>Achievement Packaging
                         </h1>
                     </div>
                     <div className="flex gap-5">
@@ -199,14 +198,18 @@ export default function Navbar({ roles, props, auth, header }) {
                             <li>
                                 <Dropdown>
                                     <Dropdown.Trigger>
-                                    <a
-  className={`${
-    (route().current("leader.detail") || route().current("leader.rekapitulasi")) &&
-    "text-red-600 underline underline-offset-4 decoration-2"
-  } flex items-center px-3 py-2 font-bold leading-snug duration-500 hover:text-red-600 hover:underline hover:decoration-2 hover:underline-offset-4`}
-  href="#"
->
-
+                                        <a
+                                            className={`${
+                                                (route().current(
+                                                    "leader.detail"
+                                                ) ||
+                                                    route().current(
+                                                        "leader.rekapitulasi"
+                                                    )) &&
+                                                "text-red-600 underline underline-offset-4 decoration-2"
+                                            } flex items-center px-3 py-2 font-bold leading-snug duration-500 hover:text-red-600 hover:underline hover:decoration-2 hover:underline-offset-4`}
+                                            href="#"
+                                        >
                                             {" "}
                                             Report{" "}
                                         </a>
@@ -262,59 +265,59 @@ export default function Navbar({ roles, props, auth, header }) {
     } else if (roles == "login") {
         return (
             <div className="py-3 border bg-white border-t-neutral-400">
-            <nav className="container flex items-center justify-between mx-auto">
-              <div className="flex items-center">
-                <img
-                  src="/perusahaan.png"
-                  alt="Image"
-                  className="h-14"
-                />
-                <h1 className="text-xl font-bold text-black">
-                  Packaging Operator<br></br>Achievement System
-                </h1>
-              </div>
-              <div className="flex gap-5">
-                <ul className="flex items-center justify-between gap-5">
-                  <li className="nav-item">
-                    <a
-                      className={`flex items-center px-3 py-2 font-bold leading-snug duration-500 text-navbar hover:text-red-600 hover:underline hover:decoration-2 hover:underline-offset-4 ${
-                        route().current("welcome")
-                          ? "text-red-600 underline"
-                          : ""
-                      }`}
-                      href={route("welcome")}
-                    >
-                      Dashboard
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className={`flex items-center px-3 py-2 font-bold leading-snug duration-500 text-navbar hover:text-red-600 hover:underline hover:decoration-2 hover:underline-offset-4 ${
-                        route().current("achievementCreate")
-                          ? "text-red-600 underline"
-                          : ""
-                      }`}
-                      href={route("achievementCreate")}
-                    >
-                      Achievement
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      className={`flex items-center px-3 py-2 font-bold leading-snug duration-500 text-navbar hover:text-red-600 hover:underline hover:decoration-2 hover:underline-offset-4 ${
-                        route().current("login") ? "text-red-600 underline" : ""
-                      }`}
-                      href={route("login")}
-                    >
-                      Login
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </nav>
-          </div>
-          
-          
+                <nav className="container flex items-center justify-between mx-auto">
+                    <div className="flex items-center">
+                        <img
+                            src="/perusahaan.png"
+                            alt="Image"
+                            className="h-14"
+                        />
+                        <h1 className="text-xl font-bold text-black">
+                            Self Service<br></br>Achievement Packaging
+                        </h1>
+                    </div>
+                    <div className="flex gap-5">
+                        <ul className="flex items-center justify-between gap-5">
+                            <li className="nav-item">
+                                <a
+                                    className={`flex items-center px-3 py-2 font-bold leading-snug duration-500 text-navbar hover:text-red-600 hover:underline hover:decoration-2 hover:underline-offset-4 ${
+                                        route().current("welcome")
+                                            ? "text-red-600 underline"
+                                            : ""
+                                    }`}
+                                    href={route("welcome")}
+                                >
+                                    Dashboard
+                                </a>
+                            </li>
+                            <li className="nav-item">
+                                <a
+                                    className={`flex items-center px-3 py-2 font-bold leading-snug duration-500 text-navbar hover:text-red-600 hover:underline hover:decoration-2 hover:underline-offset-4 ${
+                                        route().current("achievementCreate")
+                                            ? "text-red-600 underline"
+                                            : ""
+                                    }`}
+                                    href={route("achievementCreate")}
+                                >
+                                    Achievement
+                                </a>
+                            </li>
+                            <li className="nav-item">
+                                <a
+                                    className={`flex items-center px-3 py-2 font-bold leading-snug duration-500 text-navbar hover:text-red-600 hover:underline hover:decoration-2 hover:underline-offset-4 ${
+                                        route().current("login")
+                                            ? "text-red-600 underline"
+                                            : ""
+                                    }`}
+                                    href={route("login")}
+                                >
+                                    Login
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
         );
     } else {
         return (
@@ -327,7 +330,7 @@ export default function Navbar({ roles, props, auth, header }) {
                             className="h-14"
                         />
                         <h1 className="text-xl font-bold text-black">
-                            Packaging Operator<br></br>Achievement System
+                            Self Service<br></br>Achievement Packaging
                         </h1>
                     </div>
                     <div className="flex gap-5">

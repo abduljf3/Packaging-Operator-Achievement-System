@@ -4,6 +4,12 @@ import { Link, Head } from "@inertiajs/react";
 import React, { useEffect, useRef } from "react";
 import Highcharts from "highcharts";
 import accessibility from "highcharts/modules/accessibility";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper";
+import "swiper/css";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 const Home = ({ data }) => {
     const shiftChartRef = useRef(null);
@@ -35,22 +41,22 @@ const Home = ({ data }) => {
             "Oktober",
             "November",
             "Desember",
-          ];
-          const dayNames = [
+        ];
+        const dayNames = [
             "Minggu",
             "Senin",
             "Selasa",
             "Rabu",
             "Kamis",
             "Jumat",
-            "Sabtu"
+            "Sabtu",
         ];
         const currentMonth = monthNames[new Date().getMonth()];
         const currentDate = new Date().getDate();
         const currentWeek = Math.ceil((currentDate - 1) / 7) + 1; //Adjust Data Mingguan Dimulai Dihari Senin Pada Tanggal 1
         const currentYear = new Date().getFullYear();
         const currentDayName = dayNames[new Date().getDay()];
-        
+
         // CODINGAN AWAL MONTHLY
         if (monthlyChartRef.current) {
             const sortedMonthlyData = Array.isArray(data.Monthly)
@@ -62,10 +68,10 @@ const Home = ({ data }) => {
                     type: "column",
                 },
                 title: {
-                    text: "Chart Drawing Number Bulanan",
+                    text: "Monthly Achievement",
                 },
                 subtitle: {
-                    text: "Data Chart Tahun " + currentYear + "",
+                    text: "Periode " + currentYear + "",
                 },
                 xAxis: {
                     type: "category",
@@ -121,10 +127,10 @@ const Home = ({ data }) => {
                     type: "column",
                 },
                 title: {
-                    text: "Chart Drawing Number Harian",
+                    text: "Daily Achievement",
                 },
                 subtitle: {
-                    text: "Data Chart Harian Bulan " + currentMonth + " " + currentYear + " ",
+                    text: currentMonth + " " + currentYear + " ",
                 },
                 xAxis: {
                     type: "category",
@@ -178,10 +184,10 @@ const Home = ({ data }) => {
                     type: "column",
                 },
                 title: {
-                    text: "Chart Drawing Number Mingguan",
+                    text: "Weekly Achievement",
                 },
                 subtitle: {
-                    text: "Data Chart Mingguan Bulan " + currentMonth + " ",
+                    text: "Bulan " + currentMonth + " ",
                 },
                 xAxis: {
                     type: "category",
@@ -234,10 +240,19 @@ const Home = ({ data }) => {
                     type: "column",
                 },
                 title: {
-                    text: "Chart Target Per Shift",
+                    text: "Shift Achievement",
                 },
                 subtitle: {
-                    text: "Data Chart Hari " + currentDayName + ", " + currentDate + " " + currentMonth + " " + currentYear + " ",
+                    text:
+                        "" +
+                        currentDayName +
+                        ", " +
+                        currentDate +
+                        " " +
+                        currentMonth +
+                        " " +
+                        currentYear +
+                        " ",
                 },
                 xAxis: {
                     type: "category",
@@ -294,10 +309,10 @@ const Home = ({ data }) => {
                     type: "column",
                 },
                 title: {
-                    text: "Chart Target Per Product",
+                    text: "Product Achievement",
                 },
                 subtitle: {
-                    text: "Data Chart Bulan " + currentMonth + " " + currentYear + "",
+                    text: currentMonth + " " + currentYear + "",
                 },
                 xAxis: {
                     type: "category",
@@ -349,50 +364,74 @@ const Home = ({ data }) => {
             <Navbar roles="admin" />
             {/* content */}
             <div className="container w-full px-10 mx-auto bg-gray-100 py-14">
-    {Array.isArray(data.Product1) ? (
-        <div className="grid grid-cols-5 gap-6 mb-6">
-            {data.Product1
-                .sort((a, b) => b.qty - a.qty) // Sort by highest qty
-                .map((item, index) => (
-                    <div
-                        key={`product_${index}`}
-                        className="w-full shadow-md bg-white rounded-md p-6 hover:bg-rose-500 group cursor-pointer duration-500"
-                    >
-                        <div className="text-gray-500 group-hover:text-white duration-500">
-                            {item.name}
-                        </div>
-                        <div className="text-red-600 font-semibold text-2xl group-hover:text-white duration-500">
-                            {item.qty.toLocaleString("en")} Pcs
-                        </div>
+                {Array.isArray(data.Product1) ? (
+                    <div className="grid grid-cols-5 gap-6 mb-6">
+                        {data.Product1.sort((a, b) => b.qty - a.qty) // Sort by highest qty
+                            .map((item, index) => (
+                                <div
+                                    key={`product_${index}`}
+                                    className="w-full shadow-md bg-white rounded-md p-6 hover:bg-rose-500 group cursor-pointer duration-500"
+                                >
+                                    <div className="text-gray-500 group-hover:text-white duration-500">
+                                        {item.name}
+                                    </div>
+                                    <div className="text-red-600 font-semibold text-2xl group-hover:text-white duration-500">
+                                        {item.qty.toLocaleString("en")} Pcs
+                                    </div>
+                                </div>
+                            ))}
                     </div>
-                ))}
-        </div>
-    ) : (
-        <div>Data Kosong</div>
-    )}
-
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div
-                        className="w-full shadow-md"
+                ) : (
+                    <div>Data Kosong</div>
+                )}
+                <Swiper
+                    slidesPerView={1}
+                    spaceBetween={30}
+                    loop={true}
+                    autoplay={{
+                        delay: 3000,
+                        disableOnInteraction: true,
+                    }}
+                    pagination={{
+                        clickable: true,
+                    }}
+                    navigation={true}
+                    modules={[Autoplay, Pagination, Navigation]}
+                    className=" shadow-md rounded-md w-full h-full md:col-span-3"
+                >
+                    <SwiperSlide
+                        className="px-10 pb-7 pt-2 "
                         ref={monthlyChartRef}
-                    ></div>
-                    <div
-                        className="w-full shadow-md"
+                    >
+                        Slide 1
+                    </SwiperSlide>
+                    <SwiperSlide
+                        className="px-10 pb-7 pt-2 "
                         ref={productChartRef}
-                    ></div>
-                    <div
-                        className="w-full shadow-md"
+                    >
+                        Slide 2
+                    </SwiperSlide>
+                    <SwiperSlide
+                        className="px-10 pb-7 pt-2 "
                         ref={weeklyChartRef}
-                    ></div>
-                    <div className="w-full shadow-md" ref={shiftChartRef}></div>
-                    <div
-                        className="w-full h-full shadow-md md:col-span-2"
+                    >
+                        Slide 3
+                    </SwiperSlide>
+                    <SwiperSlide
+                        className="px-10 pb-7 pt-2 "
+                        ref={shiftChartRef}
+                    >
+                        Slide 4
+                    </SwiperSlide>
+                    <SwiperSlide
+                        className="px-10 pb-7 pt-2 "
                         ref={dailyChartRef}
-                    ></div>
-                </div>
+                    >
+                        Slide 5
+                    </SwiperSlide>
+                </Swiper>
             </div>
-            <div className="flex justify-between gap-5 "></div>
+
             {/* content END */}
             <Footer />
         </>
