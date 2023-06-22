@@ -72,19 +72,28 @@ export default function Create({ auth }) {
             setSubmitting(false);
         }
 
-        const handleChangeOption = (selectedOption) => {
-            setData((data) => ({
-                ...data,
-                roles: selectedOption.value,
-            }));
-        };
-        const optionEmployee = [
-            { value: "User", label: "User" },
-            { value: "Admin", label: "Admin" },
-            { value: "Leader", label: "Leader" },
-        ];   
+    
     };
 
+    const handleChangeOption = (selectedOption) => {
+        setData((data) => ({
+            ...data,
+            roles: selectedOption.value,
+            status: selectedOption.value,
+        }));
+    };
+    
+    const optionEmployee = [
+        { value: "User", label: "User" },
+        { value: "Admin", label: "Admin" },
+        { value: "Leader", label: "Leader" },
+    ];
+    const optionStatus = [
+        { value: "Tetap", label: "Tetap" },
+        { value: "PKWT", label: "PKWT" },
+        { value: "Outcourcing", label: "Outcourcing" },
+        { value: "Magang", label: "Magang" },
+    ];
     return (
         <>
             <Head title="Add Operator" />
@@ -144,15 +153,22 @@ export default function Create({ auth }) {
                                             onChange={handleChange}
                                         />
                                     </div>
+                                    
                                     <div className="w-full md:w-1/2">
-                                        <InputLabel value="Status" />
-                                        <InputError message={errors.status} />
-                                        <TextInput
-                                            className="mb-5 block w-full "
-                                            type="text"
+                                    <InputLabel value="Status" />
+                                        <InputError
+                                            message={errors.status}
+                                        />
+                                        <Select
+                                            className="mb-5 block w-full absolute"
                                             name="status"
-                                            value={data.status}
-                                            onChange={handleChange}
+                                            options={optionStatus}
+                                            value={optionStatus.find(
+                                                (option) =>
+                                                    option.value ===
+                                                    data.status
+                                            )}
+                                            onChange={handleChangeOption}
                                         />
 
                                         <InputLabel value="Password" />

@@ -363,7 +363,7 @@ const Home = ({ data }) => {
             <Head title="Welcome" />
             <Navbar roles="login" />
             {/* content */}
-            <div className="container w-full px-10 mx-auto bg-gray-100 py-14">
+            <div className="container w-full px-10 mx-auto bg-gray-100 pt-10 pb-6">
                 {Array.isArray(data.Product1) ? (
                     <div className="grid grid-cols-5 gap-6 mb-6">
                         {data.Product1.sort((a, b) => b.qty - a.qty) // Sort by highest qty
@@ -376,7 +376,7 @@ const Home = ({ data }) => {
                                         {item.name}
                                     </div>
                                     <div className="text-red-600 font-semibold text-2xl group-hover:text-white duration-500">
-                                        {item.qty.toLocaleString("en")} Pcs
+                                        {item.qty.toLocaleString("id-ID")} Pcs
                                     </div>
                                 </div>
                             ))}
@@ -384,49 +384,35 @@ const Home = ({ data }) => {
                 ) : (
                     <div>Data Kosong</div>
                 )}
+
                 <Swiper
                     slidesPerView={1}
                     spaceBetween={30}
                     loop={true}
                     autoplay={{
-                        delay: 3000,
-                        disableOnInteraction: true,
+                        delay: 5000,
+                        disableOnInteraction: false,
                     }}
                     pagination={{
                         clickable: true,
                     }}
-                    navigation={true}
+                    navigation={false}
                     modules={[Autoplay, Pagination, Navigation]}
-                    className=" shadow-md rounded-md w-full h-full"
+                    className="  w-full h-full  mx-auto shadow-md rounded-md pt-5 mb-4"
                 >
-                    <SwiperSlide
-                        className="px-10 pb-7 pt-2 "
-                        ref={monthlyChartRef}
-                    >
+                    <SwiperSlide className="pb-7 pt-2 " ref={monthlyChartRef}>
                         Slide 1
                     </SwiperSlide>
-                    <SwiperSlide
-                        className="px-10 pb-7 pt-2 "
-                        ref={productChartRef}
-                    >
+                    <SwiperSlide className="pb-7 pt-2 " ref={weeklyChartRef}>
                         Slide 2
                     </SwiperSlide>
-                    <SwiperSlide
-                        className="px-10 pb-7 pt-2 "
-                        ref={weeklyChartRef}
-                    >
+                    <SwiperSlide className="pb-7 pt-2 " ref={dailyChartRef}>
                         Slide 3
                     </SwiperSlide>
-                    <SwiperSlide
-                        className="px-10 pb-7 pt-2 "
-                        ref={shiftChartRef}
-                    >
+                    <SwiperSlide className="pb-7 pt-2 " ref={shiftChartRef}>
                         Slide 4
                     </SwiperSlide>
-                    <SwiperSlide
-                        className="px-10 pb-7 pt-2 "
-                        ref={dailyChartRef}
-                    >
+                    <SwiperSlide className="pb-7 pt-2 " ref={productChartRef}>
                         Slide 5
                     </SwiperSlide>
                 </Swiper>

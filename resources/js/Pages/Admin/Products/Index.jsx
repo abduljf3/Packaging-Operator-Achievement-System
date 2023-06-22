@@ -97,8 +97,8 @@ export default function index({ products, auth }) {
             sortable: true,
         },
         {
-            name: "Target",
-            selector: (row) => row.target,
+            name: "Target (pcs)",
+            selector: (row) => parseFloat(row.target).toLocaleString("id-ID"),
             sortable: true,
         },
         {
@@ -154,9 +154,7 @@ export default function index({ products, auth }) {
             <Authenticated>
                 <div className="">
                     <div className="flex justify-end  px-10 pt-3 gap-3 ">
-                    <ButtonOrange onClick={Print}>
-                                    Print
-                                </ButtonOrange>
+                        <ButtonOrange onClick={Print}>Print</ButtonOrange>
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <ButtonGreen className="w-15 h-9">
@@ -277,61 +275,61 @@ export default function index({ products, auth }) {
                     </div>
                 </div>
                 <div>
-                <div  id='printablediv'>
-                    <div className="flex w-full px-10 pb-10 py-3">
-                        <div className="inline-block min-w-full overflow-hidden align-middle border-b shadow sm:rounded-lg">
-                            <DataTable
-                                title="List Product"
-                                columns={columns}
-                                data={filteredData}
-                                pagination
-                                dense
-                                highlightOnHover
-                                actions={
-                                    // <Link href={route("admin.products.create")}>
-                                    //     <ButtonRed className=" mr-5 my-5">
-                                    //         <svg
-                                    //             xmlns="http://www.w3.org/2000/svg"
-                                    //             viewBox="0 0 24 24"
-                                    //             fill="currentColor"
-                                    //             className="w-6 h-6 flex"
-                                    //         >
-                                    //             <path
-                                    //                 fillRule="evenodd"
-                                    //                 d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
-                                    //                 clipRule="evenodd"
-                                    //             />
-                                    //         </svg>
-                                    //         Add Product
-                                    //     </ButtonRed>
-                                    // </Link>
-                                    <label className="w-100 h-100 mx-3 my-5 relative text-gray-400 focus-within:text-gray-600 block duration-500">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20"
-                                            fill="currentColor"
-                                            className="w-5 h-5 posistion absolute pointer-events-none ml-3 mt-3"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
+                    <div id="printablediv">
+                        <div className="flex w-full px-10 pb-10 py-3">
+                            <div className="inline-block min-w-full overflow-hidden align-middle border-b shadow sm:rounded-lg">
+                                <DataTable
+                                    title="List Product"
+                                    columns={columns}
+                                    data={filteredData}
+                                    pagination
+                                    dense
+                                    highlightOnHover
+                                    actions={
+                                        // <Link href={route("admin.products.create")}>
+                                        //     <ButtonRed className=" mr-5 my-5">
+                                        //         <svg
+                                        //             xmlns="http://www.w3.org/2000/svg"
+                                        //             viewBox="0 0 24 24"
+                                        //             fill="currentColor"
+                                        //             className="w-6 h-6 flex"
+                                        //         >
+                                        //             <path
+                                        //                 fillRule="evenodd"
+                                        //                 d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+                                        //                 clipRule="evenodd"
+                                        //             />
+                                        //         </svg>
+                                        //         Add Product
+                                        //     </ButtonRed>
+                                        // </Link>
+                                        <label className="w-100 h-100 mx-3 my-5 relative text-gray-400 focus-within:text-gray-600 block duration-500">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                                className="w-5 h-5 posistion absolute pointer-events-none ml-3 mt-3"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                                                    clipRule="evenodd"
+                                                />
+                                            </svg>
 
-                                        <input
-                                            type="text"
-                                            placeholder="Search..."
-                                            onChange={handleFilter}
-                                            value={filterText}
-                                            className="  bg-white placeholder-gray-400 text-black border-2 border-gray-300 duration-500 appearance-none w-full block pl-10 focus:outline-none rounded-lg "
-                                        ></input>
-                                    </label>
-                                }
-                                className=""
-                            />
+                                            <input
+                                                type="text"
+                                                placeholder="Search..."
+                                                onChange={handleFilter}
+                                                value={filterText}
+                                                className="  bg-white placeholder-gray-400 text-black border-2 border-gray-300 duration-500 appearance-none w-full block pl-10 focus:outline-none rounded-lg "
+                                            ></input>
+                                        </label>
+                                    }
+                                    className=""
+                                />
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </div>
             </Authenticated>
