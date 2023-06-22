@@ -21,6 +21,10 @@ export default function Edit({ users, achievements, products, auth }) {
         value: achievements.drw_no,
         label: achievements.drw_no + "  |  " + achievements.product.customer_id,
     });
+    const [shift, setShift] = useState({
+        value: achievements.shift,
+        label: achievements.shift,
+    });
 
     const [productName, setProductName] = useState(
         achievements.product.product_name
@@ -75,6 +79,20 @@ export default function Edit({ users, achievements, products, auth }) {
             ...data,
             drw_no: selectedDrwNo.value,
             product_name: product.product_name,
+        }));
+    };
+
+    const optionShift = Array.isArray(achievements)
+        ? achievements.map((achievement) => ({
+              value: achievement.shift,
+              label: achievement.shift,
+          }))
+        : [];
+    const handleShiftChange = (selectedShift) => {
+        setShift(selectedShift);
+        setData((data) => ({
+            ...data,
+            shift: selectedShift.value,
         }));
     };
 
@@ -179,12 +197,18 @@ export default function Edit({ users, achievements, products, auth }) {
                                         <div className="flex gap-4">
                                             <div className="mb-5">
                                                 <InputLabel value="Shift" />
-                                                <TextInput
-                                                    className=""
+                                                {/* <TextInput
+                                                    className="mb-5"
                                                     type="text"
                                                     name="shift"
                                                     value={data.shift}
                                                     onChange={handleChange}
+                                                /> */}
+                                                <Select
+                                                    className="mb-5"
+                                                    value={shift}
+                                                    options={optionShift}
+                                                    onChange={handleShiftChange}
                                                 />
                                             </div>
                                             <div className="mb-5">
