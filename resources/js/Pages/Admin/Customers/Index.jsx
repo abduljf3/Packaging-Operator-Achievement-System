@@ -137,7 +137,7 @@ export default function index({ customers, auth }) {
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <ButtonGreen className="w-15 h-9">
-                                    Eksport
+                                    Exsport
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
@@ -258,7 +258,7 @@ export default function index({ customers, auth }) {
                         <div className="flex w-full px-10 pb-10 py-3">
                             <div className="inline-block min-w-full overflow-hidden align-middle border-b shadow sm:rounded-lg">
                                 <DataTable
-                                    title="List Product"
+                                    title="List Customer"
                                     columns={columns}
                                     data={filteredData}
                                     pagination
