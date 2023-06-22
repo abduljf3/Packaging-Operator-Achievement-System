@@ -46,11 +46,11 @@ export default function Edit({ users, auth }) {
                     <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
                         <div className="p-4 mx-20 sm:p-8 bg-white shadow sm:rounded-lg">
                             <div className="mb-6 font-extrabold">
-                                <h1>Edit Operator</h1>
+                                <h1>Edit Employee</h1>
                             </div>
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-center gap-20">
-                                    <div className=" mx-10 my-2">
+                                    <div className=" md:w-1/2">
                                         <InputLabel value="NPK" />
 
                                         <TextInput
@@ -81,7 +81,7 @@ export default function Edit({ users, auth }) {
                                             onChange={handleChange}
                                         />
                                     </div>
-                                    <div className="mx-10 my-2">
+                                    <div className="md:w-1/2">
                                         <InputLabel value="Status" />
 
                                         <TextInput

@@ -89,17 +89,16 @@ export default function Edit({ products, customers, auth }) {
         <>
             <Head title="Edit Product" />
             <Authenticated className="bg-white">
-                <div className="flex container justify-start w-full px-10 mx-auto mb-5 bg-white py-3 font-bold">
-                    <h1>Edit Product</h1>
-                </div>
-                <div className="py-5 mx-20">
+                <div className="py-20 mx-20">
                     <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
-                        <div className="p-4 mx-20 sm:p-8 bg-white shadow sm:rounded-lg">
+                        <div className="p-8 mx-20  bg-white shadow sm:rounded-lg">
+                        <div className="mb-5 font-extrabold ">
+                                <h1>Update Product</h1>
+                            </div>
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-center gap-20">
-                                    <div className=" mx-10 my-2">
+                                    <div className="md:w-1/2">
                                         <InputLabel value="Customer Name" />
-
                                         <Select
                                             className="mb-5 block w-full "
                                             options={optionCustomerName}
@@ -109,7 +108,6 @@ export default function Edit({ products, customers, auth }) {
                                             }
                                         />
                                         <InputLabel value="Customer Code" />
-
                                         <TextInput
                                             className="mb-5 w-full block"
                                             type="text"
@@ -117,9 +115,7 @@ export default function Edit({ products, customers, auth }) {
                                             value={customerCode}
                                             onChange={handleChange}
                                         />
-
                                         <InputLabel value="Drawing Number" />
-
                                         <TextInput
                                             className="mb-5 block w-full "
                                             type="text"
@@ -128,9 +124,8 @@ export default function Edit({ products, customers, auth }) {
                                             onChange={handleChange}
                                         />
                                     </div>
-                                    <div className="mx-10 my-2">
+                                    <div className="md:w-1/2">
                                         <InputLabel value="Product Name" />
-
                                         <TextInput
                                             className="mb-5 block w-full "
                                             type="text"
@@ -138,7 +133,6 @@ export default function Edit({ products, customers, auth }) {
                                             value={state.product_name}
                                             onChange={handleChange}
                                         />
-
                                         <InputLabel value="Product Type" />
                                         <Select
                                             className="mb-5 block w-full "
@@ -146,9 +140,7 @@ export default function Edit({ products, customers, auth }) {
                                             value={selectedProductType}
                                             onChange={handleChangeProductType}
                                         />
-
                                         <InputLabel value="Target" />
-
                                         <TextInput
                                             className="mb-5 block w-full "
                                             type="text"
@@ -156,7 +148,15 @@ export default function Edit({ products, customers, auth }) {
                                             value={state.target}
                                             onChange={handleChange}
                                         />
-                                        <div className="flex justify-center mt-6">
+                                        <div className="ml-40 flex justify-center mt-6 gap-3">
+                                        <Link
+                                                href={route(
+                                                    "admin.products.index"
+                                                )}
+                                                className="px-6 py-2 bg-gray-600 text-white rounded hover:bg-gray-800"
+                                                >
+                                                Cancel 
+                                            </Link>
                                             <ButtonGreen type="submit">
                                                 Update
                                             </ButtonGreen>

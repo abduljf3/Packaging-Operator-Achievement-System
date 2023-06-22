@@ -147,7 +147,7 @@ export default function index({ users, auth }) {
 
     return (
         <>
-            <Head title="Operator" />
+            <Head title="Employee" />
 
             <Authenticated>
                 {/* content */}
@@ -283,7 +283,7 @@ export default function index({ users, auth }) {
                         <div className="pt-4 pb-10 px-10  ">
                             <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
                                 <DataTable
-                                    title="Employee"
+                                    title="List Employee"
                                     columns={columns}
                                     data={(users, filteredData)}
                                     pagination
