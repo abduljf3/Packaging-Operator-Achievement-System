@@ -113,14 +113,11 @@ export default function Index({ achievements, from, to,auth }) {
                                     type="submit" className="bg-orange-500 hover:bg-orange-500 focus:bg-orange-600 active:bg-orange-600 focus:ring-orange-400" text="PRINT"/>
                                     <Dropdown>
                                         <Dropdown.Trigger>
-                                            <PrimaryButton className="bg-green-500 hover:bg-green-500 focus:bg-green-600 active:bg-green-600 focus:ring-lime-500" text="EKSPOR">
+                                            <PrimaryButton className="bg-green-500 hover:bg-green-500 focus:bg-green-600 active:bg-green-600 focus:ring-lime-500" text="EKSPORT">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                                             </svg>
                                         </PrimaryButton>  
-                                        
-                                       
-  
                                         </Dropdown.Trigger>
                                         
                                         <Dropdown.Content>
