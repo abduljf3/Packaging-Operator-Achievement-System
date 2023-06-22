@@ -103,26 +103,29 @@ export default function Create({ auth }) {
                                             value={data.customer_name}
                                             onChange={handleChange}
                                         />
-                                        <div className="flex justify-center  gap-3">
+                                         
+                                         <div className="flex justify-center mt-6 gap-3 ml-9">
                                             <Link
                                                 href={route(
-                                                    "admin.products.index"
+                                                    "admin.employee.index"
                                                 )}
-                                                className="ml-24 px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-800"
-                                                >
-                                                CANCEL
+                                                className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-800"
+                                            >
+                                                Cancel
                                             </Link>
                                             <ButtonGreen
                                                 type="submit"
                                                 disabled={submitting}
-                                                className="pr-5"
+                                                className="px-3"
                                             >
                                                 {submitting
                                                     ? "Adding..."
-                                                    : "Add Customer"}
+                                                    : "Add Operator"}
                                             </ButtonGreen>
                                         </div>
+
                                     </div>
+                                    
                                 </div>
                             </form>
                         </div>

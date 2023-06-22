@@ -178,13 +178,17 @@ class LeaderController extends Controller
         return $pdf->download($filename);
     }
 
-    public function cetak_pdf_detail()
+    public function cetak_pdf_detail(Request $request)
     {
-        $achievements = Achievement::all();
+        $from = $request->input('from_date');
+        $to = $request->input('to_date');
+    
+        $achievements = Achievement::whereBetween('date', [$from, $to])->get();
         $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
         $pdf = Pdf::loadview('detail_pdf', ['achievements' => $achievements]);
         return $pdf->download('Laporan_Detail - ' . $dateNow . '.pdf');
     }
+    
     public function printData()
     {
         $achievements = Achievement::all();
