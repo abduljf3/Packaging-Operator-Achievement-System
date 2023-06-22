@@ -1,14 +1,13 @@
 import React from "react";
-import ButtonRed from "@/Components/ButtonRed";
 import ButtonGreen from "@/Components/ButtonGreen";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import Select from "react-select";
-import OperatorLayout from "@/Layouts/OperatorLayout";
+import moment from "moment";
 import Navbar from "@/Components/Navbar";
 import Footer from "@/Components/Footer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, Head, useForm } from "@inertiajs/react";
 import Swal from "sweetalert2";
 
@@ -18,15 +17,15 @@ export default function CreateAchievement({ users, products, massage, props }) {
     const [group, setGroup] = useState("");
     const [selectedDrwNo, setSelectedDrwNo] = useState("");
     const [productName, setProductName] = useState("");
-    const [submitting, setSubmitting] = useState(false);
+    const [currentHour, setCurrentHour] = useState(moment().hour());
+    const [selectedShift, setSelectedShift] = useState("");
     const [formError, SetFormError] = useState(false);
-    const [date, setDate] = useState();
 
     const { data, setData, post, errors } = useForm({
         shift: "",
         group: "",
         npk: "",
-        date: new Date().toISOString().slice(0, 10),
+        date: moment().format("YYYY-MM-DDTHH:mm"),
         drw_no: "",
         spring_lot: "",
         product_lot: "",
@@ -35,7 +34,24 @@ export default function CreateAchievement({ users, products, massage, props }) {
         remarks: "",
     });
 
-    const handleClick1 = () => {
+    const optionShift = [
+        { value: "1", label: "1" },
+        { value: "2", label: "2" },
+        { value: "3", label: "3" },
+    ];
+
+    useEffect(() => {
+        const currentHour = moment().hour();
+        if (currentHour >= 6 && currentHour < 14) {
+            setSelectedShift({ value: "1", label: "1" });
+        } else if (currentHour >= 14 && currentHour < 22) {
+            setSelectedShift({ value: "2", label: "2" });
+        } else {
+            setSelectedShift({ value: "3", label: "3" });
+        }
+    }, []);
+
+    const handleReset = () => {
         window.location.reload();
     };
 
@@ -56,6 +72,10 @@ export default function CreateAchievement({ users, products, massage, props }) {
         label: product.drw_no + "  |  " + product.customer_id,
     }));
 
+    const handleOptionChange = (e) => {
+        setData((data) => ({ ...data, shift: e.value }));
+        setSelectedShift(e);
+    };
     const handleNpkChange = (selectedNpkOption) => {
         setSelectedNpk(selectedNpkOption);
         const user = users.find((u) => u.npk === selectedNpkOption.value);
@@ -136,6 +156,8 @@ export default function CreateAchievement({ users, products, massage, props }) {
                                         onChange={handleNpkChange}
                                         options={optionNpk}
                                         className="mb-5"
+                                        menuPlacement="auto"
+                                        menuPosition="absolute"
                                     />
                                     <InputError message={errors.npk} />
                                     <TextInput
@@ -160,24 +182,34 @@ export default function CreateAchievement({ users, products, massage, props }) {
                                         disabled={true}
                                     />
                                     <InputError message={errors.fullname} />
-                                    <InputLabel value="Date" />
+                                    <InputLabel value="Date & Time" />
                                     <TextInput
-                                        type="date"
+                                        type="text"
                                         className="mb-5 block w-full bg-gray-100"
-                                        value={data.date}
+                                        value={moment(data.date).format(
+                                            "YYYY-MM-DD HH:mm"
+                                        )}
                                         onChange={handleChange}
                                         disabled={true}
                                     />
                                     <InputError message={errors.date} />
                                     <div className="flex gap-4">
-                                        <div className="mb-5">
+                                        <div className="mb-5 w-auto">
                                             <InputLabel value="Shift" />
-                                            <TextInput
-                                                className=""
-                                                type="text"
-                                                name="shift"
-                                                value={data.shift}
-                                                onChange={handleChange}
+                                            <Select
+                                                className="mb-5 block w-full"
+                                                options={optionShift}
+                                                value={
+                                                    (optionShift.find(
+                                                        (option) =>
+                                                            option.value ===
+                                                            data.shift
+                                                    ),
+                                                    selectedShift)
+                                                }
+                                                onChange={handleOptionChange}
+                                                menuPlacement="auto"
+                                                menuPosition="absolute"
                                             />
                                             <InputError
                                                 message={errors.shift}
@@ -198,7 +230,7 @@ export default function CreateAchievement({ users, products, massage, props }) {
                                                 message={errors.group}
                                             />
                                         </div>
-                                    </div>      
+                                    </div>
                                 </div>
                                 <div className="mx-10 my-2">
                                     <div className="flex gap-4">
@@ -216,7 +248,7 @@ export default function CreateAchievement({ users, products, massage, props }) {
                                                 id="drw_no"
                                                 name="drw_no"
                                                 value={data.drw_no}
-                                                readOnly                                       
+                                                readOnly
                                             />
                                         </div>
                                         <div className="">
@@ -227,11 +259,15 @@ export default function CreateAchievement({ users, products, massage, props }) {
                                                 name="product_id"
                                                 value={productName}
                                                 onChange={(e) =>
-                                                    setProductName(e.target.value)
+                                                    setProductName(
+                                                        e.target.value
+                                                    )
                                                 }
-                                                readOnly 
+                                                readOnly
                                             />
-                                            <InputError message={errors.product_name} />
+                                            <InputError
+                                                message={errors.product_name}
+                                            />
                                         </div>
                                     </div>
                                     <div className="flex gap-4">
@@ -298,12 +334,9 @@ export default function CreateAchievement({ users, products, massage, props }) {
                                     />
                                     <InputError message={errors.remarks} />
                                     <div className="flex justify-end gap-4  pt-5">
-                                    {/* <Link href={route('operator')} 
-                                        className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-800"
-                                        >Cancel</Link> */}
-                                        <ButtonRed onClick={handleClick}>
+                                        <ButtonGreen onClick={handleClick}>
                                             Save
-                                        </ButtonRed>
+                                        </ButtonGreen>
                                     </div>
                                 </div>
                             </div>

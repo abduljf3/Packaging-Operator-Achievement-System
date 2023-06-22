@@ -130,12 +130,28 @@ class LeaderController extends Controller
         $achievements = null;
         $from = null;
         $to = null;
-        if( $request->input('from_date')){
+        
+        if ($request->input('from_date')) {
             $from = $request->input('from_date');
             $to = $request->input('to_date');
-            $achievements = Achievement::with(['user','product'])->select('drw_no', DB::raw('SUM(total_lot) as totalLot'), DB::raw('SUM(qty) as totalQty'))->whereBetween('date',[$from,$to])->groupBy('drw_no')->get();
+            $achievements = Achievement::with(['user', 'product'])
+                ->select('drw_no', DB::raw('SUM(total_lot) as totalLot'), DB::raw('SUM(qty) as totalQty'))
+                ->whereBetween('date', [$from, $to])
+                ->groupBy('drw_no')
+                ->get();
+        } else {
+          
+            $now = Carbon::now();
+            $from = $now->startOfMonth()->toDateString();
+            $to = $now->endOfMonth()->toDateString();
+            $achievements = Achievement::with(['user', 'product'])
+                ->select('drw_no', DB::raw('SUM(total_lot) as totalLot'), DB::raw('SUM(qty) as totalQty'))
+                ->whereBetween('date', [$from, $to])
+                ->groupBy('drw_no')
+                ->get();
         }
-        return Inertia::render('Leader/Rekapitulasi',[
+        
+        return Inertia::render('Leader/Rekapitulasi', [
             'achievements' => $achievements,
             'from' => $from,
             'to' => $to
@@ -154,6 +170,11 @@ class LeaderController extends Controller
             $from = $request->input('from_date');
             $to = $request->input('to_date');;
             $to = $request->input('to_date');
+            $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
+        } else{
+            $now = Carbon::now();
+            $from = $now->startOfMonth()->toDateString();
+            $to = $now->endOfMonth()->toDateString();
             $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
         }
         return Inertia::render('Leader/Detail',[

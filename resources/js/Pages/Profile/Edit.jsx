@@ -20,13 +20,6 @@ export default function Edit({ auth, mustVerifyEmail, status, users }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                        <h1>NPK : </h1>
-                        <h1>Nama : </h1>
-                        <h1>Status : </h1>
-                        <h1>Group : </h1>
-                        <h1>Levels : </h1>
-                    </div>
-                    <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                         <UpdateProfileInformationForm
                             mustVerifyEmail={mustVerifyEmail}
                             status={status}
