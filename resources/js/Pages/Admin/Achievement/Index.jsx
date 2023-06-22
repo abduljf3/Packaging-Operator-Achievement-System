@@ -99,9 +99,19 @@ export default function Index({ achievements, from, to, auth }) {
         setFileInputKey((prevKey) => prevKey + 1);
     };
 
-    const Print = () => {
-        window.open("/leader/printData", "_blank");
+    const Print = (e) => {
+        e.preventDefault();
+        const url =
+            route("admin.print_data") +
+            "?" +
+            new URLSearchParams(data).toString();
+        const newTab = window.open(url, "_blank");
+        newTab.onload = function() {
+            newTab.print();
+        };
     };
+    
+    
 
     const columns = [
         {

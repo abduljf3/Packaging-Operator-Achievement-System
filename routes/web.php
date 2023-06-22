@@ -61,6 +61,7 @@ use Inertia\Inertia;
     //Admin Achievement
     Route::resource('achievement',AchievementController::class);
     Route::get('cetak_excel', [LeaderController::class,'cetak_excel'])->name('cetak_excel');
+    Route::get('print_data', [AchievementController::class,'print_data'])->name('print_data');
     Route::get('cetak_pdf_detail', [LeaderController::class,'cetak_pdf_detail'])->name('cetak_pdf_detail');
 
     //Admin Employee
