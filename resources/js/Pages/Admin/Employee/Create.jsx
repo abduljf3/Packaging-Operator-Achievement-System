@@ -5,6 +5,7 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { useState } from "react";
+import Select from "react-select";
 import Swal from "sweetalert2";
 import { Head, Link, useForm } from "@inertiajs/react";
 
@@ -70,6 +71,18 @@ export default function Create({ auth }) {
             });
             setSubmitting(false);
         }
+
+        const handleChangeOption = (selectedOption) => {
+            setData((data) => ({
+                ...data,
+                roles: selectedOption.value,
+            }));
+        };
+        const optionEmployee = [
+            { value: "User", label: "User" },
+            { value: "Admin", label: "Admin" },
+            { value: "Leader", label: "Leader" },
+        ];   
     };
 
     return (
@@ -85,14 +98,22 @@ export default function Create({ auth }) {
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-center gap-3 md:gap-6">
                                     <div className="w-full md:w-1/2">
-                                        <InputLabel value="Roles" />
-                                        <InputError message={errors.npk} />
-                                        <select onChange={roleChange}>
-                                            <option>Pilih</option>
-                                            <option value="User">User</option>
-                                            <option>Admin</option>
-                                            <option>Leader</option>
-                                        </select>
+                                    <InputLabel value="Roles" />
+                                        <InputError
+                                            message={errors.roles}
+                                        />
+                                        <Select
+                                            className="mb-5 block w-full absolute"
+                                            name="roles"
+                                            options={optionEmployee}
+                                            value={optionEmployee.find(
+                                                (option) =>
+                                                    option.value ===
+                                                    data.roles
+                                            )}
+                                            onChange={handleChangeOption}
+                                        />
+    
                                         <InputLabel value="NPK" />
                                         <InputError message={errors.npk} />
                                         <TextInput
@@ -145,15 +166,7 @@ export default function Create({ auth }) {
                                             disabled={!passwordDisabled}
                                         />
 
-                                        <InputLabel value="Roles" />
-                                        <InputError message={errors.roles} />
-                                        <TextInput
-                                            className="mb-5 block w-full "
-                                            type="text"
-                                            name="roles"
-                                            value={data.roles}
-                                            onChange={handleChange}
-                                        />
+                                        
                                         <div className="flex justify-center mt-6 gap-3">
                                             <Link
                                                 href={route(

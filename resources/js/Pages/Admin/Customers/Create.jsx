@@ -6,7 +6,7 @@ import InputLabel from "@/Components/InputLabel";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { useState } from "react";
 import Swal from "sweetalert2";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Create({ auth }) {
     const { data, setData, post, errors } = useForm({
@@ -69,17 +69,17 @@ export default function Create({ auth }) {
 
     return (
         <>
-            <Head title="Add Customers" />
+            <Head title="Add Customer" />
             <Authenticated className="bg-white">
-                <div className="py-5 mx-20">
-                    <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
-                        <div className="p-4 mx-20 sm:p-8 bg-white shadow sm:rounded-lg">
-                            <div className="mb-6 font-extrabold">
-                                <h1>Add Customers</h1>
+                <div className="py-28 mx-20">
+                    <div className=" mx-20">
+                        <div className="p-4 mx-60 bg-white shadow sm:rounded-lg">
+                            <div className="p-4 ml-16 font-extrabold ">
+                                <h1>Add Customer</h1>
                             </div>
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-center gap-20">
-                                    <div className=" mx-10 my-2">
+                                    <div className="mx-20 my-2 w-full">
                                         <InputLabel value="Customer Code" />
                                         <InputError
                                             message={errors.customer_id}
@@ -103,15 +103,23 @@ export default function Create({ auth }) {
                                             value={data.customer_name}
                                             onChange={handleChange}
                                         />
-                                        <div className="flex justify-center mt-6">
+                                        <div className="flex justify-center  gap-3">
+                                            <Link
+                                                href={route(
+                                                    "admin.products.index"
+                                                )}
+                                                className="ml-24 px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-800"
+                                                >
+                                                CANCEL
+                                            </Link>
                                             <ButtonGreen
                                                 type="submit"
                                                 disabled={submitting}
-                                                className=""
+                                                className="pr-5"
                                             >
                                                 {submitting
                                                     ? "Adding..."
-                                                    : "Add Customers"}
+                                                    : "Add Customer"}
                                             </ButtonGreen>
                                         </div>
                                     </div>

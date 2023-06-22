@@ -105,7 +105,7 @@ export default function Navbar({ roles, props, auth, header }) {
                                     href={route("admin.employee.index")}
                                 >
                                     {" "}
-                                    Operator{" "}
+                                    Employee{" "}
                                 </a>
                             </li>
                             <li className="nav-item">
@@ -371,7 +371,7 @@ export default function Navbar({ roles, props, auth, header }) {
                                     href={route("admin.employee.index")}
                                 >
                                     {" "}
-                                    Operator{" "}
+                                    Employee{" "}
                                 </a>
                             </li>
 

@@ -40,19 +40,18 @@ export default function Edit({ customers, auth }) {
 
     return (
         <>
-            <Head title="Edit Product" />
+            <Head title="Edit Customer" />
             <Authenticated className="bg-white">
-                <div className="flex container justify-start w-full px-10 mx-auto mb-5 bg-white py-3 font-bold">
-                    <h1>Edit Product</h1>
-                </div>
-                <div className="py-5 mx-20">
-                    <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
-                        <div className="p-4 mx-20 sm:p-8 bg-white shadow sm:rounded-lg">
+                <div className="py-28 mx-20">
+                    <div className="mx-20">
+                        <div className="p-4 mx-60 bg-white shadow sm:rounded-lg">
+                        <div className="p-4 ml-16 font-extrabold ">
+                                <h1>Update Customer</h1>
+                            </div>
                             <form onSubmit={handleSubmit}>
-                                <div className="flex justify-center gap-20">
-                                    <div className=" mx-10 my-2">
+                                <div className="flex-row justify-center gap-20">
+                                    <div className=" mx-20 my-2">
                                         <InputLabel value="Customer Code" />
-
                                         <TextInput
                                             className="mb-5 w-full block"
                                             type="text"
@@ -61,9 +60,8 @@ export default function Edit({ customers, auth }) {
                                             onChange={handleChange}
                                         />
                                     </div>
-                                    <div className="mx-10 my-2">
+                                    <div className="mx-20 my-2">
                                         <InputLabel value="Customer Name" />
-
                                         <TextInput
                                             className="mb-5 block w-full "
                                             type="text"
@@ -71,11 +69,18 @@ export default function Edit({ customers, auth }) {
                                             value={state.customer_name}
                                             onChange={handleChange}
                                         />
-
-                                        <div className="flex justify-center mt-6">
+                                        <div className="flex justify-center  gap-3">
+                                            <Link
+                                                href={route(
+                                                    "admin.customers.index"
+                                                )}
+                                                className="ml-40 px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-800"
+                                                >
+                                                Cancel 
+                                            </Link>
                                             <ButtonGreen
                                                 type="submit"
-                                                className=""
+                                                className="pr-4"
                                             >
                                                 Update
                                             </ButtonGreen>
