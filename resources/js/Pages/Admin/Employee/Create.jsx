@@ -143,15 +143,7 @@ export default function Create({ auth }) {
                                             onChange={handleChange}
                                         />
 
-                                        <InputLabel value="Group" />
-                                        <InputError message={errors.group} />
-                                        <TextInput
-                                            className="mb-5 block w-full "
-                                            type="text"
-                                            name="group"
-                                            value={data.group}
-                                            onChange={handleChange}
-                                        />
+                                      
                                     </div>
                                     
                                     <div className="w-full md:w-1/2">

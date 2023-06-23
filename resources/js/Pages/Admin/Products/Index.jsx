@@ -56,13 +56,16 @@ export default function index({ products, auth }) {
         window.location.href = url;
     };
 
-    const Print = () => {
-        // console.log("print");
-        let printContents = document.getElementById("printablediv").innerHTML;
-        let originalContents = document.body.innerHTML;
-        document.body.innerHTML = printContents;
-        window.print();
-        document.body.innerHTML = originalContents;
+    const Print = (e) => {
+        e.preventDefault();
+        const url =
+            route("admin.print_data_product") +
+            "?" +
+            new URLSearchParams(data).toString();
+        const newTab = window.open(url, "_blank");
+        newTab.onload = function() {
+            newTab.print();
+        };
     };
 
     const columns = [
