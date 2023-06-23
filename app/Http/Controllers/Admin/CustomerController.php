@@ -26,7 +26,20 @@ class CustomerController extends Controller
             'customers'=>$customers
         ]);
     }
-
+    public function print_data_customer()
+    {
+        $customers = Customer::all();
+        $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
+        $pdf = Pdf::loadView('print_data_customer', ['customers' => $customers]);
+    
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'pdf');
+        $pdf->save($tempFilePath);
+    
+        return response()->file($tempFilePath, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="List_Karyawan - ' . $dateNow . '.pdf"',
+        ])->deleteFileAfterSend(true);
+    }
     /**
      * Show the form for creating a new resource.
      *

@@ -338,6 +338,14 @@ export default function CreateAchievement({ users, products, massage, props }) {
                                         {/* <Link href={route('operator')} 
                                         className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-800"
                                         >Cancel</Link> */}
+                                          <Link
+                                                href={route(
+                                                    "achievementCreate"
+                                                )}
+                                                className="px-6 py-2 bg-gray-600 text-white rounded hover:bg-gray-800"
+                                                >
+                                                Cancel 
+                                            </Link>
                                         <ButtonGreen onClick={handleClick}>
                                             Save
                                         </ButtonGreen>
