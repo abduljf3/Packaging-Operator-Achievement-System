@@ -71,8 +71,6 @@ export default function Create({ auth }) {
             });
             setSubmitting(false);
         }
-
-    
     };
 
     const handleChangeOption = (selectedOption) => {
@@ -82,7 +80,7 @@ export default function Create({ auth }) {
             status: selectedOption.value,
         }));
     };
-    
+
     const optionEmployee = [
         { value: "User", label: "User" },
         { value: "Admin", label: "Admin" },
@@ -107,22 +105,19 @@ export default function Create({ auth }) {
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-center gap-3 md:gap-6">
                                     <div className="w-full md:w-1/2">
-                                    <InputLabel value="Roles" />
-                                        <InputError
-                                            message={errors.roles}
-                                        />
+                                        <InputLabel value="Roles" />
+                                        <InputError message={errors.roles} />
                                         <Select
                                             className="mb-5 block w-full absolute"
                                             name="roles"
                                             options={optionEmployee}
                                             value={optionEmployee.find(
                                                 (option) =>
-                                                    option.value ===
-                                                    data.roles
+                                                    option.value === data.roles
                                             )}
                                             onChange={handleChangeOption}
                                         />
-    
+
                                         <InputLabel value="NPK" />
                                         <InputError message={errors.npk} />
                                         <TextInput
@@ -142,7 +137,21 @@ export default function Create({ auth }) {
                                             value={data.fullname}
                                             onChange={handleChange}
                                         />
+                                    </div>
 
+                                    <div className="w-full md:w-1/2">
+                                        <InputLabel value="Status" />
+                                        <InputError message={errors.status} />
+                                        <Select
+                                            className="mb-5 block w-full absolute"
+                                            name="status"
+                                            options={optionStatus}
+                                            value={optionStatus.find(
+                                                (option) =>
+                                                    option.value === data.status
+                                            )}
+                                            onChange={handleChangeOption}
+                                        />
                                         <InputLabel value="Group" />
                                         <InputError message={errors.group} />
                                         <TextInput
@@ -151,24 +160,6 @@ export default function Create({ auth }) {
                                             name="group"
                                             value={data.group}
                                             onChange={handleChange}
-                                        />
-                                    </div>
-                                    
-                                    <div className="w-full md:w-1/2">
-                                    <InputLabel value="Status" />
-                                        <InputError
-                                            message={errors.status}
-                                        />
-                                        <Select
-                                            className="mb-5 block w-full absolute"
-                                            name="status"
-                                            options={optionStatus}
-                                            value={optionStatus.find(
-                                                (option) =>
-                                                    option.value ===
-                                                    data.status
-                                            )}
-                                            onChange={handleChangeOption}
                                         />
 
                                         <InputLabel value="Password" />
@@ -182,7 +173,6 @@ export default function Create({ auth }) {
                                             disabled={!passwordDisabled}
                                         />
 
-                                        
                                         <div className="flex justify-center mt-6 gap-3">
                                             <Link
                                                 href={route(

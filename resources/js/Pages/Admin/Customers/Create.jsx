@@ -104,17 +104,18 @@ export default function Create({ auth }) {
                                             value={data.customer_name}
                                             onChange={handleChange}
                                         />
-                                         
-                                         <div className="flex justify-center mt-6 gap-3 ml-9">
+
+                                        <div className="flex justify-center mt-6 gap-3 ml-9">
                                             <Link
                                                 href={route(
                                                     "admin.customers.index"
                                                 )}
-                                                
                                             >
-                                                <PrimaryButton>cancel</PrimaryButton>
+                                                <PrimaryButton>
+                                                    cancel
+                                                </PrimaryButton>
                                             </Link>
-                                            
+
                                             <ButtonGreen
                                                 type="submit"
                                                 disabled={submitting}
@@ -122,12 +123,10 @@ export default function Create({ auth }) {
                                             >
                                                 {submitting
                                                     ? "Adding..."
-                                                    : "Add Operator"}
+                                                    : "Add"}
                                             </ButtonGreen>
                                         </div>
-
                                     </div>
-                                    
                                 </div>
                             </form>
                         </div>
