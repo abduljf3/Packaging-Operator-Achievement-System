@@ -79,22 +79,27 @@ class AchievementController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function print_data(Request $request)
-{
-    $from = $request->input('from_date');
-    $to = $request->input('to_date');
-
-    $achievements = Achievement::whereBetween('date', [$from, $to])->get();
-    $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
-    $pdf = Pdf::loadview('detail_pdf', ['achievements' => $achievements]);
-
-    $tempFilePath = tempnam(sys_get_temp_dir(), 'pdf');
-    $pdf->save($tempFilePath);
-
-    return response()->file($tempFilePath, [
-        'Content-Type' => 'application/pdf',
-        'Content-Disposition' => 'inline; filename="Laporan_Detail - ' . $dateNow . '.pdf"',
-    ])->deleteFileAfterSend(true);
-}
+    {
+        $from = $request->input('from_date');
+        $to = $request->input('to_date');
+    
+        $achievements = Achievement::whereBetween('date', [$from, $to])->get();
+        $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
+        $pdf = Pdf::loadView('achievement_pdf', [
+            'achievements' => $achievements,
+            'from' => $from,
+            'to' => $to,
+        ]);
+    
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'pdf');
+        $pdf->save($tempFilePath);
+    
+        return response()->file($tempFilePath, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="Laporan_Detail - ' . $dateNow . '.pdf"',
+        ])->deleteFileAfterSend(true);
+    }
+    
 
 
     public function store(Request $request)
