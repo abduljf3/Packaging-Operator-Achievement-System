@@ -53,13 +53,16 @@ export default function Index({ achievements, from, to, auth }) {
         setData(event.target.name, event.target.value);
     };
 
-    const Print = () => {
-        //console.log('print');
-        let printContents = document.getElementById("printablediv").innerHTML;
-        let originalContents = document.body.innerHTML;
-        document.body.innerHTML = printContents;
-        window.print();
-        document.body.innerHTML = originalContents;
+    const Print = (e) => {
+        e.preventDefault();
+        const url =
+            route("admin.print_data") +
+            "?" +
+            new URLSearchParams(data).toString();
+        const newTab = window.open(url, "_blank");
+        newTab.onload = function() {
+            newTab.print();
+        };
     };
 
     const submit = (e) => {

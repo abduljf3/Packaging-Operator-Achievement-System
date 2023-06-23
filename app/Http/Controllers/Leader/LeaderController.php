@@ -259,4 +259,25 @@ return Excel::download(new RekapitulasiExport($from, $to), 'rekapitulasi.xlsx');
     
         return redirect()->back()->with('success', 'Data has been imported successfully.');
     }
+    public function print_data_detail(Request $request)
+    {
+        $from = $request->input('from_date');
+        $to = $request->input('to_date');
+    
+        $achievements = Achievement::whereBetween('date', [$from, $to])->get();
+        $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
+        $pdf = Pdf::loadView('achievement_pdf', [
+            'achievements' => $achievements,
+            'from' => $from,
+            'to' => $to,
+        ]);
+    
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'pdf');
+        $pdf->save($tempFilePath);
+    
+        return response()->file($tempFilePath, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="Laporan_Detail - ' . $dateNow . '.pdf"',
+        ])->deleteFileAfterSend(true);
+    }
 }

@@ -24,7 +24,20 @@ class ProductController extends Controller
             'products'=>$products
         ]);
     }
-
+    public function print_data_product()
+    {
+        $products = Product::all();
+        $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
+        $pdf = Pdf::loadView('print_data_product', ['products' => $products]);
+    
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'pdf');
+        $pdf->save($tempFilePath);
+    
+        return response()->file($tempFilePath, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="List_Karyawan - ' . $dateNow . '.pdf"',
+        ])->deleteFileAfterSend(true);
+    }
     /**
      * Show the form for creating a new resource.
      *
