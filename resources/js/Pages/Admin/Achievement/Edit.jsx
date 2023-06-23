@@ -148,25 +148,26 @@ export default function Edit({ users, achievements, products, auth }) {
         <>
             <Head title="Edit Achievement" />
             <Authenticated className="bg-white">
-                <div className="py-5">
+                <div className="py-5 bg-gray-100">
                     <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
                         <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                            <div className="mb-6 font-extrabold">
-                                <h1>Edit Achievement </h1>
+                            <div className="mb-6 font-extrabold pl-10">
+                                <h1>Edit Achievement</h1>
                             </div>
-
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-between">
                                     <div className=" mx-10 my-2">
                                         <InputLabel value="NPK" />
-
                                         <Select
                                             id="npk"
                                             onChange={handleNpkChange}
                                             option={optionNpk}
                                             value={selectedNpk}
                                             className="mb-5"
+                                            menuPlacement="auto"
+                                            menuPosition="absolute"
                                         />
+
                                         <TextInput
                                             className="hidden"
                                             type="text"
@@ -175,15 +176,15 @@ export default function Edit({ users, achievements, products, auth }) {
                                             value={data.npk}
                                             readOnly
                                         />
-
                                         <InputLabel value="Name" />
                                         <TextInput
-                                            className="mb-5 block w-full"
+                                            className="mb-5 block bg-gray-100 w-full"
                                             type="text"
                                             id="fullname"
                                             name="fullname"
                                             value={fullname}
                                             readOnly
+                                            disabled={true}
                                         />
 
                                         <InputLabel value="Date" />
@@ -192,18 +193,12 @@ export default function Edit({ users, achievements, products, auth }) {
                                             className="mb-5 block w-full"
                                             value={data.date}
                                             onChange={handleChange}
+                                            disabled={true}
                                         />
 
                                         <div className="flex gap-4">
-                                            <div className="mb-5">
+                                            <div className="mb-5 w-auto">
                                                 <InputLabel value="Shift" />
-                                                {/* <TextInput
-                                                    className="mb-5"
-                                                    type="text"
-                                                    name="shift"
-                                                    value={data.shift}
-                                                    onChange={handleChange}
-                                                /> */}
                                                 <Select
                                                     className="mb-5"
                                                     value={shift}
@@ -222,40 +217,44 @@ export default function Edit({ users, achievements, products, auth }) {
                                                 />
                                             </div>
                                         </div>
-                                        <InputLabel value="Drawing Number" />
-                                        <Select
-                                            options={optionDrwNo}
-                                            value={selectedDrwNo}
-                                            onChange={handleDrwNoChange}
-                                            className="mb-5"
-                                        />
-
-                                        <TextInput
-                                            className="hidden"
-                                            type="text"
-                                            id="drw_no"
-                                            name="drw_no"
-                                            value={data.drw_no}
-                                            readOnly
-                                        />
                                     </div>
-
                                     <div className="mx-10 my-2">
-                                        <InputLabel value="Product Name" />
-                                        <TextInput
-                                            className="mb-5 block w-full"
-                                            type="text"
-                                            name="product_id"
-                                            value={productName}
-                                            onChange={(e) =>
-                                                setProductName(e.target.value)
-                                            }
-                                        />
-
+                                        <div className="flex gap-4">
+                                            <div className="mb-5">
+                                                <InputLabel value="Drawing Number" />
+                                                <Select
+                                                    options={optionDrwNo}
+                                                    value={selectedDrwNo}
+                                                    onChange={handleDrwNoChange}
+                                                    className=""
+                                                />
+                                                <TextInput
+                                                    className="hidden"
+                                                    type="text"
+                                                    id="drw_no"
+                                                    name="drw_no"
+                                                    value={data.drw_no}
+                                                    readOnly
+                                                />
+                                            </div>
+                                            <div className="">
+                                                <InputLabel value="Product Name" />
+                                                <TextInput
+                                                    className="mb-5 block w-full"
+                                                    type="text"
+                                                    name="product_id"
+                                                    value={productName}
+                                                    onChange={(e) =>
+                                                        setProductName(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
                                         <div className="flex gap-4">
                                             <div className="mb-5">
                                                 <InputLabel value="Spring Lot No" />
-
                                                 <TextInput
                                                     className=""
                                                     type="text"
@@ -297,7 +296,7 @@ export default function Edit({ users, achievements, products, auth }) {
                                                 />
                                             </div>
                                         </div>
-                                        <InputLabel value="Remaks" />
+                                        <InputLabel value="Remarks" />
                                         <TextInput
                                             className="mb-5 block w-full"
                                             type="text"
@@ -305,13 +304,13 @@ export default function Edit({ users, achievements, products, auth }) {
                                             value={data.remarks}
                                             onChange={handleChange}
                                         />
-                                    </div>
-                                </div>
 
-                                <div className="flex justify-end gap-4 mx-10 my-2">
-                                    <ButtonGreen type="submit">
-                                        Update
-                                    </ButtonGreen>
+                                        <div className="flex justify-end gap-4  pt-5">
+                                            <ButtonGreen type="submit">
+                                                Update
+                                            </ButtonGreen>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </div>

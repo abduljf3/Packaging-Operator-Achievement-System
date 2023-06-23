@@ -111,7 +111,15 @@ export default function Edit({ users, auth }) {
                                             value={data.roles}
                                             onChange={handleChange}
                                         />
-                                        <div className="flex justify-center mt-6">
+                                        <div className="flex justify-center mt-6 gap-4">
+                                            <Link
+                                                href={route(
+                                                    "admin.employee.index"
+                                                )}
+                                                className="px-6 py-2 bg-gray-600 text-white rounded hover:bg-gray-800"
+                                            >
+                                                Cancel
+                                            </Link>
                                             <ButtonGreen
                                                 type="submit"
                                                 className=""
