@@ -1,20 +1,78 @@
+import ButtonGreen from "@/Components/ButtonGreen";
+import ButtonOrange from "@/Components/ButtonOrange";
+import ButtonRed from "@/Components/ButtonRed";
+import Calendar from "@/Components/Calendar";
+import Dropdown from "@/Components/Dropdown";
+import FlashMessage from "@/Components/FlashMessage";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { Link } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import DataTable from "react-data-table-component";
-import ButtonRed from "@/Components/ButtonRed";
-import ButtonOrange from "@/Components/ButtonOrange";
-import ButtonGreen from "@/Components/ButtonGreen";
-import { Inertia } from "@inertiajs/inertia";
-import Dropdown from "@/Components/Dropdown";
+import Swal from "sweetalert2";
 
-export default function index({ products, auth }) {
-    console.log(products);
+export default function index({ products, auth,flashMessage }) {
     const [filterText, setFilterText] = useState("");
-    const data = {};
+    const {delete: destroy} = useForm();
     const handleFilter = (event) => {
         const value = event.target.value || "";
         setFilterText(value);
+    };
+    
+    const handleDelete = async (id) => {
+        Swal.fire({
+            text: 'Yakin Ingin Hapus?',
+            icon: 'warning',
+            showDenyButton: true,
+            showCancelButton: true,
+            showConfirmButton:false,
+            denyButtonText: 'Hapus',
+        }).then((result) => {
+            if (result.isDenied) {
+                destroy(route('admin.products.destroy',id))
+            }
+        });
+    };
+    const handlePrint = () => {
+        Swal.fire({
+            text: 'Cetak data produk?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Cetak',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const newWindow = window.open(route('admin.product.print'));
+                newWindow.focus();
+            }   
+        });       
+        
+    };
+
+    const handleExportPdf = () => {
+        Swal.fire({
+            text: 'Export data karyawan ke Pdf?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Export',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const newWindow = window.open(route('admin.product.export.pdf'));
+                newWindow.focus();
+            }   
+        });       
+    };
+
+    const handleExportExcel = () => {
+        Swal.fire({
+            text: 'Export data karyawan ke Excel?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Export',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const newWindow = window.open(route('admin.product.export.excel'));
+                newWindow.focus();
+            }   
+        });       
     };
 
     const filteredData = products.filter(
@@ -22,51 +80,11 @@ export default function index({ products, auth }) {
             row.product_name.toLowerCase().includes(filterText.toLowerCase()) ||
             row.drw_no.toLowerCase().includes(filterText.toLowerCase()) ||
             row.product_type.toLowerCase().includes(filterText.toLowerCase()) ||
-            row.customer_id.toLowerCase().includes(filterText.toLowerCase()) ||
-            row.customer_name
-                .toLowerCase()
-                .includes(filterText.toLowerCase()) ||
-            (typeof row.target === "string" &&
+            row.customer.customer_code.toLowerCase().includes(filterText.toLowerCase()) ||
+            row.customer.customer_name.toLowerCase().includes(filterText.toLowerCase()) ||
+                (typeof row.target === "string" &&
                 row.target.toLowerCase().includes(filterText.toLowerCase()))
     );
-
-    const [deleting, setDeleting] = useState(false);
-
-    const handleDelete = async (id) => {
-        setDeleting(true);
-        const url = route("admin.products.index");
-        window.location.href = url;
-        await Inertia.delete(`/admin/products/${id}`);
-        setDeleting(false);
-    };
-    const cetak_pdf_product = (e) => {
-        e.preventDefault();
-        const url =
-            route("admin.cetak_pdf_product") +
-            "?" +
-            new URLSearchParams(data).toString();
-        window.location.href = url;
-    };
-    const cetak_excel_product = (e) => {
-        e.preventDefault();
-        const url =
-            route("admin.cetak_excel_product") +
-            "?" +
-            new URLSearchParams(data).toString();
-        window.location.href = url;
-    };
-
-    const Print = (e) => {
-        e.preventDefault();
-        const url =
-            route("admin.print_data_product") +
-            "?" +
-            new URLSearchParams(data).toString();
-        const newTab = window.open(url, "_blank");
-        newTab.onload = function() {
-            newTab.print();
-        };
-    };
 
     const columns = [
         {
@@ -76,12 +94,7 @@ export default function index({ products, auth }) {
         },
         {
             name: "Customer Code",
-            selector: (row) => row.customer_id,
-            sortable: true,
-        },
-        {
-            name: "Customer Name",
-            selector: (row) => row.customer_name,
+            selector: (row) => row.customer.customer_code,
             sortable: true,
         },
         {
@@ -108,9 +121,9 @@ export default function index({ products, auth }) {
             name: "Action",
             cell: (row) => (
                 <>
-                    <a
+                    <Link
                         href={route("admin.products.edit", row.id)}
-                        className="text-green-500 hover:text-green-900 duration-500 mr-5"
+                        className="text-green-500 hover:text-green-900 duration-500 mr-3"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -126,27 +139,25 @@ export default function index({ products, auth }) {
                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                             />
                         </svg>
-                    </a>
+                    </Link>
 
-                    <a
-                        disabled={deleting}
-                        onClick={() => handleDelete(row.id)}
-                        className="w-6 h-6 text-red-500 hover:text-red-900 duration-500"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                            />
-                        </svg>
-                    </a>
+                    <div onClick={() => handleDelete(row.id)}>
+                        <button type='button' className="w-6 h-6 text-red-500 hover:text-red-900 duration-500">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                />
+                            </svg>
+                        </button>
+                    </div>
                 </>
             ),
         },
@@ -154,10 +165,14 @@ export default function index({ products, auth }) {
 
     return (
         <>
-            <Authenticated>
+            <Authenticated className="bg-gray-200">
+                {flashMessage?.message &&(
+                    <FlashMessage message={flashMessage.message} type={flashMessage.type}/>
+                )}
+                <Calendar/>
                 <div className="">
-                    <div className="flex justify-end  px-10 pt-3 gap-3 ">
-                        <ButtonOrange onClick={Print}>Print</ButtonOrange>
+                    <div className="flex justify-end container mx-auto gap-3">
+                        <ButtonOrange onClick={handlePrint}>Print</ButtonOrange>
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <ButtonGreen className="w-15 h-9">
@@ -180,7 +195,7 @@ export default function index({ products, auth }) {
                             </Dropdown.Trigger>
                             <Dropdown.Content>
                                 <Dropdown.Link
-                                    onClick={cetak_pdf_product}
+                                    onClick={handleExportPdf}
                                     className="w-full flex gap-3 justify-start bg-transparent"
                                 >
                                     <svg
@@ -202,7 +217,7 @@ export default function index({ products, auth }) {
                                     PDF
                                 </Dropdown.Link>
                                 <Dropdown.Link
-                                    onClick={cetak_excel_product}
+                                    onClick={handleExportExcel}
                                     className="container flex gap-3"
                                 >
                                     <svg
@@ -279,7 +294,7 @@ export default function index({ products, auth }) {
                 </div>
                 <div>
                     <div id="printablediv">
-                        <div className="flex w-full px-10 pb-10 py-3">
+                        <div className="flex w-full container mx-auto pb-10 py-3">
                             <div className="inline-block min-w-full overflow-hidden align-middle border-b shadow sm:rounded-lg">
                                 <DataTable
                                     title="List Product"
@@ -289,24 +304,7 @@ export default function index({ products, auth }) {
                                     dense
                                     highlightOnHover
                                     actions={
-                                        // <Link href={route("admin.products.create")}>
-                                        //     <ButtonRed className=" mr-5 my-5">
-                                        //         <svg
-                                        //             xmlns="http://www.w3.org/2000/svg"
-                                        //             viewBox="0 0 24 24"
-                                        //             fill="currentColor"
-                                        //             className="w-6 h-6 flex"
-                                        //         >
-                                        //             <path
-                                        //                 fillRule="evenodd"
-                                        //                 d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
-                                        //                 clipRule="evenodd"
-                                        //             />
-                                        //         </svg>
-                                        //         Add Product
-                                        //     </ButtonRed>
-                                        // </Link>
-                                        <label className="w-100 h-100 mx-3 my-5 relative text-gray-400 focus-within:text-gray-600 block duration-500">
+                                        <label className="w-100 h-100 my-5 relative text-gray-400 focus-within:text-gray-600 block duration-500">
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20"

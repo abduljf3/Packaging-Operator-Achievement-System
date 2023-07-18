@@ -13,7 +13,7 @@ class AdminCustomerExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        return Customer::select( 'id','customer_id','customer_name')
+        return Customer::select( 'id','customer_code','customer_name')
             ->get();
     }
     

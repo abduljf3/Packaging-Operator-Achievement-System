@@ -17,15 +17,17 @@ return new class extends Migration
             $table->id();
             $table->date('date')->nullable();
             $table->integer('shift')->nullable();
-       
-            $table->string('npk')->nullable();
-            $table->string('drw_no')->nullable();
             $table->string('spring_lot')->nullable();
             $table->string('product_lot')->nullable();
             $table->string('total_lot')->nullable();
             $table->string('qty')->nullable();
             $table->string('remarks')->nullable();
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

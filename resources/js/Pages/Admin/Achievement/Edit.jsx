@@ -1,298 +1,229 @@
-import React, { usedata, useEffect } from "react";
-import { Inertia } from "@inertiajs/inertia";
 import ButtonGreen from "@/Components/ButtonGreen";
-import TextInput from "@/Components/TextInput";
+import Calendar from "@/Components/Calendar";
 import InputLabel from "@/Components/InputLabel";
-import Select from "react-select";
+import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { router, Link, Head, useForm } from "@inertiajs/react";
+import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useState } from "react";
+import Select from "react-select";
 import Swal from "sweetalert2";
 
-export default function Edit({ users, achievements, products, auth }) {
-    console.log(products);
-    const [selectedNpk, setSelectedNpk] = useState({
-        value: achievements.user.npk,
-        label: achievements.user.npk,
-    });
-    const [fullname, setFullname] = useState(achievements.user.fullname);
-    const [group, setGroup] = useState(achievements.user.group);
-    const [selectedDrwNo, setSelectedDrwNo] = useState({
-        value: achievements.drw_no,
-        label: achievements.drw_no + "  |  " + achievements.product.customer_id,
-    });
-    const [shift, setShift] = useState({
-        value: achievements.shift,
-        label: achievements.shift,
-    });
-
-    const [productName, setProductName] = useState(
-        achievements.product.product_name
-    );
-
-    const { data, setData, post } = useForm({
-        id: achievements.id,
-        date: achievements.date,
-        shift: achievements.shift,
-        group: achievements.group,
-        proses: achievements.proses,
-        user_id: achievements.user_id,
-        npk: achievements.npk,
-        fullname: achievements.user.fullname,
-        customer_id: achievements.customer_id,
-        drw_no: achievements.drw_no,
-        product_id: achievements.product_id,
-        spring_lot: achievements.spring_lot,
-        product_lot: achievements.product_lot,
-        total_lot: achievements.total_lot,
-        qty: achievements.qty,
-        remarks: achievements.remarks,
+export default function Edit({ users, achievement, products, auth }) {
+    const [selectedUser, setSelectedUser] = useState({});
+    const [selectedProduct, setSelectedProduct] = useState({});
+    const [selectedShift, setSelectedShift] = useState({});
+    const { data, setData } = useForm({
+        id: achievement.id,
+        date: achievement.date,
+        shift: achievement.shift,
+        group: achievement.user.group,
+        user_id: achievement.user_id,
+        npk: achievement.user.npk,
+        fullname: achievement.user.fullname,
+        customer_id: achievement.product.customer_id,
+        drw_no: achievement.product.drw_no,
+        product_id: achievement.product_id,
+        product_name: achievement.product.product_name,
+        spring_lot: achievement.spring_lot,
+        product_lot: achievement.product_lot,
+        total_lot: achievement.total_lot,
+        qty: achievement.qty,
+        remarks: achievement.remarks,
     });
 
-    const optionNpk = users.map((user) => ({
-        value: user.npk,
+    const optionUsers = users.map((user) => ({
+        value: user.id,
         label: user.npk,
     }));
-    const optionDrwNo = products?.map((product) => ({
-        value: product.drw_no,
-        label: product.drw_no + "  |  " + product.customer_id,
+
+    const optionProducts = products.map((product) => ({
+        value: product.id,
+        label: product.drw_no,
     }));
 
-    const handleNpkChange = (selectedNpkOption) => {
-        setSelectedNpk(selectedNpkOption);
-        const user = users.find((u) => u.npk === selectedNpkOption.value);
-        setFullname(user.fullname);
-        setGroup(user.group);
+    const handleUserChange = (selectedOption) => {
+        const user = users.find((item) => item.id === selectedOption.value);
         setData((data) => ({
             ...data,
-            npk: selectedNpkOption.value,
+            user_id:selectedOption.value,
+            fullname:user.fullname,
             group: user.group,
         }));
     };
 
-    const handleDrwNoChange = (selectedDrwNo) => {
-        setSelectedDrwNo(selectedDrwNo);
-        const product = products.find((p) => p.drw_no === selectedDrwNo.value);
-        setProductName(product.product_name);
-        setGroup(product.product_name);
+    const handleProductChange = (selectedOption) => {
+        const product = products.find((item) => item.id === selectedOption.value);
         setData((data) => ({
             ...data,
-            drw_no: selectedDrwNo.value,
+            product_id: selectedOption.value,
             product_name: product.product_name,
         }));
     };
 
-    const optionShift = Array.isArray(achievements)
-        ? achievements.map((achievement) => ({
-              value: achievement.shift,
-              label: achievement.shift,
-          }))
-        : [];
-    const handleShiftChange = (selectedShift) => {
-        setShift(selectedShift);
+    const optionShifts = [
+        { value: 1, label: 1 },
+        { value: 2, label: 2 },
+        { value: 3, label: 3 },
+    ];
+
+    const handleShiftChange = (selectedOption) => {
         setData((data) => ({
             ...data,
-            shift: selectedShift.value,
+            shift: selectedOption.value,
         }));
-    };
-
-    const handleChange = (e) => {
-        setData(e.target.name, e.target.value);
-
-        if (key === "npk") {
-            // Look up the corresponding fullname from the users array
-            const user = users.find((user) => user.npk === value);
-            const fullname = user ? user.fullname : "";
-            const shift = user ? user.shift : "";
-            const group = user ? user.group : "";
-            setData((data) => ({
-                ...data,
-                npk: value,
-                fullname,
-                shift,
-                group,
-            }));
-        } else if (key === "drw_no") {
-            // Look up the corresponding product name from the products array
-            const product = products.find(
-                (product) => product.drw_no === value
-            );
-            const product_name = product ? product.product_name : "";
-            const customer_id = product ? product.customer_id : "";
-            setData((data) => ({
-                ...data,
-                drw_no: value,
-                product_name,
-                customer_id,
-            }));
-        } else {
-            setData((data) => ({ ...data, [key]: value }));
-        }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: "Data berhasil diupdate",
-            showConfirmButton: false,
-        });
-        router.post(route("admin.achievement.update", achievements.id), {
-            _method: "PUT",
-            ...data,
-        });
+            text: 'Simpan?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.post(route("admin.achievement.update", achievement.id), {
+                    _method: "PUT",
+                    ...data,
+                });
+            }
+        })
+        
     };
 
     return (
         <>
             <Head title="Edit Achievement" />
-            <Authenticated className="bg-white">
-                <div className="py-5 bg-gray-100">
-                    <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
-                        <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                            <div className="mb-6 font-extrabold pl-10">
+            <Authenticated className="bg-gray-200">
+                <Calendar/>
+                <div className="flex justify-center w-full items-center py-20">
+                    <div className="w-full md:max-w-7xl">
+                        <div className="p-4 bg-white shadow sm:rounded-lg">
+                            <div className="mb-6 font-extrabold">
                                 <h1>Edit Achievement</h1>
                             </div>
                             <form onSubmit={handleSubmit}>
-                                <div className="flex justify-between">
-                                    <div className=" mx-10 my-2">
-                                        <InputLabel value="NPK" />
-                                        <Select
-                                            id="npk"
-                                            onChange={handleNpkChange}
-                                            option={optionNpk}
-                                            value={selectedNpk}
-                                            className="mb-5"
-                                            menuPlacement="auto"
-                                            menuPosition="absolute"
-                                        />
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <div className="w-full">
+                                        <div className="mb-5">
+                                            <InputLabel value="NPK" />
+                                            <Select
+                                                onChange={handleUserChange}
+                                                options={optionUsers}
+                                                value={optionUsers.find(optionUser => optionUser.value === data.user_id)}
+                                                className="bg-gray-100"
+                                                menuPlacement="auto"
+                                                menuPosition="absolute"
+                                            />
+                                        </div>
 
-                                        <TextInput
-                                            className="hidden"
-                                            type="text"
-                                            id="npk"
-                                            name="npk"
-                                            value={data.npk}
-                                            readOnly
-                                        />
-                                        <InputLabel value="Name" />
-                                        <TextInput
-                                            className="mb-5 block bg-gray-100 w-full"
-                                            type="text"
-                                            id="fullname"
-                                            name="fullname"
-                                            value={fullname}
-                                            readOnly
-                                            disabled={true}
-                                        />
-
-                                        <InputLabel value="Date" />
-                                        <TextInput
-                                            type="date"
-                                            className="mb-5 block w-full"
-                                            value={data.date}
-                                            onChange={handleChange}
-                                            disabled={true}
-                                        />
-
-                                        <div className="flex gap-4">
-                                            <div className="mb-5 w-auto">
+                                        <div className="mb-5">
+                                            <InputLabel value="Name" />
+                                            <TextInput
+                                                className="block bg-gray-100 w-full"
+                                                type="text"
+                                                id="fullname"
+                                                name="fullname"
+                                                value={data.fullname}
+                                                readOnly
+                                                disabled={true}
+                                            />
+                                        </div>
+                                        <div className="mb-5">
+                                            <InputLabel value="Group" />
+                                            <TextInput
+                                                className="block bg-gray-100 w-full"
+                                                type="text"
+                                                name="group"
+                                                value={data.group}
+                                                disabled={true}
+                                            />
+                                        </div>
+                                        
+                                        <div className="flex gap-3">
+                                            <div className="w-full md:w-1/2">
+                                                <InputLabel value="Date" />
+                                                <TextInput
+                                                    type="date"
+                                                    className="block bg-gray-100 w-full"
+                                                    value={data.date}
+                                                    onChange={(e) => setData('date', e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="w-full md:w-1/2">
                                                 <InputLabel value="Shift" />
                                                 <Select
-                                                    className="mb-5"
-                                                    value={shift}
-                                                    options={optionShift}
+                                                    className="block"
+                                                    value={optionShifts.find(optionShift => optionShift.value === data.shift)}
+                                                    options={optionShifts}
                                                     onChange={handleShiftChange}
                                                 />
                                             </div>
-                                            <div className="mb-5">
-                                                <InputLabel value="Group" />
-                                                <TextInput
-                                                    className=""
-                                                    type="text"
-                                                    name="group"
-                                                    value={group}
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
+                                            
                                         </div>
                                     </div>
-                                    <div className="mx-10 my-2">
-                                        <div className="flex gap-4">
-                                            <div className="mb-5">
+                                    <div className="w-full">
+                                        <div className="flex gap-4 mb-5">
+                                            <div className="w-full md:w-1/2">
                                                 <InputLabel value="Drawing Number" />
                                                 <Select
-                                                    options={optionDrwNo}
-                                                    value={selectedDrwNo}
-                                                    onChange={handleDrwNoChange}
+                                                    options={optionProducts}
+                                                    value={optionProducts.find(optionProduct => optionProduct.value === data.product_id)}
+                                                    onChange={handleProductChange}
                                                     className=""
                                                 />
-                                                <TextInput
-                                                    className="hidden"
-                                                    type="text"
-                                                    id="drw_no"
-                                                    name="drw_no"
-                                                    value={data.drw_no}
-                                                    readOnly
-                                                />
                                             </div>
-                                            <div className="">
+                                            <div className="w-full md:w-1/2">
                                                 <InputLabel value="Product Name" />
                                                 <TextInput
-                                                    className="mb-5 block w-full"
+                                                    className="block w-full bg-gray-100"
                                                     type="text"
-                                                    name="product_id"
-                                                    value={productName}
-                                                    onChange={(e) =>
-                                                        setProductName(
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                />
+                                                    name="product_name"
+                                                    disabled={true}
+                                                    value={data.product_name}                                                />
                                             </div>
                                         </div>
-                                        <div className="flex gap-4">
-                                            <div className="mb-5">
+                                        <div className="flex gap-4 mb-5">
+                                            <div className="w-full md:w-1/2">
                                                 <InputLabel value="Spring Lot No" />
                                                 <TextInput
-                                                    className=""
+                                                    className="block w-full"
                                                     type="text"
                                                     name="spring_lot"
                                                     value={data.spring_lot}
-                                                    onChange={handleChange}
+                                                    onChange={(e) => setData('spring_lot', e.target.value)}
                                                 />
                                             </div>
-                                            <div className="mb-5">
+                                            <div className="w-full md:w-1/2">
                                                 <InputLabel value="Product Lot No" />
                                                 <TextInput
-                                                    className=""
+                                                    className="block w-full"
                                                     type="text"
                                                     name="product_lot"
                                                     value={data.product_lot}
-                                                    onChange={handleChange}
+                                                    onChange={(e) => setData('product_lot', e.target.value)}
                                                 />
                                             </div>
                                         </div>
-                                        <div className="flex gap-4">
-                                            <div className="mb-5">
+                                        <div className="flex gap-4 mb-5">
+                                            <div className="w-full md:w-1/2">
                                                 <InputLabel value="Total Lot" />
                                                 <TextInput
-                                                    className=""
+                                                    className="block w-full"
                                                     type="text"
                                                     name="total_lot"
                                                     value={data.total_lot}
-                                                    onChange={handleChange}
+                                                    onChange={(e) => setData('total_lot', e.target.value)}
                                                 />
                                             </div>
-                                            <div className="mb-5">
+                                            <div className="w-full md:w-1/2">
                                                 <InputLabel value="Qty(pcs)" />
                                                 <TextInput
-                                                    className=""
+                                                    className="block w-full"
                                                     type="text"
                                                     name="qty"
                                                     value={data.qty}
-                                                    onChange={handleChange}
+                                                    onChange={(e) => setData('qty', e.target.value)}
                                                 />
                                             </div>
                                         </div>
@@ -301,11 +232,14 @@ export default function Edit({ users, achievements, products, auth }) {
                                             className="mb-5 block w-full"
                                             type="text"
                                             name="remarks"
-                                            value={data.remarks}
-                                            onChange={handleChange}
+                                            value={data.remarks || ''}
+                                            onChange={(e) => setData('remarks', e.target.value)}
                                         />
 
-                                        <div className="flex justify-end gap-4  pt-5">
+                                        <div className="flex justify-end gap-4 pt-5">
+                                            <Link href={route("admin.achievement.index")} className="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-opacity-75 duration-500 ">
+                                                    CANCEL
+                                            </Link>
                                             <ButtonGreen type="submit">
                                                 Update
                                             </ButtonGreen>
@@ -316,6 +250,7 @@ export default function Edit({ users, achievements, products, auth }) {
                         </div>
                     </div>
                 </div>
+
             </Authenticated>
         </>
     );

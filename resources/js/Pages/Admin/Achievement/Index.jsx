@@ -1,17 +1,20 @@
-import TextInput from "@/Components/TextInput";
-import { Head, useForm, Link, router } from "@inertiajs/react";
 import ButtonGreen from "@/Components/ButtonGreen";
-import { useState, useRef } from "react";
-import DataTable, { createTheme } from "react-data-table-component";
-import { Inertia } from "@inertiajs/inertia";
-import Authenticated from "@/Layouts/AuthenticatedLayout";
 import ButtonOrange from "@/Components/ButtonOrange";
+import Calendar from "@/Components/Calendar";
 import Dropdown from "@/Components/Dropdown";
-import { toast, ToastContainer } from "react-toastify";
+import FlashMessage from "@/Components/FlashMessage";
+import TextInput from "@/Components/TextInput";
+import Authenticated from "@/Layouts/AuthenticatedLayout";
+import { Head, Link, router, useForm } from "@inertiajs/react";
+import { useState } from "react";
+import DataTable from "react-data-table-component";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
-export default function Index({ achievements, from, to, auth }) {
-    const { data, setData, get, processing, errors, reset } = useForm({
+export default function Index({ achievements, from, to, auth,flashMessage }) {
+    const [isLoading, setIsLoading] = useState(false);
+    const {delete: destroy} = useForm();
+    const { data, setData, get } = useForm({
         from_date: from,
         to_date: to,
     });
@@ -29,23 +32,25 @@ export default function Index({ achievements, from, to, auth }) {
                 .toLowerCase()
                 .includes(filterText.toLowerCase()) ||
             row.user.group.toLowerCase().includes(filterText.toLowerCase()) ||
-            row.npk.toLowerCase().includes(filterText.toLowerCase()) ||
-            row.drw_no.toLowerCase().includes(filterText.toLowerCase()) ||
-            row.total_lot.toLowerCase().includes(filterText.toLowerCase()) ||
+            row.user.npk.toLowerCase().includes(filterText.toLowerCase()) ||
+            row.product.drw_no.toLowerCase().includes(filterText.toLowerCase()) ||
+            row.product_lot.toLowerCase().includes(filterText.toLowerCase()) ||
             row.qty.toLowerCase().includes(filterText.toLowerCase())
     );
 
-    const [deleting, setDeleting] = useState(false);
-
     const handleDelete = async (id) => {
-        setDeleting(true);
-
-        await Inertia.delete(`/admin/achievement/${id}`);
-
-        const url = new URL(window.location.href);
-        window.location.href = url.toString();
-
-        setDeleting(false);
+        Swal.fire({
+            text: 'Yakin Ingin Hapus?',
+            icon: 'warning',
+            showDenyButton: true,
+            showCancelButton: true,
+            showConfirmButton:false,
+            denyButtonText: 'Hapus',
+        }).then((result) => {
+            if (result.isDenied) {
+                destroy(route('admin.achievement.destroy',id))
+            }
+        });
     };
 
     const handleOnChange = (event) => {
@@ -56,23 +61,7 @@ export default function Index({ achievements, from, to, auth }) {
         e.preventDefault();
         get(route("admin.achievement.index"));
     };
-
-    const cetak_excel = (e) => {
-        e.preventDefault();
-        const url =
-            route("admin.cetak_excel") +
-            "?" +
-            new URLSearchParams(data).toString();
-        window.location.href = url;
-    };
-    const cetak_pdf_detail = (e) => {
-        e.preventDefault();
-        const url =
-            route("admin.cetak_pdf_detail") +
-            "?" +
-            new URLSearchParams(data).toString();
-        window.location.href = url;
-    };
+    
     const [selectedFile, setSelectedFile] = useState(null);
     const [fileInputKey, setFileInputKey] = useState(0);
 
@@ -80,42 +69,132 @@ export default function Index({ achievements, from, to, auth }) {
         setSelectedFile(e.target.files[0]);
     };
 
-    const handleImport = async () => {
-        if (!selectedFile) {
-            toast.error("No file selected!", {
-                position: toast.POSITION.TOP_RIGHT,
-            });
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-        router.post("/import", formData);
-        toast.success("Import successful!", {
-            position: toast.POSITION.TOP_RIGHT,
-        });
-
-        setSelectedFile(null);
-        setFileInputKey((prevKey) => prevKey + 1);
-    };
-
-    const Print = (e) => {
+    const handleImport = async (e) => {
         e.preventDefault();
-        const url =
-            route("admin.print_data") +
-            "?" +
-            new URLSearchParams(data).toString();
-        const newTab = window.open(url, "_blank");
-        newTab.onload = function() {
-            newTab.print();
-        };
+        Swal.fire({
+            text: 'Upload Data Ini?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Upload',
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                setIsLoading(true);
+                const formData = new FormData();
+                formData.append("file", selectedFile);
+                try {
+                    router.post(route('admin.achievement.import'), formData);
+                } catch (error) {
+                    Swal.fire({
+                        text: 'Upload file gagal',
+                        showConfirmButton: false,
+                        icon: 'error',
+                        timer: 3000,
+                    })
+                    setIsLoading(false);
+                }
+            }
+            setSelectedFile(null);
+        });
+    };   
+
+    const handleRemoveAttachment = () => {
+        setSelectedFile(null);
+    }
+
+    const handlePrint = () => {
+        Swal.fire({
+          text: 'Cetak data Achievement?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Cetak',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const queryParams = new URLSearchParams();
+            if (data.from_date) {
+              queryParams.append('from_date', data.from_date);
+            }
+            if (data.to_date) {
+              queryParams.append('to_date', data.to_date);
+            }
+            const queryString = queryParams.toString();
+            const newWindow = window.open(`/admin/achievement/print/detail/?${queryString}`);
+            newWindow.focus();
+          }
+        });
     };
-    
-    
+
+    const handleExportPdf = () => {
+        Swal.fire({
+            text: 'Export data Achievement ke Pdf?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Export',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const queryParams = new URLSearchParams();
+            if (data.from_date) {
+              queryParams.append('from_date', data.from_date);
+            }
+            if (data.to_date) {
+              queryParams.append('to_date', data.to_date);
+            }
+            const queryString = queryParams.toString();
+            const newWindow = window.open(`/admin/achievement/export/pdf/detail/?${queryString}`);
+            newWindow.focus();
+          }
+        });
+    };
+
+    const handleExportExcel = () => {
+        Swal.fire({
+            text: 'Export data Achievement ke Excel?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Export',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const queryParams = new URLSearchParams();
+            if (data.from_date) {
+              queryParams.append('from_date', data.from_date);
+            }
+            if (data.to_date) {
+              queryParams.append('to_date', data.to_date);
+            }
+            const queryString = queryParams.toString();
+            const newWindow = window.open(`/admin/achievement/export/excel/detail/?${queryString}`);
+            newWindow.focus();
+          }
+        });
+    };
+
+    const achievementPercents = (rowQuantity, rowTarget) => {
+        let qty = parseInt(rowQuantity);
+        let target = parseInt(rowTarget);
+        let achievement = ((qty/target)*100).toFixed(0);
+        let progressWidth = achievement > 100 ? 100 : achievement;
+        return (
+            <div className="w-full h-4 rounded-full">
+                <div
+                className={`h-full block rounded-full text-right px-2 text-xs text-white ${progressWidth <= 75 ? 'bg-yellow-500' : 'bg-emerald-500'}`}
+                style={{ width: `${progressWidth}%` }}
+                >{achievement}%</div>
+            </div>
+        );
+    }
+
+    const achievementSort = (rowQuantity, rowTarget) => {
+        let qty = parseInt(rowQuantity);
+        let target = parseInt(rowTarget);
+        let achievement = (qty/target)*100;
+        return achievement;
+    }
+
+
 
     const columns = [
         {
             name: "No",
+            width:'5%',
             selector: (row, index) => index + 1,
             sortable: true,
         },
@@ -126,27 +205,36 @@ export default function Index({ achievements, from, to, auth }) {
             sortable: true,
         },
         {
-            name: "Nama",
-            selector: (row) => row.user?.fullname,
-            sortable: true,
-        },
-        {
-            name: "Group",
-            selector: (row) => row.user?.group,
+            name: "Shift",
+            width:'5%',
+            selector: (row) => row.shift,
             sortable: true,
         },
         {
             name: "NPK",
-            selector: (row) => row.npk,
+            width:'5%',
+            selector: (row) => row.user.npk,
             sortable: true,
         },
         {
+            name: "Nama",
+            selector: (row) => row.user.fullname,
+            sortable: true,
+        },
+              
+        {
             name: "Drawing Number",
-            selector: (row) => row.drw_no,
+            selector: (row) => row.product.drw_no,
+            sortable: true,
+        },
+        {
+            name: "Lot No.",
+            selector: (row) => row.product_lot,
             sortable: true,
         },
         {
             name: "Total Lot",
+            width:'7%',
             selector: (row) =>
                 parseFloat(row.total_lot).toLocaleString("id-ID"),
             sortable: true,
@@ -157,12 +245,25 @@ export default function Index({ achievements, from, to, auth }) {
             sortable: true,
         },
         {
+            name: "Target (pcs)",
+            selector: (row) => parseFloat(row.product.target).toLocaleString("id-ID"),
+            sortable: true,
+        },
+        {
+            name: "Achievement (%)",
+            cell: (row) => {
+                return achievementPercents(row.qty, row.product.target);
+            },
+            selector: (row) => achievementSort(row.qty, row.product.target),
+            sortable: true,
+        },
+        {
             name: "Action",
             cell: (row) => (
                 <>
-                    <a
+                    <Link
                         href={route("admin.achievement.edit", row.id)}
-                        className="text-green-500 hover:text-green-900 duration-500 mr-5"
+                        className="text-green-500 hover:text-green-900 duration-500 mr-3"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -178,27 +279,25 @@ export default function Index({ achievements, from, to, auth }) {
                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                             />
                         </svg>
-                    </a>
+                    </Link>
 
-                    <a
-                        disabled={deleting}
-                        onClick={() => handleDelete(row.id)}
-                        className="w-6 h-6 text-red-500 hover:text-red-900 duration-500"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                            />
-                        </svg>
-                    </a>
+                    <div onClick={() => handleDelete(row.id)}>
+                        <button type='button' className="w-6 h-6 text-red-500 hover:text-red-900 duration-500">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                />
+                            </svg>
+                        </button>
+                    </div>
                 </>
             ),
         },
@@ -207,11 +306,21 @@ export default function Index({ achievements, from, to, auth }) {
     return (
         <>
             <Head title="Report Achievement" />
-            <Authenticated>
-                {/* content */}
+            <Authenticated  className="bg-gray-200">
+                <Calendar/>
+                {flashMessage?.message &&(
+                    <FlashMessage message={flashMessage.message} type={flashMessage.type}/>
+                )}
+
+                {!flashMessage?.message && isLoading &&(
+                    <div className="fixed flex-col gap-3 top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-red-600"></div>
+                        <div className="text-white font-light">Menunggu file selesai diunggah...</div>
+                    </div>
+                )}
 
                 <div className="w-screen">
-                    <div className="flex justify-between px-10 pt-3 ">
+                    <div className="flex justify-between container mx-auto">
                         <form
                             className="flex items-center gap-2"
                             onSubmit={submit}
@@ -236,7 +345,7 @@ export default function Index({ achievements, from, to, auth }) {
 
                         <div className="flex mr-0">
                             <div className="flex items-center gap-3">
-                                <ButtonOrange onClick={Print}>
+                                <ButtonOrange onClick={handlePrint}>
                                     Print
                                 </ButtonOrange>
                                 <Dropdown>
@@ -261,7 +370,7 @@ export default function Index({ achievements, from, to, auth }) {
                                     </Dropdown.Trigger>
                                     <Dropdown.Content>
                                         <Dropdown.Link
-                                            onClick={cetak_pdf_detail}
+                                            onClick={handleExportPdf}
                                             className="w-full flex gap-3 justify-start bg-transparent"
                                         >
                                             <svg
@@ -283,7 +392,7 @@ export default function Index({ achievements, from, to, auth }) {
                                             PDF
                                         </Dropdown.Link>
                                         <Dropdown.Link
-                                            onClick={cetak_excel}
+                                            onClick={handleExportExcel}
                                             className="container flex gap-3"
                                         >
                                             <svg
@@ -343,51 +452,49 @@ export default function Index({ achievements, from, to, auth }) {
                                 <div>
                                     <form className="flex items-center">
                                         {!selectedFile && (
-                                            <label className="relative overflow-hidden rounded-md  bg-red-600 rounded-md cursor-pointer hover:bg-opacity-70 duration-500">
+                                            <label className="relative overflow-hidden  bg-red-600 rounded-md cursor-pointer hover:bg-opacity-70 duration-500">
                                                 <input
                                                     type="file"
                                                     key={fileInputKey}
-                                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                                    className="absolute inset-0 w-full h-full opacity-0 file:cursor-pointer"
                                                     onChange={handleFileInput}
                                                 />
 
                                                 <span className="inline-block px-6 py-1 text-white">
-                                                    Browse
+                                                    IMPORT
                                                 </span>
                                             </label>
                                         )}
 
                                         {selectedFile && (
-                                            <div className="relative ">
+                                            <div className="relative">
                                                 <button
-                                                    type="button"
-                                                    className="px-6 py-1 text-white bg-blue-500 rounded-md hover:bg-blue-600 duration-500"
+                                                    type="submit"
+                                                    className="px-6 py-1 w-fit text-white bg-blue-500 rounded-md hover:bg-blue-600 duration-500"
                                                     onClick={handleImport}
                                                 >
-                                                    Import
+                                                    UPLOAD
                                                 </button>
-                                                <span className="text-xs font-light text-gray-600">
-                                                    Selected file:{" "}
-                                                    {selectedFile.name}
-                                                </span>
+                                                <div className="flex items-center justify-end gap-2 absolute w-56 right-0 mt-1">
+                                                    <span className="text-right block text-xs font-light text-gray-600">
+                                                        {selectedFile.name}
+                                                    </span>
+                                                    <div className="text-red-600 cursor-pointer" onClick={handleRemoveAttachment}>X</div>
+                                                </div>
                                             </div>
                                         )}
                                     </form>
-
-                                    {/* Add the ToastContainer component */}
-                                    <ToastContainer />
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="pt-4 px-10  ">
+                    <div className="container mx-auto mt-6">
                         <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
                             <DataTable
                                 title="Achievement"
                                 columns={columns}
                                 data={(achievements, filteredData)}
-                                // customStyles={customStyles}
                                 pagination
                                 dense
                                 highlightOnHover

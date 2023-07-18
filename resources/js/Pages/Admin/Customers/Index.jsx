@@ -1,16 +1,17 @@
+import ButtonGreen from "@/Components/ButtonGreen";
+import ButtonOrange from "@/Components/ButtonOrange";
+import ButtonRed from "@/Components/ButtonRed";
+import Calendar from "@/Components/Calendar";
+import Dropdown from "@/Components/Dropdown";
+import FlashMessage from "@/Components/FlashMessage";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { Link } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import DataTable from "react-data-table-component";
-import ButtonRed from "@/Components/ButtonRed";
-import ButtonOrange from "@/Components/ButtonOrange";
-import ButtonGreen from "@/Components/ButtonGreen";
-import { Inertia } from "@inertiajs/inertia";
-import Dropdown from "@/Components/Dropdown";
 import Swal from "sweetalert2";
 
-export default function index({ customers, auth }) {
-    console.log(customers);
+export default function index({ customers, flashMessage }) {
+    console.log(flashMessage);
     const [filterText, setFilterText] = useState("");
     const data = {};
     const handleFilter = (event) => {
@@ -20,47 +21,67 @@ export default function index({ customers, auth }) {
 
     const filteredData = customers.filter(
         (row) =>
-            row.customer_id.toLowerCase().includes(filterText.toLowerCase()) ||
-            row.customer_name
-                .toLowerCase()
-                .includes(filterText.toLowerCase()) ||
-            (typeof row.target === "string" &&
-                row.target.toLowerCase().includes(filterText.toLowerCase()))
-    );
+            row.customer_code.toLowerCase().includes(filterText.toLowerCase()) ||
+            row.customer_name.toLowerCase().includes(filterText.toLowerCase()) ||
+            (typeof row.target === "string" && row.target.toLowerCase().includes(filterText.toLowerCase()))
+        );
 
-    const [deleting, setDeleting] = useState(false);
-
-    const handleDelete = async (id) => {
-        setDeleting(true);
-        const url = route("admin.customers.index");
-        window.location.href = url;
-        await Inertia.delete(`/admin/customers/${id}`);
-        setDeleting(false);
-    };
-    const cetak_pdf_customer = (e) => {
-        e.preventDefault();
-        const url =
-            route("admin.cetak_pdf_customer") +
-            "?" +
-            new URLSearchParams(data).toString();
-        window.location.href = url;
-    };
-    const cetak_excel_customer = (e) => {
-        e.preventDefault();
-        const url =
-            route("admin.cetak_excel_customer") +
-            "?" +
-            new URLSearchParams(data).toString();
-        window.location.href = url;
+    const {delete: destroy} = useForm();
+    function handleDelete(id) {
+        Swal.fire({
+            text: 'Yakin Ingin Hapus?',
+            icon: 'warning',
+            showDenyButton: true,
+            showConfirmButton:false,
+            showCancelButton:true,
+            denyButtonText: 'Hapus',
+        }).then((result) => {
+            if (result.isDenied) {
+                destroy(route('admin.customers.destroy',id))
+            }
+        });
     };
 
-    const Print = () => {
-        // console.log("print");
-        let printContents = document.getElementById("printablediv").innerHTML;
-        let originalContents = document.body.innerHTML;
-        document.body.innerHTML = printContents;
-        window.print();
-        document.body.innerHTML = originalContents;
+    const handlePrint = () => {
+        Swal.fire({
+            text: 'Cetak data customer?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Cetak',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const newWindow = window.open(route('admin.customers.print'));
+                newWindow.focus();
+            }   
+        });         
+    };
+
+    const handleExportPdf = () => {
+        Swal.fire({
+            text: 'Export data customer ke Pdf?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Export',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const newWindow = window.open(route('admin.customers.export.pdf'));
+                newWindow.focus();
+            }   
+        });       
+    };
+
+    const handleExportExcel = () => {
+        Swal.fire({
+            text: 'Export data customer ke Excel?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Export',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const newWindow = window.open(route('admin.customers.export.excel'));
+                newWindow.focus();
+            }   
+        });       
     };
 
     const columns = [
@@ -71,7 +92,7 @@ export default function index({ customers, auth }) {
         },
         {
             name: "Customer Code",
-            selector: (row) => row.customer_id,
+            selector: (row) => row.customer_code,
             sortable: true,
         },
         {
@@ -84,7 +105,7 @@ export default function index({ customers, auth }) {
             name: "Action",
             cell: (row) => (
                 <>
-                    <a
+                    <Link
                         href={route("admin.customers.edit", row.id)}
                         className="text-green-500 hover:text-green-900 duration-500 mr-5"
                     >
@@ -102,13 +123,9 @@ export default function index({ customers, auth }) {
                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                             />
                         </svg>
-                    </a>
-
-                    <a
-                        disabled={deleting}
-                        onClick={() => handleDelete(row.id)}
-                        className="w-6 h-6 text-red-500 hover:text-red-900 duration-500"
-                    >
+                    </Link>
+                    <div onClick={() => handleDelete(row.id)}>
+                        <button type='button' className="w-6 h-6 text-red-500 hover:text-red-900 duration-500">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -122,7 +139,8 @@ export default function index({ customers, auth }) {
                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                             />
                         </svg>
-                    </a>
+                        </button>
+                    </div>
                 </>
             ),
         },
@@ -130,10 +148,14 @@ export default function index({ customers, auth }) {
 
     return (
         <>
-            <Authenticated>
+            <Authenticated className="bg-gray-200">
+                <Calendar/>
                 <div className="">
-                    <div className="flex justify-end  px-10 pt-3 gap-3 ">
-                        <ButtonOrange onClick={Print}>Print</ButtonOrange>
+                    {flashMessage?.message && (
+                        <FlashMessage message={flashMessage.message} type={flashMessage.type}/>
+                    )}
+                    <div className="flex justify-end container mx-auto gap-3 ">
+                        <ButtonOrange onClick={handlePrint}>Print</ButtonOrange>
                         <Dropdown>
                             <Dropdown.Trigger>
                                 <ButtonGreen className="w-15 h-9">
@@ -156,7 +178,7 @@ export default function index({ customers, auth }) {
                             </Dropdown.Trigger>
                             <Dropdown.Content>
                                 <Dropdown.Link
-                                    onClick={cetak_pdf_customer}
+                                    onClick={handleExportPdf}
                                     className="w-full flex gap-3 justify-start bg-transparent"
                                 >
                                     <svg
@@ -178,7 +200,7 @@ export default function index({ customers, auth }) {
                                     PDF
                                 </Dropdown.Link>
                                 <Dropdown.Link
-                                    onClick={cetak_excel_customer}
+                                    onClick={handleExportExcel}
                                     className="container flex gap-3"
                                 >
                                     <svg
@@ -255,7 +277,7 @@ export default function index({ customers, auth }) {
                 </div>
                 <div>
                     <div id="printablediv">
-                        <div className="flex w-full px-10 pb-10 py-3">
+                        <div className="flex w-full container mx-auto py-3">
                             <div className="inline-block min-w-full overflow-hidden align-middle border-b shadow sm:rounded-lg">
                                 <DataTable
                                     title="List Customer"

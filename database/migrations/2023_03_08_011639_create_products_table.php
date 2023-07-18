@@ -18,10 +18,11 @@ return new class extends Migration
          $table->string('drw_no');
          $table->string('product_name');
          $table->string('product_type');
-         $table->string('customer_id');
-         $table->string('customer_name');
          $table->string('target');
+         $table->unsignedBigInteger('customer_id');
+         $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
          $table->timestamps();
+         $table->softDeletes();
         });
     }
 

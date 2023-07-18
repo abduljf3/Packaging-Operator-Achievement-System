@@ -1,9 +1,10 @@
 export default function Footer({ props }) {
     return (
-        <footer className="py-5 border bg-white border-t-neutral-400">
-            <h5 className="flex justify-end font-extrabold text-red-600 mr-10">
-                V 1.0
-            </h5>
+        <footer className="py-3 border bg-white border-t-gray-300">
+            <div className="container mx-auto flex justify-between items-center">
+                <p className="text-gray-500 text-sm">&copy; 2023 HTA Indonesia Group. All rights reserved.</p>
+                <p className="text-gray-500 text-sm">Self Serfice Achevement Packaging</p>
+            </div>
         </footer>
     );
 }

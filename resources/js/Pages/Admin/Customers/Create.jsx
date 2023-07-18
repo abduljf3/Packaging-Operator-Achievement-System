@@ -1,23 +1,21 @@
-import React from "react";
-import ButtonGreen from "@/Components/ButtonGreen";
-import TextInput from "@/Components/TextInput";
+import PrimaryButton from "@/Components/ButtonGray";
+import Calendar from "@/Components/Calendar";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
+import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
+import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import Swal from "sweetalert2";
-import PrimaryButton from "@/Components/PrimaryButton";
-import { Head, Link, useForm } from "@inertiajs/react";
 
-export default function Create({ auth }) {
-    const { data, setData, post, errors } = useForm({
-        id: "",
-        customer_id: "",
+export default function Create({ customers }) {
+    const [errors, setErrors] = useState({});
+    const { data, setData, post } = useForm({
+        customer_code: "",
         customer_name: "",
     });
 
     const [submitting, setSubmitting] = useState(false);
-
     const handleChange = (e) => {
         const key = e.target.name;
         const value = e.target.value;
@@ -27,104 +25,100 @@ export default function Create({ auth }) {
         }));
     };
 
-    const handleChangeOption = (selectedOption) => {
-        setData((data) => ({
-            ...data,
-            product_type: selectedOption.value,
-        }));
+    const validateForm = () => {
+        let isValid = true;
+        const newErrors = {};
+        if (!data.customer_code) {
+            newErrors.customer_code = "Kode customer harus diisi";
+            isValid = false;
+        }else {
+            const customerCode = data.customer_code.trim();
+            const codeExists = customers.some(customer => customer.customer_code === customerCode);
+            if (codeExists) {
+                newErrors.customer_code = 'Kode customer sudah terdaftar';
+                isValid = false;
+            }
+        }
+        if (!data.customer_name) {
+            newErrors.customer_name = "Nama customer harus diisi";
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
     };
 
-    const handleChangeOptionCustomerName = (selectedOption) => {
-        setData((data) => ({
-            ...data,
-            customer_name: selectedOption.value,
-        }));
-    };
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        if (data.customer_id == "" || data.customer_name == "") {
+        if (validateForm()) {
             Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "Isi semua kolom terlebih dahulu!",
-                showConfirmButton: false,
-                timer: 2000,
-            });
-        } else {
-            setSubmitting(true);
-            Swal.fire({
-                icon: "success",
-                title: "Success",
-                text: "Data berhasil ditambahkan!",
-                showConfirmButton: false,
-            });
-            const url = route("admin.customers.index");
-            window.location.href = url;
-            await post("/admin/customers", {
-                data,
-                preserveScroll: true,
-            });
-            setSubmitting(false);
-        }
+                text: 'Simpan?',
+                icon: 'question',
+                showCancelButton:true,
+                confirmButtonText: 'Save',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    router.post(route('admin.customers.store'),{
+                        ...data,
+                    });    
+                }
+            });        
+        }   
     };
 
     return (
         <>
             <Head title="Add Customer" />
-            <Authenticated className="bg-white">
-                <div className="py-28 mx-20">
-                    <div className=" mx-20">
-                        <div className="p-4 mx-60 bg-white shadow sm:rounded-lg">
-                            <div className="p-4 ml-16 font-extrabold ">
+            <Authenticated className="bg-gray-200">
+                <Calendar/>
+                <div className="container mx-auto py-20">
+                    <div className="flex justify-center">
+                        <div className="w-full md:w-1/2 bg-white shadow sm:rounded-lg p-3 md:p-5">
+                            <div className="font-semibold text-xl">
                                 <h1>Add Customer</h1>
                             </div>
                             <form onSubmit={handleSubmit}>
                                 <div className="flex justify-center gap-20">
-                                    <div className="mx-20 my-2 w-full">
-                                        <InputLabel value="Customer Code" />
-                                        <InputError
-                                            message={errors.customer_id}
-                                        />
-                                        <TextInput
-                                            className="mb-5 w-full block"
-                                            type="text"
-                                            name="customer_id"
-                                            value={data.customer_id}
-                                            onChange={handleChange}
-                                        />
-
-                                        <InputLabel value="Customer Name" />
-                                        <InputError
-                                            message={errors.customer_name}
-                                        />
-                                        <TextInput
-                                            className="mb-5 w-full block"
-                                            type="text"
-                                            name="customer_name"
-                                            value={data.customer_name}
-                                            onChange={handleChange}
-                                        />
-
-                                        <div className="flex justify-center mt-6 gap-3 ml-9">
-                                            <Link
-                                                href={route(
-                                                    "admin.customers.index"
-                                                )}
-                                            >
-                                                <PrimaryButton>
-                                                    cancel
-                                                </PrimaryButton>
+                                    <div className="mt-5 w-full">
+                                        <div className="block mb-5">
+                                            <InputLabel value="Customer Code" className="mb-1"/>
+                                            <TextInput
+                                                className="block mb-1 w-full"
+                                                type="text"
+                                                name="customer_code"
+                                                value={data.customer_code}
+                                                onChange={handleChange}
+                                                placeholder="customer Code"
+                                            />
+                                            <InputError message={errors.customer_code}/>
+                                        </div>
+                                        <div className="block mb-5">
+                                            <InputLabel value="Customer Name" className="mb-1"/>
+                                            <TextInput
+                                                className="block mb-1 w-full"
+                                                type="text"
+                                                name="customer_name"
+                                                value={data.customer_name}
+                                                onChange={handleChange}
+                                                placeholder="Customer Name"
+                                            />
+                                            <InputError message={errors.customer_name}/>
+                                        </div>
+                                    
+                                        <div className="flex justify-end gap-3">
+                                            <Link href={route("admin.customers.index")} className="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-opacity-75 duration-500 ">
+                                                    CANCEL
                                             </Link>
 
-                                            <ButtonGreen
+                                            <PrimaryButton
                                                 type="submit"
                                                 disabled={submitting}
-                                                className=""
+                                                className="bg-red-600"
                                             >
                                                 {submitting
-                                                    ? "Adding..."
-                                                    : "Add"}
-                                            </ButtonGreen>
+                                                    ? "SAVING..."
+                                                    : "SAVE"}
+                                            </PrimaryButton>
                                         </div>
                                     </div>
                                 </div>

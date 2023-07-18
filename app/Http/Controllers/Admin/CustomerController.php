@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AdminCustomerExport;
+use App\Exports\CustomerExport;
 
 class CustomerController extends Controller
 {
@@ -21,25 +22,12 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers= Customer::get();
+        $customers= Customer::orderBy('customer_code')->get();
         return Inertia::render('Admin/Customers/Index',[
             'customers'=>$customers
         ]);
     }
-    public function print_data_customer()
-    {
-        $customers = Customer::all();
-        $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
-        $pdf = Pdf::loadView('print_data_customer', ['customers' => $customers]);
-    
-        $tempFilePath = tempnam(sys_get_temp_dir(), 'pdf');
-        $pdf->save($tempFilePath);
-    
-        return response()->file($tempFilePath, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="List_Karyawan - ' . $dateNow . '.pdf"',
-        ])->deleteFileAfterSend(true);
-    }
+   
     /**
      * Show the form for creating a new resource.
      *
@@ -47,8 +35,10 @@ class CustomerController extends Controller
      */
     public function create()
     {
-    
-        return Inertia::render('Admin/Customers/Create');
+        $customers = Customer::select('customer_code')->get();
+        return Inertia::render('Admin/Customers/Create',[
+            'customers' => $customers
+        ]);
     }
 
     /**
@@ -59,19 +49,13 @@ class CustomerController extends Controller
      */
     
      public function store(Request $request)
-     {  $customers = Customer::get();
-         $validatedData = $request->validate([
-            'customer_id' => 'required', 
-            'customer_name' => 'required', 
-           
-           
-        
-
-         ]);
-     
-         $customers = Customer::create($validatedData);
-     
-         return redirect()->route('customers.index');
+        { 
+            $customers = $request->all();
+            Customer::create($customers);
+            return redirect()->route('admin.customers.index')->with([
+                'message' => 'Berhasil Disimpan',
+                'type' => 'success',
+            ]);
      }
 
     /**
@@ -91,56 +75,57 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Customer $customer)
     {
-        $customers = Customer::findOrFail($id);
-
+        $customers = Customer::select('customer_code')->get();
         return Inertia::render('Admin/Customers/Edit', [
             'customers' => $customers,
+            'customer' => $customer,
         ]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request,Customer $customer)
     {
-        $validatedData = $request->validate([
-            'customer_id' => 'required', 
-            'customer_name' => 'required', 
-           
-           
+        $data = $request->all();
+        $customer->update($data);
+        return redirect()->route('admin.customers.index')->with([
+            'message' => 'Berhasil Diupdate',
+            'type' => 'success',
         ]);
-    
-        $customers = Customer::findOrFail($request->id); // find the operator by id
-        $customers->update($validatedData); // update the operator instance
-    
-        return redirect()->route('admin.customers.index');
     }
 
-
-    public function delete($id)
+    public function destroy(Customer $customer)
     {
-        $customers = Customer::findOrFail($id);
-        return Inertia::render('Admin/Customers/Delete',[
+        $customer->delete();
+        return redirect()->route('admin.customers.index')->with([
+            'message' => 'Berhasil Dihapus',
+            'type' => 'success',
+        ]);
+    }
+
+    public function print(Request $request)
+    {
+        $customers = Customer::get();
+        return Inertia::render('Admin/Customers/Print',[
             'customers' => $customers
         ]);
     }
-    public function destroy($id)
-    {
-        $customers = Customer::where('id', $id)->firstorfail()->delete();
-        echo ("User Record deleted successfully.");
-        return redirect()->route("admin.customers.index");
-     }
-     public function cetak_pdf_customer()
-     {
-         $customers = Customer::all();
-         $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
-         $pdf = Pdf::loadview('customer_pdf', ['customers' => $customers]);
-         return $pdf->download('Daftar_Customer - ' . $dateNow . '.pdf');
-     }
-     public function cetak_excel_customer()
-     {   
-        $customers = Customer::all();
-         
-         return Excel::download(new AdminCustomerExport($customers), 'Daftar_Customer.xlsx');
-     }
 
+    public function export_pdf(Request $request)
+    {
+        $customers = Customer::get();
+        $pdf = Pdf::loadView('pdf.customer', compact('customers'))->setPaper('A4');
+        $filename = "Data Customer.pdf";
+        return $pdf->download($filename);
     }
+    
+    public function export_excel(Request $request)
+    {
+        $filename = "Data Product.xlsx";
+        $customers = Customer::select('customer_code','customer_name')->get();
+        return Excel::download(new CustomerExport($customers), $filename);
+    }
+
+
+
+}

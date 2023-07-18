@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AdminProductExport;
+use App\Exports\ProductExport;
+
 class ProductController extends Controller
 {
     /**
@@ -19,25 +21,12 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $products= Product::get();
+        $products= Product::with('customer')->get();
         return Inertia::render('Admin/Products/Index',[
             'products'=>$products
         ]);
     }
-    public function print_data_product()
-    {
-        $products = Product::all();
-        $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
-        $pdf = Pdf::loadView('print_data_product', ['products' => $products]);
     
-        $tempFilePath = tempnam(sys_get_temp_dir(), 'pdf');
-        $pdf->save($tempFilePath);
-    
-        return response()->file($tempFilePath, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="List_Karyawan - ' . $dateNow . '.pdf"',
-        ])->deleteFileAfterSend(true);
-    }
     /**
      * Show the form for creating a new resource.
      *
@@ -46,9 +35,11 @@ class ProductController extends Controller
     public function create()
     {
         $customers = Customer::get();
+        $products = Product::select('drw_no')->get();
         return Inertia::render('Admin/Products/Create',[
-            
-        'customers'=>$customers]);
+            'customers'=>$customers,
+            'products'=>$products,
+        ]);
     }
 
     /**
@@ -60,20 +51,19 @@ class ProductController extends Controller
     
      public function store(Request $request)
      {
-         $validatedData = $request->validate([
-             'customer_id' => 'required', 
-             'customer_name' => 'required', 
-             'drw_no' => 'required', 
-             'product_name' => 'required',
-             'product_type' => 'required',
-             'target' => 'required',
-         ]);
-     
-         $products = Product::create($validatedData);
-     
-         $customers = Customer::all(); // Retrieve all customers from the "customers" table
-     
-         return redirect()->route('products.index')->with('customers', $customers);
+        $data = $request->all();
+        Product::create([
+            'drw_no' => $data['drw_no'],
+            'product_name' => $data['product_name'],
+            'product_type' => $data['product_type'],
+            'target' => $data['target'],
+            'product_type' => $data['product_type'],
+            'customer_id' => $data['customer_id'],
+        ]);
+        return redirect(route('admin.products.index'))->with([
+            'message' => 'Data produk berhasil di simpan',
+            'type' => 'success',
+        ]);
      }
 
     /**
@@ -95,30 +85,32 @@ class ProductController extends Controller
      */
     public function edit($id)
     {   
-        $products = Product::with('customer')->findOrFail($id);
+        $product = Product::with('customer')->findOrFail($id);
         $customers = Customer::all();
+        $products = Product::select('drw_no')->get();
         return Inertia::render('Admin/Products/Edit', [
-            'products' => $products,
+            'product' => $product,
             'customers' => $customers,
+            'products' => $products,
         ]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request,$id)
     {
-        $validatedData = $request->validate([
-            'customer_id' => 'required', 
-            'customer_name' => 'required', 
-            'drw_no' => 'required', 
-            'product_name' => 'required',
-            'product_type' => 'required',
-            'target' => 'required',
-           
+        $data = $request->all();
+        $product = Product::findOrFail($id);
+        $product->update([
+            'drw_no' => $data['drw_no'],
+            'product_name' => $data['product_name'],
+            'product_type' => $data['product_type'],
+            'target' => $data['target'],
+            'product_type' => $data['product_type'],
+            'customer_id' => $data['customer_id'],
         ]);
-    
-        $products = Product::findOrFail($request->id); // find the operator by id
-        $products->update($validatedData); // update the operator instance
-    
-        return redirect()->route('admin.products.index');
+        return redirect(route('admin.products.index'))->with([
+            'message' => 'Data produk berhasil di update',
+            'type' => 'success',
+        ]);
     }
 
 
@@ -131,22 +123,36 @@ class ProductController extends Controller
     }
     public function destroy($id)
     {
-        $products = Product::where('id', $id)->firstorfail()->delete();
-        echo ("User Record deleted successfully.");
-        return redirect()->route("admin.products.index");
-     }
-     public function cetak_pdf_product()
-     {
-         $products = Product::all();
-         $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
-         $pdf = Pdf::loadview('product_pdf', ['products' => $products]);
-         return $pdf->download('Daftar_Product - ' . $dateNow . '.pdf');
-     }
-     public function cetak_excel_product()
-     {   
-        $products = Product::all();
-         
-         return Excel::download(new AdminProductExport($products), 'Daftar_Product.xlsx');
+        Product::where('id', $id)->firstorfail()->delete();
+        return redirect(route('admin.products.index'))->with([
+            'message' => 'Data produk berhasil di hapus',
+            'type' => 'success',
+        ]);
      }
 
+    public function print(Request $request)
+    {
+        $products = Product::with('customer')->get();
+        return Inertia::render('Admin/Products/Print',[
+            'products' => $products
+        ]);
     }
+
+    public function export_pdf(Request $request)
+    {
+        $products = Product::with('customer')->get();
+        $pdf = Pdf::loadView('pdf.product', compact('products'))->setPaper('A4');
+        $filename = "Data Product.pdf";
+        return $pdf->download($filename);
+    }
+    
+    public function export_excel(Request $request)
+    {
+        $filename = "Data Product.xlsx";
+        $products = Product::join('customers', 'products.customer_id', '=', 'customers.id')
+        ->select('products.drw_no', 'products.product_name', 'products.product_type', 'products.target', 'customers.customer_code', 'customers.customer_name')
+        ->get();
+
+        return Excel::download(new ProductExport($products), $filename);
+    }
+}

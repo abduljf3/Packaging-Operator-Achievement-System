@@ -21,10 +21,11 @@ return new class extends Migration
             $table->string('group')->nullable(); 
             $table->string('status')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('roles')->default('USER');
+            $table->string('password')->nullable();
+            $table->string('roles')->default('User');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\AdminAchievementExport;
-use App\Exports\DetailExport;
+use App\Exports\AchievementExport;
 use App\Http\Controllers\Controller;
+use App\Imports\AchievementImport;
 use App\Models\achievement;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 class AchievementController extends Controller
 {
@@ -23,42 +21,28 @@ class AchievementController extends Controller
      */
     public function index(Request $request)
     {
-        $achievements = null;
         $from = $request->input('from_date');
         $to = $request->input('to_date');
-    
-         if ($from && $to) {
+        if ($from) {
             $achievements = Achievement::with(['user', 'product'])
             ->whereBetween('date', [$from, $to])
             ->get();
         } else {
-        $from = date('Y-m-d');
-        $to = date('Y-m-d');
-        
-        $achievements = Achievement::with(['user', 'product'])
-            ->whereDate('date', '=', $from)
-            ->get();
-    }
+            $from = date('Y-m-d');
+            $to = date('Y-m-d');
+            $achievements = Achievement::with(['user', 'product'])
+                ->whereDate('date', '=', $from)
+                ->get();
+        }
     
-    return Inertia::render('Admin/Achievement/Index', [
-        'achievements' => $achievements,
-        'from' => $from,
-        'to' => $to
-    ]);
+        return Inertia::render('Admin/Achievement/Index', [
+            'achievements' => $achievements,
+            'from' => $from,
+            'to' => $to
+        ]);
 
     }
-    public function achievement(Request $request)
-    {
-        $achievements = null;
-        if( $request->input('from_date')){
-            $from = $request->input('from_date');
-            $to = $request->input('to_date');
-            $achievements = Achievement::with(['user','product'])->whereBetween('date',[$from,$to])->get();
-        }
-        return Inertia::render('Admin/Achievement/Index',[
-            'achievements' => $achievements
-        ]);
-    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -78,29 +62,6 @@ class AchievementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function print_data(Request $request)
-    {
-        $from = $request->input('from_date');
-        $to = $request->input('to_date');
-    
-        $achievements = Achievement::whereBetween('date', [$from, $to])->get();
-        $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
-        $pdf = Pdf::loadView('achievement_pdf', [
-            'achievements' => $achievements,
-            'from' => $from,
-            'to' => $to,
-        ]);
-    
-        $tempFilePath = tempnam(sys_get_temp_dir(), 'pdf');
-        $pdf->save($tempFilePath);
-    
-        return response()->file($tempFilePath, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="Laporan_Detail - ' . $dateNow . '.pdf"',
-        ])->deleteFileAfterSend(true);
-    }
-    
-
 
     public function store(Request $request)
     {
@@ -136,11 +97,11 @@ class AchievementController extends Controller
     {
         $users = User::all();
         $products = Product::all();
-        $achievements = achievement::with(['user','product'])->findOrFail($id);
+        $achievement = achievement::with(['user','product'])->findOrFail($id);
         return Inertia::render('Admin/Achievement/Edit',[
-            'achievements' => $achievements,
+            'achievement' => $achievement,
             'users' => $users,
-            'Products' => $products
+            'products' => $products
         ]);
     }
     public function delete($id)
@@ -161,9 +122,11 @@ class AchievementController extends Controller
     {
         $data = $request->all();
         $achievements = Achievement ::findOrFail($id);
-    
         $achievements->update($data);
-        return redirect()->route('admin.achievement.index');
+        return redirect(route('admin.achievement.index'))->with([
+            'message' => 'Data achievement berhasil di update',
+            'type' => 'success',
+        ]);
     }
 
       /**
@@ -175,14 +138,52 @@ class AchievementController extends Controller
 
     public function destroy($id)
     {
-        $achievements = achievement::where('id', $id)->firstorfail()->delete();
-        echo ("User Record deleted successfully.");
-        return redirect()->route('admin.achievement.index');
+        Achievement::where('id', $id)->firstorfail()->delete();
+        return redirect(route('admin.achievement.index'))->with([
+            'message' => 'Data achievement berhasil di hapus',
+            'type' => 'success',
+        ]);
      }
 
-     public function import(Request $request)
-     {  return inertia('importexcel'); 
-     }
-     
+    public function import(Request $request)
+    { 
+        $file = $request->file('file');
+        Excel::import(new AchievementImport, $file);  
+        return redirect(route('admin.achievement.index'))->with([
+            'message' => 'Data achievement berhasil diimport',
+            'type' => 'success',
+        ]);
+    }
 
+    public function print(Request $request)
+    {
+        $data = $request->all();
+        $achievements = Achievement::with(['user','product'])
+            ->whereBetween('date', [$data['from_date'], $data['to_date']])
+            ->get();
+        return Inertia::render('Admin/Achievement/Print',[
+            'achievements' => $achievements,
+            'data' => $data,
+        ]);
+    }
+
+    public function export_pdf(Request $request)
+    {
+        $data = $request->all();
+        $achievements = Achievement::with(['user','product'])
+            ->whereBetween('date', [$data['from_date'], $data['to_date']])
+            ->get();
+        $pdf = Pdf::loadView('pdf.achievement', compact(['achievements','data']))->setPaper('A4', 'landscape');
+        $filename = "Achievement_{$data['from_date']}-{$data['to_date']}.pdf";
+        return $pdf->download($filename);
+    }
+    
+    public function export_excel(Request $request)
+    {
+        $data = $request->all();
+        $fromDate = $data['from_date'];
+        $toDate = $data['to_date'];
+        $filename = "Achievement_{$fromDate}-{$toDate}.xlsx";
+        return Excel::download(new AchievementExport($fromDate, $toDate), $filename);
+    }
 }

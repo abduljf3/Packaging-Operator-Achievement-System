@@ -3,17 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Employee\Store;
 use App\Http\Requests\Admin\Employee\Update;
-use App\Models\Achievement;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
-use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\AdminEmployeeExport;
+use App\Exports\UserExport;
+
 class AdminEmployeeController extends Controller
 {
     /**
@@ -27,20 +25,6 @@ class AdminEmployeeController extends Controller
         return Inertia::render('Admin/Employee/Index',[
             'users'=>$users
         ]);
-    }
-    public function print_data_employee()
-    {
-        $users = User::all();
-        $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
-        $pdf = Pdf::loadView('print_data_employee', ['users' => $users]);
-    
-        $tempFilePath = tempnam(sys_get_temp_dir(), 'pdf');
-        $pdf->save($tempFilePath);
-    
-        return response()->file($tempFilePath, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="List_Karyawan - ' . $dateNow . '.pdf"',
-        ])->deleteFileAfterSend(true);
     }
     
     public function employee()
@@ -71,12 +55,19 @@ class AdminEmployeeController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-     public function store(Store $request)
+     public function store(Request $request)
      {
-        $data = $request->validated();
-        $data['password'] = Hash::make($request->password);
+        $data = $request->all();
+        if($data['password']){
+            $data['password'] = Hash::make($request->password);
+        }else{
+            $data['password'] = null;
+        }
         User::create($data);
-         return redirect()->route('admin.employee.index');
+        return redirect(route('admin.employee.index'))->with([
+            'message' => 'Data karyawan berhasil di simpan',
+            'type' => 'success',
+        ]);
      }
 
     /**
@@ -98,8 +89,10 @@ class AdminEmployeeController extends Controller
      */
     public function edit($id)
     {
-        $users = User::findorfail($id);
+        $user = User::findorfail($id);
+        $users= User::get();
         return Inertia::render('Admin/Employee/Edit',[
+            'user' => $user,
             'users' => $users
         ]);
     }
@@ -110,13 +103,21 @@ class AdminEmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Update $request, $id)
+    public function update(Update $request,$id)
     {
         $data = $request->all();
         $user = User::findOrFail($id);
-        $data['password'] = Hash::make($request->password);
-        $user->update($data);
-        return redirect()->route('admin.employee.index');
+        $user->update([
+            'fullname' => $data['fullname'],
+            'npk' => $data['npk'],
+            'group' => $data['group'],
+            'status' => $data['status'],
+            'roles' => $data['roles'],
+        ]);
+        return redirect(route('admin.employee.index'))->with([
+            'message' => 'Data karyawan berhasil di update',
+            'type' => 'success',
+        ]);
     }
 
       /**
@@ -127,21 +128,34 @@ class AdminEmployeeController extends Controller
      */
     public function destroy($id)
     {
-        $users = User::where('id', $id)->firstorfail()->delete();
-        echo ("User Record deleted successfully.");
-        return redirect()->route('admin.employee.index');
-     }
-     public function cetak_pdf_employee()
-     {
-         $users = User::all();
-         $dateNow = Carbon::now()->format('Y_m_d - H:i:s');
-         $pdf = Pdf::loadview('employee_pdf', ['users' => $users]);
-         return $pdf->download('Daftar_Employee - ' . $dateNow . '.pdf');
-     }
-     public function cetak_excel_employee()
-     {   
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect(route('admin.employee.index'))->with([
+            'message' => 'Data karyawan berhasil di hapus',
+            'type' => 'success',
+        ]);
+    }
+    
+    public function print(Request $request)
+    {
         $users = User::all();
-         
-         return Excel::download(new AdminEmployeeExport($users), 'Daftar_Employee.xlsx');
-     }
+        return Inertia::render('Admin/Employee/Print',[
+            'users' => $users
+        ]);
+    }
+
+    public function export_pdf(Request $request)
+    {
+        $users = User::all();
+        $pdf = Pdf::loadView('pdf.employee', compact('users'))->setPaper('A4');
+        $filename = "Data Employees.pdf";
+        return $pdf->download($filename);
+    }
+    
+    public function export_excel(Request $request)
+    {
+        $filename = "Data Employees.xlsx";
+        $users = User::select('npk','fullname','group','status','roles')->get();
+        return Excel::download(new UserExport($users), $filename);
+    }
 }

@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { Inertia } from "@inertiajs/inertia";
-import ButtonGreen from "@/Components/ButtonGreen";
-import TextInput from "@/Components/TextInput";
+import PrimaryButton from "@/Components/ButtonGray";
+import Calendar from "@/Components/Calendar";
+import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import Swal from "sweetalert2";
+import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { Link, router, Head, useForm } from "@inertiajs/react";
+import { Head, Link, router, useForm } from "@inertiajs/react";
+import { useState } from "react";
+import Select from "react-select";
+import Swal from "sweetalert2";
 
-export default function Edit({ users, auth }) {
+export default function Edit({ user,users, auth }) {
+    const [errors, setErrors] = useState({});
     const { data, setData, post } = useForm({
-        id: users.id,
-        fullname: users.fullname,
-        npk: users.npk,
-        group: users.group,
-        status: users.status,
-        roles: users.roles,
+        id: user.id,
+        fullname: user.fullname,
+        npk: user.npk,
+        group: user.group,
+        status: user.status,
+        roles: user.roles,
         password: "",
     });
 
@@ -22,26 +25,104 @@ export default function Edit({ users, auth }) {
         setData(e.target.name, e.target.value);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: "Data berhasil diupdate",
-            showConfirmButton: false,
-        });
-        const url = route("admin.employee.index");
-        window.location.href = url;
-        router.post(route("admin.employee.update", users.id), {
-            _method: "PUT",
+    const handleChangeOption = (selectedOption) => {
+        setData((data) => ({
+          ...data,
+          roles: selectedOption.value,
+        }));
+      
+        if (selectedOption.value === "User") {
+          setData((data) => ({
             ...data,
-        });
+            password: '',
+          }));
+          setPasswordDisabled(true);
+        } else {
+          setPasswordDisabled(false);
+        }
     };
+
+    const optionEmployee = [
+        { value: "User", label: "User" },
+        { value: "Admin", label: "Admin" },
+        { value: "Leader", label: "Leader" },
+    ];
+    const optionStatus = [
+        { value: "Tetap", label: "Tetap" },
+        { value: "PKWT", label: "PKWT" },
+        { value: "Outcourcing", label: "Outcourcing" },
+        { value: "Magang", label: "Magang" },
+    ];
+    const optionGroup = [
+        { value: "1", label: "1" },
+        { value: "2", label: "2" },
+        { value: "3", label: "3" },
+        { value: "NS", label: "NS" },
+    ];
+
+    const validateForm = () => {
+        let isValid = true;
+        const newErrors = {};
+        
+        if (!data.roles) {
+            newErrors.roles = "Role harus diisi";
+            isValid = false;
+        }
+        if (!data.fullname) {
+            newErrors.fullname = "Nama karyawan harus diisi";
+            isValid = false;
+        }
+
+        if (!data.status) {
+            newErrors.status = "Status harus diisi";
+            isValid = false;
+        }
+        if (!data.group) {
+            newErrors.group = "Group harus diisi";
+            isValid = false;
+        }
+       
+       
+        if (!data.npk) {
+            newErrors.npk = "NPK harus diisi";
+            isValid = false;
+        }else {
+            const npkExist = users.some(item => item.npk === data.npk && data.npk != user.npk);
+            if (npkExist) {
+                newErrors.npk = 'NPK sudah terdaftar';
+                isValid = false;
+            }
+        }
+        
+        setErrors(newErrors);
+        return isValid;
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (validateForm()){
+            Swal.fire({
+                text: 'Simpan?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Save',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    router.post(route("admin.employee.update", user.id), {
+                        _method: "PUT",
+                        ...data,
+                    });
+                }
+            })
+        }
+    };
+
 
     return (
         <>
             <Head title="Edit Operator" />
-            <Authenticated className="bg-white">
+            <Authenticated className="bg-gray-200">
+                <Calendar/>
                 <div className="py-5 mx-20">
                     <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
                         <div className="p-4 mx-20 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -49,85 +130,100 @@ export default function Edit({ users, auth }) {
                                 <h1>Edit Employee</h1>
                             </div>
                             <form onSubmit={handleSubmit}>
-                                <div className="flex justify-center gap-20">
-                                    <div className=" md:w-1/2">
-                                        <InputLabel value="NPK" />
-
-                                        <TextInput
-                                            className="mb-5 w-full block"
-                                            type="text"
-                                            name="npk"
-                                            value={data.npk}
-                                            onChange={handleChange}
-                                        />
-
-                                        <InputLabel value="Nama" />
-
-                                        <TextInput
-                                            className="mb-5 w-full block"
-                                            type="text"
-                                            name="fullname"
-                                            value={data.fullname}
-                                            onChange={handleChange}
-                                        />
-
-                                        <InputLabel value="Group" />
-
-                                        <TextInput
-                                            className="mb-5 block w-full "
-                                            type="text"
-                                            name="group"
-                                            value={data.group}
-                                            onChange={handleChange}
-                                        />
-                                    </div>
-                                    <div className="md:w-1/2">
-                                        <InputLabel value="Status" />
-
-                                        <TextInput
-                                            className="mb-5 block w-full "
-                                            type="text"
-                                            name="status"
-                                            value={data.status}
-                                            onChange={handleChange}
-                                        />
-
-                                        <InputLabel value="Password" />
-
-                                        <TextInput
-                                            className="mb-5 block w-full "
-                                            type="password"
-                                            name="password"
-                                            value={data.password}
-                                            onChange={handleChange}
-                                        />
-
-                                        <InputLabel value="Roles" />
-
-                                        <TextInput
-                                            className="mb-5 block w-full "
-                                            type="text"
-                                            name="roles"
-                                            value={data.roles}
-                                            onChange={handleChange}
-                                        />
-                                        <div className="flex justify-center mt-6 gap-4">
-                                            <Link
-                                                href={route(
-                                                    "admin.employee.index"
+                                <div className="flex justify-center gap-3 md:gap-6">
+                                    <div className="w-full">
+                                        <div className="w-full mb-5">
+                                            <InputLabel value="Role" />
+                                            <Select
+                                                className="my-1 block w-full absolute"
+                                                name="roles"
+                                                options={optionEmployee}
+                                                value={optionEmployee.find(
+                                                    (option) =>
+                                                        option.value === data.roles
                                                 )}
-                                                className="px-6 py-2 bg-gray-600 text-white rounded hover:bg-gray-800"
-                                            >
-                                                Cancel
-                                            </Link>
-                                            <ButtonGreen
-                                                type="submit"
-                                                className=""
-                                            >
-                                                Update
-                                            </ButtonGreen>
+                                                onChange={handleChangeOption}
+                                            />
+                                            <InputError message={errors.roles} />
+                                        </div>
+
+                                        <div className="w-full mb-5">
+                                            <InputLabel value="NPK" />
+                                            <TextInput
+                                                className="my-1 w-full block"
+                                                type="text"
+                                                name="npk"
+                                                value={data.npk ||''}
+                                                onChange={(e) => {
+                                                    setData('npk', e.target.value.slice(0, 5));
+                                                }}
+                                            />
+                                            <InputError message={errors.npk} />
+                                        </div>
+
+                                        <div className="w-full mb-5">
+                                            <InputLabel value="Nama" />
+                                            <TextInput
+                                                className="my-1 w-full block"
+                                                type="text"
+                                                name="fullname"
+                                                value={data.fullname}
+                                                onChange={handleChange}
+                                            />
+                                            <InputError message={errors.fullname} />
                                         </div>
                                     </div>
+
+                                    <div className="w-full">
+                                        <div className="w-full mb-5">
+                                            <InputLabel value="Status" />
+                                            <Select
+                                                className="my-1 w-full block"
+                                                name="status"
+                                                isClearable={true}
+                                                defaultValue={''}
+                                                options={optionStatus}
+                                                value={optionStatus.find(
+                                                    (option) =>
+                                                    option.value === data.status
+                                                    )}
+                                                onChange={selectedOption => setData('status', selectedOption ? selectedOption.value : null)}
+                                            />
+                                            <InputError message={errors.status} />
+                                        </div>
+                                        <div className="w-full mb-5">
+                                            <InputLabel value="Group" />
+                                            <Select
+                                                className="my-1 w-full block"
+                                                name="group"
+                                                isClearable={true}
+                                                defaultValue={''}
+                                                options={optionGroup}
+                                                value={optionGroup.find(
+                                                    (option) =>
+                                                    option.value === data.group
+                                                    )}
+                                                onChange={selectedOption => setData('group', selectedOption ? selectedOption.value : null)}
+                                            />
+                                            <InputError message={errors.group} />
+                                        </div>                                        
+
+                                    </div>
+                                </div>
+                                <div className="flex justify-end mt-6 gap-3">
+                                    <Link
+                                        href={route(
+                                            "admin.employee.index"
+                                        )}
+                                        className="px-6 py-2 bg-gray-600 text-white rounded hover:bg-gray-800"
+                                    >
+                                        Cancel
+                                    </Link>
+                                    <PrimaryButton
+                                        type="submit"
+                                        className="bg-red-600"
+                                    >Save
+                                    </PrimaryButton>
                                 </div>
                             </form>
                         </div>

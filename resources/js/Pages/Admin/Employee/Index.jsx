@@ -1,21 +1,65 @@
-import { Head, useForm } from "@inertiajs/react";
-import ButtonRed from "@/Components/ButtonRed";
 import ButtonGreen from "@/Components/ButtonGreen";
 import ButtonOrange from "@/Components/ButtonOrange";
-import { Link } from "@inertiajs/react";
+import ButtonRed from "@/Components/ButtonRed";
+import Calendar from "@/Components/Calendar";
+import Dropdown from "@/Components/Dropdown";
+import FlashMessage from "@/Components/FlashMessage";
+import Authenticated from "@/Layouts/AuthenticatedLayout";
+import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import DataTable from "react-data-table-component";
-import { Inertia } from "@inertiajs/inertia";
-import Authenticated from "@/Layouts/AuthenticatedLayout";
-import Dropdown from "@/Components/Dropdown";
+import Swal from "sweetalert2";
 
-export default function index({ users, auth }) {
-    const data = {};
+export default function index({ users,flashMessage, auth }) {
+    const {delete: destroy} = useForm();
     const [filterText, setFilterText] = useState("");
 
     const handleFilter = (event) => {
         const value = event.target.value || "";
         setFilterText(value);
+    };
+
+    const handlePrint = () => {
+        Swal.fire({
+            text: 'Cetak data karyawan?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Cetak',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const newWindow = window.open(route('admin.employee.print'));
+                newWindow.focus();
+            }   
+        });       
+        
+    };
+
+    const handleExportPdf = () => {
+        Swal.fire({
+            text: 'Export data karyawan ke Pdf?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Export',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const newWindow = window.open(route('admin.employee.export.pdf'));
+                newWindow.focus();
+            }   
+        });       
+    };
+
+    const handleExportExcel = () => {
+        Swal.fire({
+            text: 'Export data karyawan ke Excel?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Export',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const newWindow = window.open(route('admin.employee.export.excel'));
+                newWindow.focus();
+            }   
+        });       
     };
 
     const filteredData = filterText
@@ -33,42 +77,19 @@ export default function index({ users, auth }) {
           )
         : users;
 
-    const [deleting, setDeleting] = useState(false);
-    // handle delete action
-    const handleDelete = async (id) => {
-        setDeleting(true);
-        const url = route("admin.employee.index");
-        window.location.href = url;
-        await Inertia.delete(`/admin/employee/${id}`);
-        setDeleting(false);
-    };
-    const cetak_pdf_employee = (e) => {
-        e.preventDefault();
-        const url =
-            route("admin.cetak_pdf_employee") +
-            "?" +
-            new URLSearchParams(data).toString();
-        window.location.href = url;
-    };
-    const cetak_excel_employee = (e) => {
-        e.preventDefault();
-        const url =
-            route("admin.cetak_excel_employee") +
-            "?" +
-            new URLSearchParams(data).toString();
-        window.location.href = url;
-    };
-
-    const Print = (e) => {
-        e.preventDefault();
-        const url =
-            route("admin.print_data_employee") +
-            "?" +
-            new URLSearchParams(data).toString();
-        const newTab = window.open(url, "_blank");
-        newTab.onload = function() {
-            newTab.print();
-        };
+    function handleDelete(id) {
+        Swal.fire({
+            text: 'Yakin Ingin Hapus?',
+            icon: 'warning',
+            showDenyButton: true,
+            showCancelButton: true,
+            showConfirmButton:false,
+            denyButtonText: 'Hapus',
+        }).then((result) => {
+            if (result.isDenied) {
+                destroy(route('admin.employee.destroy',id))
+            }
+        });
     };
 
     const columns = [
@@ -106,7 +127,7 @@ export default function index({ users, auth }) {
                 <>
                     <a
                         href={route("admin.employee.edit", row.id)}
-                        className="text-green-500 hover:text-green-900 duration-500 mr-5"
+                        className="text-green-500 hover:text-green-900 duration-500 mr-3"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -123,26 +144,23 @@ export default function index({ users, auth }) {
                             />
                         </svg>
                     </a>
-
-                    <a
-                        disabled={deleting}
-                        onClick={() => handleDelete(row.id)}
-                        className="w-6 h-6 text-red-500 hover:text-red-900 duration-500"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                            />
-                        </svg>
-                    </a>
+                    <div onClick={() => handleDelete(row.id)}>
+                        <button type='button' className="w-6 h-6 text-red-500 hover:text-red-900 duration-500">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                />
+                            </svg>
+                        </button>
+                    </div>
                 </>
             ),
         },
@@ -151,15 +169,16 @@ export default function index({ users, auth }) {
     return (
         <>
             <Head title="Employee" />
-
-            <Authenticated>
-                {/* content */}
-
+            <Authenticated className="bg-gray-200">
+                <Calendar/>
+                {flashMessage?.message &&(
+                    <FlashMessage message={flashMessage.message} type={flashMessage.type}/>
+                )}
                 <div className="w-screen">
-                    <div className="flex justify-end px-10 pt-3 ">
+                    <div className="flex justify-end container mx-auto">
                         <div className="flex mr-0">
                             <div className="flex items-center gap-3">
-                                <ButtonOrange onClick={Print}>
+                                <ButtonOrange onClick={handlePrint} className="">
                                     Print
                                 </ButtonOrange>
                                 <Dropdown>
@@ -184,7 +203,7 @@ export default function index({ users, auth }) {
                                     </Dropdown.Trigger>
                                     <Dropdown.Content>
                                         <Dropdown.Link
-                                            onClick={cetak_pdf_employee}
+                                            onClick={handleExportPdf}
                                             className="w-full flex gap-3 justify-start bg-transparent"
                                         >
                                             <svg
@@ -206,7 +225,7 @@ export default function index({ users, auth }) {
                                             PDF
                                         </Dropdown.Link>
                                         <Dropdown.Link
-                                            onClick={cetak_excel_employee}
+                                            onClick={handleExportExcel}
                                             className="container flex gap-3"
                                         >
                                             <svg
@@ -283,7 +302,7 @@ export default function index({ users, auth }) {
                         </div>
                     </div>
                     <div id="printablediv">
-                        <div className="pt-4 pb-10 px-10  ">
+                        <div className="pt-4 container mx-auto">
                             <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
                                 <DataTable
                                     title="List Employee"

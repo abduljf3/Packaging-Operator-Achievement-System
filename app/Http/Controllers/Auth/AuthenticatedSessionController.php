@@ -37,14 +37,8 @@ class AuthenticatedSessionController extends Controller
     $user = Auth::user();
 
     $roles = DB::table('users')->where('id', $user->id)->value('roles');
-
-    if ($roles === 'admin') {
-        return redirect()->route('dashboard');
-    } elseif ($roles === 'leader') {
-        return redirect()->route('leader.dashboard');
-    } else {
         return redirect()->intended(RouteServiceProvider::HOME);
-    }
+    
 }
     
 
@@ -59,6 +53,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }

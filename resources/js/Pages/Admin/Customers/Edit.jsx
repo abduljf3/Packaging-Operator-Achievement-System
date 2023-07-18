@@ -1,89 +1,125 @@
-import React, { useState, useEffect } from "react";
-import { Inertia } from "@inertiajs/inertia";
-import ButtonGreen from "@/Components/ButtonGreen";
-import TextInput from "@/Components/TextInput";
+import PrimaryButton from "@/Components/ButtonGray";
+import Calendar from "@/Components/Calendar";
+import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
+import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import Select from "react-select";
+import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
 import Swal from "sweetalert2";
-import { Link, Head, useForm } from "@inertiajs/react";
-import { set } from "lodash";
 
-export default function Edit({ customers, auth }) {
-    const [state, setState] = useState({
-        id: customers.id,
-        customer_id: customers.customer_id,
-        customer_name: customers.customer_name,
+export default function Create({ customers,customer }) {
+    const [errors, setErrors] = useState({});
+    const { data, setData,put } = useForm({
+        customer_code: customer.customer_code,
+        customer_name: customer.customer_name,
     });
 
-    useEffect(() => {
-        setState(customers);
-    }, [customers]);
-
+    const [submitting, setSubmitting] = useState(false);
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setState({ ...state, [name]: value });
+        const key = e.target.name;
+        const value = e.target.value;
+        setData((data) => ({
+            ...data,
+            [key]: value,
+        }));
+    };
+
+    const validateForm = () => {
+        let isValid = true;
+        const newErrors = {};
+        if (!data.customer_code) {
+            newErrors.customer_code = "Kode customer harus diisi";
+            isValid = false;
+        }else {
+            const customerCode = data.customer_code.trim();
+            const codeExists = customers.some(item => item.customer_code === customerCode  && item.customer_code !== customer.customer_code);
+            if (codeExists) {
+                newErrors.customer_code = 'Kode customer sudah terdaftar';
+                isValid = false;
+            }
+        }
+        if (!data.customer_name) {
+            newErrors.customer_name = "Nama customer harus diisi";
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: "Data berhasil diupdate",
-            showConfirmButton: false,
-        });
-        const url = route("admin.customers.index");
-        window.location.href = url;
-        Inertia.put(`/admin/customers/${state.id}`, state);
+        if (validateForm()) {
+            Swal.fire({
+                text: 'Simpan?',
+                icon: 'question',
+                showCancelButton:true,
+                confirmButtonText: 'Save',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    put(route('admin.customers.update',customer.id),{
+                        _method: 'PUT',
+                        ...data,
+                    });    
+                }
+            });        
+        }   
     };
 
     return (
         <>
-            <Head title="Edit Customer" />
-            <Authenticated className="bg-white">
-                <div className="py-28 mx-20">
-                    <div className="mx-20">
-                        <div className="p-4 mx-60 bg-white shadow sm:rounded-lg">
-                        <div className="p-4 ml-16 font-extrabold ">
-                                <h1>Update Customer</h1>
+            <Head title="Add Customer" />
+            <Authenticated className="bg-gray-200">
+                <Calendar/>
+                <div className="container mx-auto py-20">
+                    <div className="flex justify-center">
+                        <div className="w-full md:w-1/2 bg-white shadow sm:rounded-lg p-3 md:p-5">
+                            <div className="font-semibold text-xl">
+                                <h1>Edit Customer : {customer.customer_name}</h1>
                             </div>
                             <form onSubmit={handleSubmit}>
-                                <div className="flex-row justify-center gap-20">
-                                    <div className=" mx-20 my-2">
-                                        <InputLabel value="Customer Code" />
-                                        <TextInput
-                                            className="mb-5 w-full block"
-                                            type="text"
-                                            name="customer_id"
-                                            value={state.customer_id}
-                                            onChange={handleChange}
-                                        />
-                                    </div>
-                                    <div className="mx-20 my-2">
-                                        <InputLabel value="Customer Name" />
-                                        <TextInput
-                                            className="mb-5 block w-full "
-                                            type="text"
-                                            name="customer_name"
-                                            value={state.customer_name}
-                                            onChange={handleChange}
-                                        />
-                                        <div className="flex justify-center  gap-3">
-                                            <Link
-                                                href={route(
-                                                    "admin.customers.index"
-                                                )}
-                                                className="ml-40 px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-800"
-                                                >
-                                                Cancel 
+                                <div className="flex justify-center gap-20">
+                                    <div className="mt-5 w-full">
+                                        <div className="block mb-5">
+                                            <InputLabel value="Customer Code" className="mb-1"/>
+                                            <TextInput
+                                                className="block mb-1 w-full"
+                                                type="text"
+                                                name="customer_code"
+                                                value={data.customer_code}
+                                                onChange={handleChange}
+                                                placeholder="customer Code"
+                                            />
+                                            <InputError message={errors.customer_code}/>
+                                        </div>
+                                        <div className="block mb-5">
+                                            <InputLabel value="Customer Name" className="mb-1"/>
+                                            <TextInput
+                                                className="block mb-1 w-full"
+                                                type="text"
+                                                name="customer_name"
+                                                value={data.customer_name}
+                                                onChange={handleChange}
+                                                placeholder="Customer Name"
+                                            />
+                                            <InputError message={errors.customer_name}/>
+                                        </div>
+                                    
+                                        <div className="flex justify-end gap-3">
+                                            <Link href={route("admin.customers.index")} className="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-opacity-75 duration-500 ">
+                                                    CANCEL
                                             </Link>
-                                            <ButtonGreen
+
+                                            <PrimaryButton
                                                 type="submit"
-                                                className="pr-4"
+                                                disabled={submitting}
+                                                className="bg-red-600"
                                             >
-                                                Update
-                                            </ButtonGreen>
+                                                {submitting
+                                                    ? "SAVING..."
+                                                    : "SAVE"}
+                                            </PrimaryButton>
                                         </div>
                                     </div>
                                 </div>
