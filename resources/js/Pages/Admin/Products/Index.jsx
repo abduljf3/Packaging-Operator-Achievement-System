@@ -5,7 +5,7 @@ import Calendar from "@/Components/Calendar";
 import Dropdown from "@/Components/Dropdown";
 import FlashMessage from "@/Components/FlashMessage";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
-import { Link, useForm } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
@@ -114,7 +114,7 @@ export default function index({ products, auth,flashMessage }) {
         },
         {
             name: "Target (pcs)",
-            selector: (row) => parseFloat(row.target).toLocaleString("id-ID"),
+            selector: (row) => parseFloat(row.target).toLocaleString("en-US"),
             sortable: true,
         },
         {
@@ -165,7 +165,8 @@ export default function index({ products, auth,flashMessage }) {
 
     return (
         <>
-            <Authenticated className="bg-gray-200">
+            <Authenticated>
+                <Head title="Products" />
                 {flashMessage?.message &&(
                     <FlashMessage message={flashMessage.message} type={flashMessage.type}/>
                 )}

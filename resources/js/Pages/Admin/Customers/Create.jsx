@@ -69,7 +69,7 @@ export default function Create({ customers }) {
     return (
         <>
             <Head title="Add Customer" />
-            <Authenticated className="bg-gray-200">
+            <Authenticated>
                 <Calendar/>
                 <div className="container mx-auto py-20">
                     <div className="flex justify-center">

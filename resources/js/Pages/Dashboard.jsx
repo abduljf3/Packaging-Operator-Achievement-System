@@ -19,8 +19,11 @@ export default function Home({products,yearlyAchievement,monthlyAchievement,week
 
     return (
         <>
-        <Head title="Welcome" />
-            <div className="w-full min-h-screen flex flex-col justify-between bg-gray-200">
+            <Head title="Dashboard" />
+            <Head>
+                <link rel="icon" href="/logo.png" type="image/x-icon"/>
+            </Head>
+            <div className="w-full min-h-screen flex flex-col justify-between bg-gray-100">
                 <Navbar roles={roles} />
                 <Calendar/>
                 <div className="container w-full mx-auto h-full grow">
@@ -64,7 +67,7 @@ export default function Home({products,yearlyAchievement,monthlyAchievement,week
                             className="overflow-hidden bg-transparent"
                         >
                             <SwiperSlide>
-                                <div className="bg-white rounded-md overflow-hidden shadow-md h-[36rem]">
+                                <div className="bg-white rounded-md overflow-hidden shadow-md h-[20rem]">
                                     <div className="w-full border-b border-gray-300">
                                         <h1 className="font-semibold px-5 py-2 block text-red-600">Monthly Achievement {year}</h1>
                                     </div>
@@ -72,7 +75,7 @@ export default function Home({products,yearlyAchievement,monthlyAchievement,week
                                 </div>
                             </SwiperSlide>    
                             <SwiperSlide>
-                                <div className="bg-white rounded-md overflow-hidden shadow-md h-[36rem]">
+                                <div className="bg-white rounded-md overflow-hidden shadow-md h-[20rem]">
                                     <div className="w-full border-b border-gray-300">
                                         <h1 className="font-semibold px-5 py-2 block text-red-600">Achievement {month} {year}</h1>
                                     </div>
@@ -80,15 +83,15 @@ export default function Home({products,yearlyAchievement,monthlyAchievement,week
                                 </div>
                             </SwiperSlide>      
                             <SwiperSlide>
-                                <div className="bg-white rounded-md overflow-hidden shadow-md h-[36rem]">
+                                <div className="bg-white rounded-md overflow-hidden shadow-md h-[20rem]">
                                     <div className="w-full border-b border-gray-300">
-                                        <h1 className="font-semibold px-5 py-2 block text-red-600">Weakly Achievement {month} {year}</h1>
+                                        <h1 className="font-semibold px-5 py-2 block text-red-600">Weekly Achievement {month} {year}</h1>
                                     </div>
                                     <ChartWeekly achievements={weeklyAchievement}/>
                                 </div>
                             </SwiperSlide> 
                             <SwiperSlide>
-                                <div className="bg-white rounded-md overflow-hidden shadow-md h-[36rem]">
+                                <div className="bg-white rounded-md overflow-hidden shadow-md h-[20rem]">
                                     <div className="w-full border-b border-gray-300">
                                         <h1 className="font-semibold px-5 py-2 block text-red-600">Daily Achievement {month} {year}</h1>
                                     </div>

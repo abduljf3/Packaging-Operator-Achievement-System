@@ -35,7 +35,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        $customers = Customer::select('customer_code')->get();
+        $customers = Customer::select('customer_code')->withTrashed()->get();
         return Inertia::render('Admin/Customers/Create',[
             'customers' => $customers
         ]);

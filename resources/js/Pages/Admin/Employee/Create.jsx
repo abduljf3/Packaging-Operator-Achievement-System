@@ -10,6 +10,7 @@ import Select from "react-select";
 import Swal from "sweetalert2";
 
 export default function Create({ auth,users }) {
+    console.log(users)
     const [errors, setErrors] = useState({});
     const [passwordDisabled, setPasswordDisabled] = useState(true);
     const [submitting, setSubmitting] = useState(false);
@@ -19,7 +20,7 @@ export default function Create({ auth,users }) {
         group: "",
         status: "",
         password: "",
-        roles: "",
+        roles: "User",
     });
 
     const optionEmployee = [
@@ -92,6 +93,9 @@ export default function Create({ auth,users }) {
         if (!data.npk) {
             newErrors.npk = "NPK harus diisi";
             isValid = false;
+        }else if (!/^(?:\d{4}|K\d{4})$/.test(data.npk)) {
+            newErrors.npk = "NPK harus terdiri dari 4 digit angka atau 5 digit dengan huruf 'K' di depan";
+            isValid = false;
         }else {
             const npkExist = users.some(item => item.npk === data.npk);
             if (npkExist) {
@@ -124,10 +128,10 @@ export default function Create({ auth,users }) {
     return (
         <>
             <Head title="Add Operator" />
-            <Authenticated className="bg-gray-200">
+            <Authenticated>
                 <Calendar/>
-                <div className="flex justify-center py-20">
-                    <div className="w-full md:w-3/4">
+                <div className="flex justify-center items-center">
+                    <div className="xs:w-full w-3/4 lg:max-w-7xl">
                         <div className="p-4 sm:p-8 bg-white shadow-md sm:rounded-lg">
                             <div className="mb-6 font-extrabold">
                                 <h1>Add Employee</h1>

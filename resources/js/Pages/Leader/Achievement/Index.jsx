@@ -111,15 +111,24 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
         });
     };
 
+    const calculateTarget =(row) => {
+        let target = parseInt(row.product.target);
+        const startTime = new Date(`2023-07-22T${row.start}`);
+        const finishTime = new Date(`2023-07-22T${row.finish}`);
+        let differenceTime = (finishTime - startTime) / 60000;    
+        let targetActual = parseInt((differenceTime/420)*target);
+        return targetActual;
+    }
+
     const achievementPercents = (rowQuantity, rowTarget) => {
         let qty = parseInt(rowQuantity);
         let target = parseInt(rowTarget);
-        let achievement = ((qty/target)*100).toFixed(0);
-        let progressWidth = achievement > 100 ? 100 : achievement;
+        let achievement = parseInt((qty / target)*100);
+        let progressWidth = achievement > 100 ? 100 : parseInt(achievement);
         return (
             <div className="w-full h-4 rounded-full">
                 <div
-                className={`h-full block rounded-full text-right px-2 text-xs text-white ${progressWidth <= 75 ? 'bg-yellow-500' : 'bg-emerald-500'}`}
+                className={`h-full block rounded-full text-right px-2 text-xs text-white ${progressWidth <= 50 ? 'bg-red-500' : progressWidth <= 75 ? 'bg-yellow-500' : 'bg-emerald-500'}`}
                 style={{ width: `${progressWidth}%` }}
                 >{achievement}%</div>
             </div>
@@ -129,7 +138,7 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
     const achievementSort = (rowQuantity, rowTarget) => {
         let qty = parseInt(rowQuantity);
         let target = parseInt(rowTarget);
-        let achievement = (qty/target)*100;
+        let achievement = parseInt((qty / target)*100);
         return achievement;
     }
 
@@ -150,13 +159,11 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
         },
         {
             name: "Shift",
-            width:'5%',
             selector: (row) => row.shift,
             sortable: true,
         },
         {
             name: "NPK",
-            width:'5%',
             selector: (row) => row.user.npk,
             sortable: true,
         },
@@ -188,17 +195,30 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
             selector: (row) => parseFloat(row.qty).toLocaleString("id-ID"),
             sortable: true,
         },
+
+        {
+            name: "Start",
+            selector: (row) => row.start,
+            sortable: true,
+        },
+
+        {
+            name: "Finish",
+            selector: (row) => row.finish,
+            sortable: true,
+        },
+
         {
             name: "Target (pcs)",
-            selector: (row) => parseFloat(row.product.target).toLocaleString("id-ID"),
+            selector: (row) => calculateTarget(row).toLocaleString(),
             sortable: true,
         },
         {
             name: "Achievement (%)",
             cell: (row) => {
-                return achievementPercents(row.qty, row.product.target);
+                return achievementPercents(row.qty, calculateTarget(row));
             },
-            selector: (row) => achievementSort(row.qty, row.product.target),
+            selector: (row) => achievementSort(row.qty, calculateTarget(row)),
             sortable: true,
         },
     ];
@@ -206,7 +226,7 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
     return (
         <>
             <Head title="Report Achievement" />
-            <LeaderLayout  className="bg-gray-200">
+            <LeaderLayout>
                 <div className="w-screen">
                     <Calendar/>
                     <div className="flex justify-between container mx-auto">
@@ -342,7 +362,7 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
                     </div>
 
                     <div className="pt-4 container mx-auto  ">
-                        <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
+                        <div className="block min-w-full overflow-x-auto shadow rounded-md">
                             <DataTable
                                 title="Achievement"
                                 columns={columns}

@@ -148,7 +148,7 @@ export default function index({ customers, flashMessage }) {
 
     return (
         <>
-            <Authenticated className="bg-gray-200">
+            <Authenticated>
                 <Calendar/>
                 <div className="">
                     {flashMessage?.message && (

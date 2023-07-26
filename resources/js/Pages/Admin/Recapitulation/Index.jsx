@@ -106,13 +106,14 @@ export default function Index({ achievements, userAchievements, from, to, auth,f
     };
 
     const achievementPercents = (achievement) => {
+        let parseAchievement = parseInt(achievement);
         let progressWidth = achievement > 100 ? 100 : achievement;
         return (
             <div className="w-full h-4 rounded-full">
                 <div
-                className={`h-full block rounded-full text-right px-2 text-xs text-white ${progressWidth <= 75 ? 'bg-yellow-500' : 'bg-emerald-500'}`}
+                className={`h-full block rounded-full text-right px-2 text-xs text-white ${progressWidth <= 50 ? 'bg-red-500' : progressWidth <= 75 ? 'bg-yellow-500' : 'bg-emerald-500'}`}
                 style={{ width: `${progressWidth}%` }}
-                >{achievement}%</div>
+                >{parseAchievement}%</div>
             </div>
         );
     }
@@ -160,7 +161,7 @@ export default function Index({ achievements, userAchievements, from, to, auth,f
     return (
         <>
             <Head title="Report Achievement" />
-            <Authenticated className="bg-gray-200">
+            <Authenticated>
                 {flashMessage?.message &&(
                     <FlashMessage message={flashMessage.message} type={flashMessage.type}/>
                 )}

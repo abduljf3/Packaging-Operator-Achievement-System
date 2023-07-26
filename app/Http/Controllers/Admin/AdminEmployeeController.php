@@ -42,7 +42,7 @@ class AdminEmployeeController extends Controller
      */
     public function create()
     {
-        $users= User::get();
+        $users= User::withTrashed()->get();
         return Inertia::render('Admin/Employee/Create',[
             'users'=>$users
         ]);

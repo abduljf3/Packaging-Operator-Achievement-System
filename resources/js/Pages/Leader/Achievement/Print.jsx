@@ -8,16 +8,33 @@ export default function Print({ achievements,data}) {
         window.print();
     }, []);
 
-    const achievementPercent = (achievementQty, achievementTarget) => {
-        let qty = parseInt(achievementQty);
-        let target = parseInt(achievementTarget);
-        let achievement = (qty/target)*100;
-        return achievement.toFixed(0);
+    const calculateTarget =(row) => {
+        let target = parseInt(row.product.target);
+        const startTime = new Date(`2023-07-22T${row.start}`);
+        const finishTime = new Date(`2023-07-22T${row.finish}`);
+        let differenceTime = (finishTime - startTime) / 60000;    
+        let targetActual = parseInt((differenceTime/420)*target);
+        return targetActual;
+    }
+
+    const achievementPercents = (rowQuantity, rowTarget) => {
+        let qty = parseInt(rowQuantity);
+        let target = parseInt(rowTarget);
+        let achievement = parseInt((qty / target)*100);
+        let progressWidth = achievement > 100 ? 100 : parseInt(achievement);
+        return (
+            <div className="w-full h-4 rounded-full">
+                <div
+                className={`h-full block rounded-full text-right px-2 text-xs text-white ${progressWidth <= 50 ? 'bg-red-500' : progressWidth <= 75 ? 'bg-yellow-500' : 'bg-emerald-500'}`}
+                style={{ width: `${progressWidth}%` }}
+                >{achievement}%</div>
+            </div>
+        );
     }
 
     return (
         <div className="w-full">
-            <Head title="Employee" />
+            <Head title="Achievement" />
             <style>
                 {`
                     @media print {
@@ -28,7 +45,7 @@ export default function Print({ achievements,data}) {
                 `}
             </style>
             <div className="w-full flex justify-between">
-                <div className="flex w-fit items-center">
+                <div className="flex w-fit items-center gap-1">
                     <ApplicationLogo className="h-10"/>
                     <div className="flex flex-col gap-0">
                         <div className="font-semibold text-gray-800 text-sm">PT. Arai Rubeer Seal Indonesia</div>
@@ -36,7 +53,7 @@ export default function Print({ achievements,data}) {
                     </div>
                 </div>
             </div>
-            <h1 className="text-gray-800 text-3xl font-semibold text-center w-full">Detail Achievement</h1>  
+            <h1 className="text-gray-800 text-3xl font-semibold text-center w-full">Detail Achievement Packaging</h1>  
             <div className="text-gray-800 font-semibold w-full mb-3 text">Periode : {data.from_date} - {data.to_date}</div>  
             <table class="border-collapse border border-slate-400 table-auto w-full">
             <thead>
@@ -50,6 +67,8 @@ export default function Print({ achievements,data}) {
                     <th class="border border-slate-400">Lot No.</th>
                     <th class="border border-slate-400">Total Lot</th>
                     <th class="border border-slate-400">Qty (pcs)</th>
+                    <th class="border border-slate-400">Start</th>
+                    <th class="border border-slate-400">Finish</th>
                     <th class="border border-slate-400">Target (pcs)</th>
                     <th class="border border-slate-400">Achievement (%)</th>
                 </tr>
@@ -65,10 +84,12 @@ export default function Print({ achievements,data}) {
                         <td class="px-2 text-center border border-slate-400">{achievement.product.drw_no}</td>
                         <td class="px-2 text-center border border-slate-400">{achievement.product_lot}</td>
                         <td class="px-2 text-center border border-slate-400">{achievement.total_lot}</td>
-                        <td class="px-2 text-center border border-slate-400">{parseFloat(achievement.qty).toLocaleString("id-ID")}</td>
-                        <td class="px-2 text-center border border-slate-400">{parseFloat(achievement.product.target).toLocaleString("id-ID")}</td>
+                        <td class="px-2 text-center border border-slate-400">{parseFloat(achievement.qty).toLocaleString()}</td>
+                        <td class="px-2 text-center border border-slate-400">{achievement.start}</td>
+                        <td class="px-2 text-center border border-slate-400">{achievement.finish}</td>
+                        <td class="px-2 text-center border border-slate-400">{calculateTarget(achievement).toLocaleString()}</td>
                         <td class="px-2 text-center border border-slate-400">
-                            {achievementPercent(achievement.qty, achievement.product.target)}
+                            {achievementPercents(achievement.qty, calculateTarget(achievement))}
                         </td>
                     </tr>
                 ))}

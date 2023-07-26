@@ -117,16 +117,16 @@ export default function Edit({ product, customers,products, auth }) {
     return (
         <>
             <Head title="Edit Product" />
-            <Authenticated className="bg-gray-200">
+            <Authenticated>
                 <Calendar/>
-                <div className="py-20 mx-20">
-                    <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
-                        <div className="p-8 mx-20  bg-white shadow sm:rounded-lg">
-                        <div className="mb-5 font-extrabold ">
-                                <h1>Update Product</h1>
+                <div className="flex justify-center items-center">
+                    <div className="xs:w-full w-1/2 lg:max-w-7xl">
+                        <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                            <div className="mb-6 font-extrabold">
+                                <h1>Edit Product</h1>
                             </div>
                             <form onSubmit={handleSubmit}>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                     <div className="w-full">
                                         <div className="mb-5">
                                             <InputLabel value="Customer Code" />

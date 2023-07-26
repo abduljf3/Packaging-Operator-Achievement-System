@@ -124,7 +124,7 @@ export default function index({ user,users,flashMessage }) {
     
     return (
         <>
-            <LeaderLayout className="bg-gray-200">
+            <LeaderLayout>
                 {flashMessage?.message &&(
                     <FlashMessage message={flashMessage.message} type={flashMessage.type}/>
                 )}

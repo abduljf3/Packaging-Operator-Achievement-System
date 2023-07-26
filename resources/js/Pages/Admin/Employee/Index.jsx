@@ -169,7 +169,7 @@ export default function index({ users,flashMessage, auth }) {
     return (
         <>
             <Head title="Employee" />
-            <Authenticated className="bg-gray-200">
+            <Authenticated>
                 <Calendar/>
                 {flashMessage?.message &&(
                     <FlashMessage message={flashMessage.message} type={flashMessage.type}/>

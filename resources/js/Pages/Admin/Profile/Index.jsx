@@ -124,7 +124,7 @@ export default function index({ user,users,flashMessage }) {
     
     return (
         <>
-            <Authenticated className="bg-gray-200">
+            <Authenticated>
                 {flashMessage?.message &&(
                     <FlashMessage message={flashMessage.message} type={flashMessage.type}/>
                 )}

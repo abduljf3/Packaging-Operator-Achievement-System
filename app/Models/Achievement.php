@@ -16,6 +16,8 @@ class Achievement extends Model
         'product_lot',
         'total_lot',
         'qty',
+        'start',
+        'finish',
         'remarks',
         'user_id',
         'product_id',

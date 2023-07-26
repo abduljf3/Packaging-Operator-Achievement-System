@@ -2,7 +2,7 @@ import { useState } from "react";
 import Dropdown from "@/Components/Dropdown";
 import Navbar from "@/Components/Navbar";
 import Footer from "@/Components/Footer";
-import { Link } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 
 export default function Authenticated({ auth, header, children,className }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -11,6 +11,9 @@ export default function Authenticated({ auth, header, children,className }) {
     return (
         <>
             <div className={`min-h-screen bg-gray-100 flex flex-col ${className}`}>
+                <Head>
+                    <link rel="icon" href="/logo.png" type="image/x-icon"/>
+                </Head>
                 <Navbar roles="Admin" />
                 {header && (
                     <header className="bg-white shadow">

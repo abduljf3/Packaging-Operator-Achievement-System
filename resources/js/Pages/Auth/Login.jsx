@@ -1,13 +1,12 @@
-import { useEffect } from "react";
+import ApplicationLogo from "@/Components/ApplicationLogo";
+import ButtonRed from "@/Components/ButtonRed";
 import Checkbox from "@/Components/Checkbox";
-import GuestLayout from "@/Layouts/GuestLayout";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import ButtonRed from "@/Components/ButtonRed";
 import TextInput from "@/Components/TextInput";
+import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import ApplicationLogo from "@/Components/ApplicationLogo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Login({ status, canResetPassword }) {
     const [formErrors, setFormErrors] = useState({});
@@ -35,7 +34,6 @@ export default function Login({ status, canResetPassword }) {
     const validateForm = () => {
         let isValid = true;
         const newErrors = {};
-
         
         if (!/^(?:\d{4}|K\d{4})$/.test(data.npk)) {
             newErrors.npk = "NPK harus terdiri dari 4 digit angka atau 5 digit dengan huruf 'K' di depan";
@@ -55,12 +53,12 @@ export default function Login({ status, canResetPassword }) {
     return (
         <GuestLayout>
             <Head title="Log in" />
-
             {status && (
                 <div className="mb-4 font-medium text-sm text-green-600">
                     {status}
                 </div>
             )}
+            
             <Link href={route('dashboard')} className="flex items-center gap-2 mb-5">
                 <ApplicationLogo className=""/>
                 <div className="md:flex flex-col font-bold text-black hidden">

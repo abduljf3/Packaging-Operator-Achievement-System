@@ -121,11 +121,11 @@ export default function Edit({ user,users, auth }) {
     return (
         <>
             <Head title="Edit Operator" />
-            <Authenticated className="bg-gray-200">
+            <Authenticated>
                 <Calendar/>
-                <div className="py-5 mx-20">
-                    <div className="mmax-w-7xl mx-20 sm:px-6 lg:px-8 space-y-6">
-                        <div className="p-4 mx-20 sm:p-8 bg-white shadow sm:rounded-lg">
+                <div className="flex justify-center items-center">
+                    <div className="xs:w-full w-3/4 lg:max-w-7xl">
+                        <div className="p-4 sm:p-8 bg-white shadow-md sm:rounded-lg">
                             <div className="mb-6 font-extrabold">
                                 <h1>Edit Employee</h1>
                             </div>

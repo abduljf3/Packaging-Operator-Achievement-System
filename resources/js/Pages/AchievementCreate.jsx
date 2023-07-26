@@ -6,7 +6,7 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import Navbar from "@/Components/Navbar";
 import TextInput from "@/Components/TextInput";
-import { Head, useForm } from "@inertiajs/react"
+import { Head, Link, useForm } from "@inertiajs/react"
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import Select from "react-select";
@@ -41,6 +41,8 @@ export default function AchievementCreate({users,products,flashMessage}) {
         product_lot: "",
         total_lot: "",
         qty: "",
+        start: "",
+        finish: "",
         remarks: "",
     });
 
@@ -134,6 +136,14 @@ export default function AchievementCreate({users,products,flashMessage}) {
             newErrors.qty = "Quantity harus diisi";
             isValid = false;
         }
+        if (!data.start) {
+            newErrors.start = "Waktu mulai harus diisi";
+            isValid = false;
+        }
+        if (!data.finish) {
+            newErrors.finish = "Waktu selesai harus diisi";
+            isValid = false;
+        }
             
         setErrors(newErrors);
         return isValid;
@@ -155,12 +165,17 @@ export default function AchievementCreate({users,products,flashMessage}) {
             product_lot: '',
             total_lot: '',
             qty: '',
+            start: "",
+            finish: "",
             remarks: '',
           });
           setIsSubmitted(false);
         }
       }, [isSubmitted]);
-      
+    
+    const handleClear = () => {
+        setIsSubmitted(true);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -183,20 +198,23 @@ export default function AchievementCreate({users,products,flashMessage}) {
     return (
         <>
         <Head title="Create Achievement" />
+            <Head>
+                <link rel="icon" href="/logo.png" type="image/x-icon"/>
+            </Head>
             {flashMessage?.message &&(
                 <FlashMessage message={flashMessage.message} type={flashMessage.type}/>
             )}
-            <div className="w-full min-h-screen flex flex-col bg-gray-200">
+            <div className="w-full min-h-screen flex flex-col bg-gray-100">
                 <Navbar />
                 <Calendar/>
                 <div className="grow">
                     <div className="w-full container flex justify-center mx-auto">
-                        <div className="w-full md:w-3/4 bg-white rounded-md shadow-md">
+                        <div className="w-full bg-white rounded-md shadow-md">
                             <h1 className="font-semibold text-gray-800 text-2xl p-5">Create Achievement</h1>
                             <form onSubmit={handleSubmit}>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-5 pb-5">
-                                    <div className="col-span-3 md:col-span-1">
-                                        <div className="mb-5">
+                                    <div className="">
+                                        <div className="w-full mb-5">
                                             <InputLabel value="NPK" className="after:content-['*'] after:ml-0.5 after:text-red-500 "/>
                                             <Select
                                                 className="block w-full my-1"
@@ -255,104 +273,122 @@ export default function AchievementCreate({users,products,flashMessage}) {
                                         </div>
                                         
                                     </div>
-                                    <div className="col-span-3 md:col-span-2">
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-                                            <div className="w-full">
-                                                <InputLabel value="Drawing No." className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
-                                                <Select
-                                                    className="block w-full my-1"
-                                                    options={OptionProducts}
-                                                    onChange={handleChangeProduct}
-                                                    isClearable={true}
-                                                    value={OptionProducts.find(OptionProduct => OptionProduct.value === data.product_id) || null}
-                                                />
-                                                <InputError message={errors.product_id}/>
-                                            </div>
-                                            <div className="w-full">
-                                                <InputLabel value="Product Name" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
-                                                <TextInput
-                                                    className="w-full block bg-gray-200 my-1"
-                                                    type="text"
-                                                    name="product_name"
-                                                    value={data.product_name}
-                                                    readOnly={true}
-                                                />
-                                                <InputError message={errors.product_name}/>
-                                            </div>
+                                    <div className="">
+                                        <div className="w-full mb-5">
+                                            <InputLabel value="Drawing No." className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
+                                            <Select
+                                                className="block w-full my-1"
+                                                options={OptionProducts}
+                                                onChange={handleChangeProduct}
+                                                isClearable={true}
+                                                value={OptionProducts.find(OptionProduct => OptionProduct.value === data.product_id) || null}
+                                            />
+                                            <InputError message={errors.product_id}/>
+                                        </div>
+                                        <div className="w-full mb-5">
+                                            <InputLabel value="Product Type" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
+                                            <TextInput
+                                                className="w-full block bg-gray-200 my-1"
+                                                type="text"
+                                                name="product_type"
+                                                value={data.product_type || ''}
+                                                readOnly={true}
+                                            />
+                                            <InputError message={errors.product_type}/>
+                                        </div>
+                                        <div className="w-full mb-5">
+                                            <InputLabel value="Product Name" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
+                                            <TextInput
+                                                className="w-full block bg-gray-200 my-1"
+                                                type="text"
+                                                name="product_name"
+                                                value={data.product_name}
+                                                readOnly={true}
+                                            />
+                                            <InputError message={errors.product_name}/>
+                                        </div>
+                                        <div className="w-full mb-5">
+                                            <InputLabel value="Customer Name" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
+                                            <TextInput
+                                                className="w-full block bg-gray-200 my-1"
+                                                type="text"
+                                                name="customer_name"
+                                                value={data.customer_name || ''}
+                                                readOnly={true}
+                                            />
+                                            <InputError message={errors.customer_name}/>
                                         </div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                                             <div className="w-full">
-                                                <InputLabel value="Product Type" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
+                                                <InputLabel value="Waktu Mulai" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
                                                 <TextInput
-                                                    className="w-full block bg-gray-200 my-1"
-                                                    type="text"
-                                                    name="product_type"
-                                                    value={data.product_type || ''}
-                                                    readOnly={true}
+                                                    className="w-full block my-1"
+                                                    type="time"
+                                                    name="time"
+                                                    value={data.start || ''}
+                                                    onChange ={(e) => setData('start',e.target.value)}
                                                 />
-                                                <InputError message={errors.product_type}/>
+                                                <InputError message={errors.start}/>
                                             </div>
                                             <div className="w-full">
-                                                <InputLabel value="Customer Name" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
+                                                <InputLabel value="Waktu Selesai" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
                                                 <TextInput
-                                                    className="w-full block bg-gray-200 my-1"
-                                                    type="text"
-                                                    name="customer_name"
-                                                    value={data.customer_name || ''}
-                                                    readOnly={true}
+                                                    className="w-full block my-1"
+                                                    type="time"
+                                                    name="finish"
+                                                    value={data.finish || ''}
+                                                    onChange ={(e) => setData('finish',e.target.value)}
                                                 />
-                                                <InputError message={errors.customer_name}/>
+                                                <InputError message={errors.finish}/>
                                             </div>
                                         </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-                                            <div className="w-full">
-                                                <InputLabel value="Spring Lot" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
-                                                <TextInput
-                                                    className="w-full block my-1"
-                                                    type="text"
-                                                    name="spring_lot"
-                                                    value={data.spring_lot}
-                                                    onChange={(e) => setData('spring_lot', e.target.value)}
-                                                />
-                                                <InputError message={errors.spring_lot}/>
-                                            </div>
-                                            <div className="w-full">
-                                                <InputLabel value="Product Lot" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
-                                                <TextInput
-                                                    className="w-full block my-1"
-                                                    type="text"
-                                                    name="product_lot"
-                                                    value={data.product_lot}
-                                                    onChange={(e) => setData('product_lot', e.target.value)}
-                                                />
-                                                <InputError message={errors.product_lot}/>
-                                            </div>
+                                    </div>
+                                    <div className="">
+                                        <div className="w-full mb-5">
+                                            <InputLabel value="Spring Lot" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
+                                            <TextInput
+                                                className="w-full block my-1"
+                                                type="text"
+                                                name="spring_lot"
+                                                value={data.spring_lot}
+                                                onChange={(e) => setData('spring_lot', e.target.value)}
+                                            />
+                                            <InputError message={errors.spring_lot}/>
                                         </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-                                            <div className="w-full">
-                                                <InputLabel value="Total Lot" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
-                                                <TextInput
-                                                    className="w-full block my-1"
-                                                    type="number"
-                                                    name="total_lot"
-                                                    value={data.total_lot}
-                                                    onChange={(e) => setData('total_lot', e.target.value)}
-                                                />
-                                                <InputError message={errors.total_lot}/>
-                                            </div>
-                                            <div className="w-full">
-                                                <InputLabel value="Quantity" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
-                                                <TextInput
-                                                    className="w-full block my-1"
-                                                    type="number"
-                                                    name="qty"
-                                                    value={data.qty}
-                                                    onChange={(e) => setData('qty', e.target.value)}
-                                                />
-                                                <InputError message={errors.qty}/>
-                                            </div>
+                                        <div className="w-full mb-5">
+                                            <InputLabel value="Product Lot" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
+                                            <TextInput
+                                                className="w-full block my-1"
+                                                type="text"
+                                                name="product_lot"
+                                                value={data.product_lot}
+                                                onChange={(e) => setData('product_lot', e.target.value)}
+                                            />
+                                            <InputError message={errors.product_lot}/>
                                         </div>
-                                        <div className="w-full">
+                                        <div className="w-full mb-5">
+                                            <InputLabel value="Total Lot" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
+                                            <TextInput
+                                                className="w-full block my-1"
+                                                type="number"
+                                                name="total_lot"
+                                                value={data.total_lot}
+                                                onChange={(e) => setData('total_lot', e.target.value)}
+                                            />
+                                            <InputError message={errors.total_lot}/>
+                                        </div>
+                                        <div className="w-full mb-5">
+                                            <InputLabel value="Quantity" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
+                                            <TextInput
+                                                className="w-full block my-1"
+                                                type="number"
+                                                name="qty"
+                                                value={data.qty}
+                                                onChange={(e) => setData('qty', e.target.value)}
+                                            />
+                                            <InputError message={errors.qty}/>
+                                        </div>
+                                        <div className="w-full mb-5">
                                             <InputLabel value="Remarks" />
                                             <textarea
                                                 className="w-full block my-1 border-gray-300"
@@ -365,8 +401,10 @@ export default function AchievementCreate({users,products,flashMessage}) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex w-full justify-end bg-gray-200 p-5">
-                                    <PrimaryButton className="bg-red-600 px-6 py-3">Save</PrimaryButton>
+
+                                <div className="flex w-full justify-end gap-3 bg-gray-200 p-5">
+                                    <div onClick={handleClear} className="rounded-md cursor-pointer px-5 py-2 text-center bg-gray-500 text-white hover:bg-gray-600">Clear</div>
+                                    <PrimaryButton type="submit" className="bg-red-600 px-6 py-3">Save</PrimaryButton>
                                 </div>
                             </form>
                         </div>

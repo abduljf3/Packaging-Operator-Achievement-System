@@ -35,7 +35,7 @@ class ProductController extends Controller
     public function create()
     {
         $customers = Customer::get();
-        $products = Product::select('drw_no')->get();
+        $products = Product::select('drw_no')->withTrashed()->get();
         return Inertia::render('Admin/Products/Create',[
             'customers'=>$customers,
             'products'=>$products,

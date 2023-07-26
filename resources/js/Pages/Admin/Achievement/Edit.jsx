@@ -94,7 +94,7 @@ export default function Edit({ users, achievement, products, auth }) {
     return (
         <>
             <Head title="Edit Achievement" />
-            <Authenticated className="bg-gray-200">
+            <Authenticated>
                 <Calendar/>
                 <div className="flex justify-center w-full items-center py-20">
                     <div className="w-full md:max-w-7xl">

@@ -117,10 +117,10 @@ export default function Create({ customers,products }) {
     return (
         <>
             <Head title="Add Product" />
-            <Authenticated className="bg-gray-200">
+            <Authenticated>
                 <Calendar/>
                 <div className="flex justify-center items-center">
-                    <div className="w-full md:max-w-7xl py-10">
+                    <div className="xs:w-full w-1/2 lg:max-w-7xl">
                         <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                             <div className="mb-6 font-extrabold">
                                 <h1>Add Product</h1>
@@ -192,7 +192,7 @@ export default function Create({ customers,products }) {
                                         </div>
                                         
                                         <div className="mb-5">
-                                            <InputLabel value="Target" />
+                                            <InputLabel value="Target / Shift (pcs)" />
                                             <TextInput
                                                 className="block w-full"
                                                 type="number"

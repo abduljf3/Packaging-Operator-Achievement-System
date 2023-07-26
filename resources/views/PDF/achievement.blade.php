@@ -31,6 +31,8 @@
                         <th scope="col">Lot No.</th>
                         <th scope="col">Total Lot</th>
                         <th scope="col">Achievement (pcs)</th>
+                        <th scope="col">Start</th>
+                        <th scope="col">Finish</th>
                         <th scope="col">Target (pcs)</th>
                         <th scope="col">Achievement (%)</th>
                     </tr>
@@ -47,6 +49,8 @@
                             <td>{{ $achievement->product_lot }}</td>
                             <td>{{ $achievement->total_lot }}</td>
                             <td>{{ number_format($achievement->qty, 0, ',', '.') }}</td>
+                            <td>{{ $achievement->start}}</td>
+                            <td>{{ $achievement->finish}}</td>
                             <td>{{ number_format($achievement->product->target, 0, ',', '.') }}</td>
                             <td>{{ ($achievement->qty / $achievement->product->target) * 100 }}</td>
                         </tr>
