@@ -12,9 +12,10 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import Swal from "sweetalert2";
 
-export default function AchievementCreate({users,products,flashMessage}) {
+export default function AchievementCreate({users,products,parcels,flashMessage}) {
     const [errors, setErrors] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isDisabledTarget, setIsDisabledTarget] = useState(true);
     const currentDate = format(new Date(), 'yyyy-MM-dd');
     const getCurrentShift = () => {
         const currentHour = new Date().getHours();
@@ -36,7 +37,8 @@ export default function AchievementCreate({users,products,flashMessage}) {
         product_id: "",
         product_name: "",
         product_type: "",
-        customer_name: "",
+        target_id:"",
+        target:"",
         spring_lot: "",
         product_lot: "",
         total_lot: "",
@@ -59,7 +61,7 @@ export default function AchievementCreate({users,products,flashMessage}) {
           fullname: user?.fullname || '',
           group: user?.group || '',
         }));
-      };      
+    };      
 
     const optionShifts = [
         { value: "1", label: "1" },
@@ -69,17 +71,56 @@ export default function AchievementCreate({users,products,flashMessage}) {
 
     const OptionProducts = products.map((product) => ({
         value: product.id,
-        label: `${product.drw_no} | ${product.customer.customer_code}`,
+        label:product.drw_no,
     }));
 
+    const filteredParcels = data.product_id
+    ? parcels.filter((target) => target.product_id === data.product_id)
+    : parcels;
+
+    const optionParcels = filteredParcels.map((target) => ({
+        value: target.id,
+        label: target.parcel.quantity.toLocaleString(),
+        target: target.quantity || 0,
+    }));
+
+    const optionRemarks = [
+        { value: "Meeting", label: "Meeting" },
+        { value: "5S", label: "5S" },
+        { value: "Repacking", label: "Repacking" },
+        { value: "Proses Pecahan", label: "Proses Pecahan" },
+        { value: "Serah Terima Box ke Gudang", label: "Serah Terima Box ke Gudang" },
+        { value: "Others", label: "Others" },
+    ];
+
+
     const handleChangeProduct = (selectedOption) => {
-        const product = products.find((item) => item.id === selectedOption?.value);
+        if(selectedOption){
+            const product = products.find((item) => item.id === selectedOption?.value);
+            setData((data) => ({
+                ...data,
+                product_id: selectedOption?.value || "",
+                product_name: product?.product_name || "",
+                product_type: product?.product_type || "",
+            }));
+            setIsDisabledTarget(false)
+        }else{
+            setData((data) => ({
+                ...data,
+                product_id: "",
+                product_name: "",
+                product_type: "",
+                target_id:'',
+            }));
+            setIsDisabledTarget(true)
+        }
+    };
+
+    const handleChangeParcel = (selectedOption) => {
         setData((data) => ({
           ...data,
-          product_id: selectedOption?.value || "",
-          product_name: product?.product_name || "",
-          product_type: product?.product_type || "",
-          customer_name: product?.customer?.customer_name || "",
+          target_id: selectedOption?.value || "",
+          target: selectedOption?.target || "",
         }));
     };
 
@@ -107,10 +148,6 @@ export default function AchievementCreate({users,products,flashMessage}) {
             newErrors.product_type = "Product type harus diisi";
             isValid = false;
         }
-        if (!data.customer_name) {
-            newErrors.customer_name = "Cust. name harus diisi";
-            isValid = false;
-        }
         if (!data.date) {
             newErrors.date = "Tanggal harus diisi";
             isValid = false;
@@ -120,7 +157,11 @@ export default function AchievementCreate({users,products,flashMessage}) {
             newErrors.product_id = "Drawing No. harus dipilih";
             isValid = false;
         }
-        if (!data.spring_lot) {
+        if (!data.target_id) {
+            newErrors.target_id = "Qty / parcel harus dipilih";
+            isValid = false;
+        }
+        if (!data.product_id || (!data.spring_lot && data.product_type === 'Oil Seals')) {
             newErrors.spring_lot = "Spring lot harus diisi";
             isValid = false;
         }
@@ -144,6 +185,10 @@ export default function AchievementCreate({users,products,flashMessage}) {
             newErrors.finish = "Waktu selesai harus diisi";
             isValid = false;
         }
+        if (!data.remarks) {
+            newErrors.remarks = "Remarks harus dipilih";
+            isValid = false;
+        }
             
         setErrors(newErrors);
         return isValid;
@@ -160,7 +205,8 @@ export default function AchievementCreate({users,products,flashMessage}) {
             product_id: '',
             product_name: '',
             product_type: '',
-            customer_name: '',
+            target_id:"",
+            target:"",
             spring_lot: '',
             product_lot: '',
             total_lot: '',
@@ -210,7 +256,7 @@ export default function AchievementCreate({users,products,flashMessage}) {
                 <div className="grow">
                     <div className="w-full container flex justify-center mx-auto">
                         <div className="w-full bg-white rounded-md shadow-md">
-                            <h1 className="font-semibold text-gray-800 text-2xl p-5">Create Achievement</h1>
+                            <h1 className="font-semibold text-gray-800 text-2xl p-5">Create New Achievement</h1>
                             <form onSubmit={handleSubmit}>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-5 pb-5">
                                     <div className="">
@@ -307,24 +353,14 @@ export default function AchievementCreate({users,products,flashMessage}) {
                                             />
                                             <InputError message={errors.product_name}/>
                                         </div>
-                                        <div className="w-full mb-5">
-                                            <InputLabel value="Customer Name" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
-                                            <TextInput
-                                                className="w-full block bg-gray-200 my-1"
-                                                type="text"
-                                                name="customer_name"
-                                                value={data.customer_name || ''}
-                                                readOnly={true}
-                                            />
-                                            <InputError message={errors.customer_name}/>
-                                        </div>
+                                       
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                                             <div className="w-full">
                                                 <InputLabel value="Waktu Mulai" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
                                                 <TextInput
                                                     className="w-full block my-1"
                                                     type="time"
-                                                    name="time"
+                                                    name="start"
                                                     value={data.start || ''}
                                                     onChange ={(e) => setData('start',e.target.value)}
                                                 />
@@ -342,29 +378,43 @@ export default function AchievementCreate({users,products,flashMessage}) {
                                                 <InputError message={errors.finish}/>
                                             </div>
                                         </div>
+                                        <div className="w-full mb-5">
+                                            <InputLabel value="Qty / Parcel" className="after:content-['*'] after:ml-0.5 after:text-red-500 "/>
+                                            <Select
+                                                className="block w-full my-1"
+                                                options={optionParcels}
+                                                onChange={handleChangeParcel}
+                                                isClearable={true}
+                                                value={optionParcels.find((optionParcel) => optionParcel.value === data.target_id) || null}
+                                                isDisabled={isDisabledTarget}
+                                            />
+                                            <InputError message={errors.target_id}/>
+                                        </div>
                                     </div>
                                     <div className="">
-                                        <div className="w-full mb-5">
-                                            <InputLabel value="Spring Lot" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
-                                            <TextInput
-                                                className="w-full block my-1"
-                                                type="text"
-                                                name="spring_lot"
-                                                value={data.spring_lot}
-                                                onChange={(e) => setData('spring_lot', e.target.value)}
-                                            />
-                                            <InputError message={errors.spring_lot}/>
-                                        </div>
-                                        <div className="w-full mb-5">
-                                            <InputLabel value="Product Lot" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
-                                            <TextInput
-                                                className="w-full block my-1"
-                                                type="text"
-                                                name="product_lot"
-                                                value={data.product_lot}
-                                                onChange={(e) => setData('product_lot', e.target.value)}
-                                            />
-                                            <InputError message={errors.product_lot}/>
+                                        <div className="grid grid-cols-2 gap-3 mb-5">
+                                            <div className="w-full">
+                                                <InputLabel value="Spring Lot" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
+                                                <TextInput
+                                                    className="w-full block my-1"
+                                                    type="text"
+                                                    name="spring_lot"
+                                                    value={data.spring_lot}
+                                                    onChange={(e) => setData('spring_lot', e.target.value)}
+                                                />
+                                                <InputError message={errors.spring_lot}/>
+                                            </div>
+                                            <div className="w-full">
+                                                <InputLabel value="Product Lot" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
+                                                <TextInput
+                                                    className="w-full block my-1"
+                                                    type="text"
+                                                    name="product_lot"
+                                                    value={data.product_lot}
+                                                    onChange={(e) => setData('product_lot', e.target.value)}
+                                                />
+                                                <InputError message={errors.product_lot}/>
+                                            </div>
                                         </div>
                                         <div className="w-full mb-5">
                                             <InputLabel value="Total Lot" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
@@ -389,14 +439,15 @@ export default function AchievementCreate({users,products,flashMessage}) {
                                             <InputError message={errors.qty}/>
                                         </div>
                                         <div className="w-full mb-5">
-                                            <InputLabel value="Remarks" />
-                                            <textarea
-                                                className="w-full block my-1 border-gray-300"
-                                                type="number"
-                                                name="remarks"
-                                                value={data.remarks}
-                                                onChange={(e) => setData('remarks', e.target.value)}
-                                            ></textarea>
+                                            <InputLabel value="Remarks" className="after:content-['*'] after:ml-0.5 after:text-red-500"/>
+                                            <Select
+                                                className="block w-full my-1"
+                                                options={optionRemarks}
+                                                isClearable={true}
+                                                onChange={(selectedOption) => setData('remarks', selectedOption ? selectedOption.value : null)}
+                                                placeholder="Pilih Remarks"
+                                                defaultValue={optionRemarks.find(optionRemark => optionRemark.value === data.remarks)}
+                                            />
                                             <InputError message={errors.remarks}/>
                                         </div>
                                     </div>

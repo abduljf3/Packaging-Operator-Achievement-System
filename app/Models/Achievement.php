@@ -21,6 +21,7 @@ class Achievement extends Model
         'remarks',
         'user_id',
         'product_id',
+        'target_id',
     ];
     public function user()
     {
@@ -30,5 +31,10 @@ class Achievement extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function target()
+    {
+        return $this->belongsTo(ProductParcel::class);
     }
 }

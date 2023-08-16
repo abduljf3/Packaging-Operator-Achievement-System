@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Imports\AchievementImport;
 use App\Models\achievement;
 use App\Models\Product;
+use App\Models\ProductParcel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -24,13 +25,13 @@ class AchievementController extends Controller
         $from = $request->input('from_date');
         $to = $request->input('to_date');
         if ($from) {
-            $achievements = Achievement::with(['user', 'product'])
+            $achievements = Achievement::with(['user', 'product','target','target.parcel'])
             ->whereBetween('date', [$from, $to])
             ->get();
         } else {
             $from = date('Y-m-d');
             $to = date('Y-m-d');
-            $achievements = Achievement::with(['user', 'product'])
+            $achievements = Achievement::with(['user', 'product','target','target.parcel'])
                 ->whereDate('date', '=', $from)
                 ->get();
         }
@@ -97,11 +98,13 @@ class AchievementController extends Controller
     {
         $users = User::all();
         $products = Product::all();
+        $parcels = ProductParcel::with('parcel')->get();
         $achievement = achievement::with(['user','product'])->findOrFail($id);
         return Inertia::render('Admin/Achievement/Edit',[
             'achievement' => $achievement,
             'users' => $users,
-            'products' => $products
+            'products' => $products,
+            'parcels' => $parcels,
         ]);
     }
     public function delete($id)
@@ -148,7 +151,7 @@ class AchievementController extends Controller
     public function import(Request $request)
     { 
         $file = $request->file('file');
-        Excel::import(new AchievementImport, $file);  
+        Excel::import(new AchievementImport, $file, 'achievement');  
         return redirect(route('admin.achievement.index'))->with([
             'message' => 'Data achievement berhasil diimport',
             'type' => 'success',
@@ -158,7 +161,7 @@ class AchievementController extends Controller
     public function print(Request $request)
     {
         $data = $request->all();
-        $achievements = Achievement::with(['user','product'])
+        $achievements = Achievement::with(['user', 'product','target','target.parcel'])
             ->whereBetween('date', [$data['from_date'], $data['to_date']])
             ->get();
         return Inertia::render('Admin/Achievement/Print',[
@@ -170,7 +173,7 @@ class AchievementController extends Controller
     public function export_pdf(Request $request)
     {
         $data = $request->all();
-        $achievements = Achievement::with(['user','product'])
+        $achievements = Achievement::with(['user','product','target'])
             ->whereBetween('date', [$data['from_date'], $data['to_date']])
             ->get();
         $pdf = Pdf::loadView('pdf.achievement', compact(['achievements','data']))->setPaper('A4', 'landscape');

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UserExport;
+use App\Imports\OperatorImport;
 
 class AdminEmployeeController extends Controller
 {
@@ -157,5 +158,15 @@ class AdminEmployeeController extends Controller
         $filename = "Data Employees.xlsx";
         $users = User::select('npk','fullname','group','status','roles')->get();
         return Excel::download(new UserExport($users), $filename);
+    }
+
+    public function import(Request $request)
+    { 
+        $file = $request->file('file');
+        Excel::import(new OperatorImport, $file, 'operator');  
+        return redirect(route('admin.employee.index'))->with([
+            'message' => 'Data operator berhasil diimport',
+            'type' => 'success',
+        ]);
     }
 }

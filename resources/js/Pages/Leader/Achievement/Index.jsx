@@ -11,7 +11,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 
 export default function Index({ achievements, from, to, auth,flashMessage }) {
-    const [isLoading, setIsLoading] = useState(false);
     const { data, setData, get } = useForm({
         from_date: from,
         to_date: to,
@@ -112,7 +111,7 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
     };
 
     const calculateTarget =(row) => {
-        let target = parseInt(row.product.target);
+        let target = parseInt(row.target.quantity);
         const startTime = new Date(`2023-07-22T${row.start}`);
         const finishTime = new Date(`2023-07-22T${row.finish}`);
         let differenceTime = (finishTime - startTime) / 60000;    
@@ -198,13 +197,27 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
 
         {
             name: "Start",
-            selector: (row) => row.start,
+            selector: (row) => {
+                const startTime = new Date(`1970-01-01T${row.start}`);
+                return startTime.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                });
+            },
             sortable: true,
         },
 
         {
             name: "Finish",
-            selector: (row) => row.finish,
+            selector: (row) => {
+                const finishTime = new Date(`1970-01-01T${row.finish}`);
+                return finishTime.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                });
+            },
             sortable: true,
         },
 

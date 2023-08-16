@@ -28,6 +28,7 @@ class AchievementExport implements FromQuery, WithHeadings
         return Achievement::query()
             ->join('users', 'achievements.user_id', '=', 'users.id')
             ->join('products', 'achievements.product_id', '=', 'products.id')
+            ->join('product_parcels', 'achievements.target_id', '=', 'product_parcels.id')
             ->select(
                 'achievements.id',
                 'achievements.date',
@@ -38,11 +39,15 @@ class AchievementExport implements FromQuery, WithHeadings
                 'achievements.product_lot',
                 'achievements.total_lot',
                 'achievements.qty',
-                'products.target',
-                DB::raw('(achievements.qty / products.target) * 100 as achievement_percent')
+                'achievements.start',
+                'achievements.finish',
+                DB::raw('CAST((TIME_TO_SEC(TIMEDIFF(achievements.finish, achievements.start)) / 60 / 420) * product_parcels.quantity AS SIGNED) as target'),
+                DB::raw('CAST((achievements.qty / ((TIME_TO_SEC(TIMEDIFF(achievements.finish, achievements.start)) / 60 / 420) * product_parcels.quantity) * 100) AS SIGNED) as achievement_percent')
             )
             ->whereBetween('achievements.date', [$this->fromDate, $this->toDate]);
     }
+
+
 
 
     public function headings(): array
@@ -57,6 +62,8 @@ class AchievementExport implements FromQuery, WithHeadings
             'Lot No.',
             'Total Lot',
             'Qty (pcs)',
+            'Start',
+            'Finish',
             'Target (pcs)',
             'Achievement (%)'
         ];

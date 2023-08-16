@@ -44,11 +44,11 @@ export default function Navbar({ roles }) {
                                 </div>
                                 </Dropdown.Trigger>
                                 <Dropdown.Content>
-                                    <Dropdown.Link>
-                                        <Link href={route("admin.achievement.index")} className={`block font-semibold ${route().current('admin.achievement.index') && 'text-red-600'} hover:text-red-600`}>Detail</Link>
+                                    <Dropdown.Link href={route("admin.achievement.index")} className={`block font-semibold ${route().current('admin.achievement.index') && 'text-red-600'} hover:text-red-600`}>
+                                        Detail
                                     </Dropdown.Link>
-                                    <Dropdown.Link>
-                                        <Link href={route("admin.recapitulation.index")} className={`block font-semibold ${route().current('admin.recapitulation.index') && 'text-red-600'} hover:text-red-600`}>Rekapitulasi</Link>
+                                    <Dropdown.Link href={route("admin.recapitulation.index")} className={`block font-semibold ${route().current('admin.recapitulation.index') && 'text-red-600'} hover:text-red-600`}>
+                                        Rekapitulasi
                                     </Dropdown.Link>
                                 </Dropdown.Content>
                             </Dropdown>
@@ -78,12 +78,12 @@ export default function Navbar({ roles }) {
                         <li className="nav-item">
                             <Link
                                 className={`${
-                                    route().current("admin.customers.*") &&
+                                    route().current("admin.parcel.*") &&
                                     "text-red-600 underline underline-offset-4 decoration-2"
                                 } flex items-center px-3 py-2 font-bold leading-snug duration-500  hover:text-red-600 hover:underline hover:decoration-2  hover:underline-offset-4`}
-                                href={route("admin.customers.index")}
+                                href={route("admin.parcel.index")}
                             >
-                                Customer
+                                Parcel
                             </Link>
                         </li>
                         <li className="cursor-pointer">
@@ -108,7 +108,7 @@ export default function Navbar({ roles }) {
                                     </Dropdown.Link>
                                     <Dropdown.Link
                                         method="post"
-                                        href={route("logout")} className="hover:text-red-600"
+                                        href={route("logout")} className="hover:text-red-600" as="button"
                                     >
                                         Logout
                                     </Dropdown.Link>
@@ -162,11 +162,11 @@ export default function Navbar({ roles }) {
                                     </div>
                                     </Dropdown.Trigger>
                                     <Dropdown.Content>
-                                        <Dropdown.Link>
-                                            <Link href={route("leader.achievement.index")} className={`block font-semibold ${route().current('leader.achievement.index') && 'text-red-600'} hover:text-red-600`}>Detail</Link>
+                                        <Dropdown.Link href={route("leader.achievement.index")} className={`block font-semibold ${route().current('leader.achievement.index') && 'text-red-600'} hover:text-red-600`}>
+                                            Detail
                                         </Dropdown.Link>
-                                        <Dropdown.Link>
-                                            <Link href={route("leader.recapitulation.index")} className={`block font-semibold ${route().current('leader.recapitulation.index') && 'text-red-600'} hover:text-red-600`}>Rekapitulasi</Link>
+                                        <Dropdown.Link href={route("leader.recapitulation.index")} className={`block font-semibold ${route().current('leader.recapitulation.index') && 'text-red-600'} hover:text-red-600`}>
+                                            Rekapitulasi
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
@@ -194,6 +194,7 @@ export default function Navbar({ roles }) {
                                         <Dropdown.Link
                                             method="post"
                                             href={route("logout")} className="hover:text-red-600"
+                                            as="button"
                                         >
                                             Logout
                                         </Dropdown.Link>

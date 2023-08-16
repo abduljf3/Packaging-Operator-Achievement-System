@@ -1,0 +1,301 @@
+import PrimaryButton from "@/Components/ButtonGray";
+import ButtonGreen from "@/Components/ButtonGreen";
+import ButtonOrange from "@/Components/ButtonOrange";
+import ButtonRed from "@/Components/ButtonRed";
+import Calendar from "@/Components/Calendar";
+import Dropdown from "@/Components/Dropdown";
+import FlashMessage from "@/Components/FlashMessage";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
+import Authenticated from "@/Layouts/AuthenticatedLayout";
+import { Link, router, useForm } from "@inertiajs/react";
+import { useState } from "react";
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
+
+export default function index({ parcels, flashMessage }) {
+    const [filterText, setFilterText] = useState("");
+    const [errors, setErrors] = useState({});
+    const [showModal, setShowModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const { data, setData} = useForm({
+        file:''
+    });
+
+    const handleRemoveFile = () => {
+        setData('file', null);
+    };
+
+    const handleModal = () => {
+        setShowModal(!showModal);
+    };
+
+    const handleFilter = (event) => {
+        const value = event.target.value || "";
+        setFilterText(value);
+    };
+
+    const filteredData = parcels.filter(
+        (row) =>
+            row.quantity.toString().includes(filterText.toLowerCase())
+        );
+
+    const {delete: destroy} = useForm();
+    function handleDelete(id) {
+        Swal.fire({
+            text: 'Yakin Ingin Hapus?',
+            icon: 'warning',
+            showDenyButton: true,
+            showConfirmButton:false,
+            showCancelButton:true,
+            denyButtonText: 'Hapus',
+        }).then((result) => {
+            if (result.isDenied) {
+                destroy(route('admin.parcel.destroy',id))
+            }
+        });
+    };
+    
+    const validateForm = () => {
+        let isValid = true;
+        const newErrors = {};
+        if (!data.file) {
+            newErrors.file = "File tidak boleh kosong";
+            isValid = false;
+        }else {
+            const allowedExtensions = [".xls", ".xlsx"];
+            const fileExtension = "." + data.file.name.split(".").pop();
+        
+            if (!allowedExtensions.includes(fileExtension)) {
+                newErrors.file = "File harus dalam format Excel (.xls, .xlsx)";
+                isValid = false;
+            }
+        }
+        setErrors(newErrors);
+        return isValid;
+    };   
+
+    const submit = async (e) => {
+        e.preventDefault();
+        if (validateForm()) {
+            Swal.fire({
+                text: 'Upload Data Ini?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Upload',
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    setIsLoading(true);
+                    const formData = new FormData();
+                    formData.append('file', data.file);
+                    try {
+                        router.post(route('admin.parcel.import'), formData);
+                    } catch (error) {
+                        Swal.fire({
+                            text: 'Upload file gagal',
+                            showConfirmButton: false,
+                            icon: 'error',
+                            timer: 3000,
+                        })
+                    }
+                }
+                handleModal(!showModal);
+            });
+        }
+    };   
+
+    const columns = [
+        {
+            name: "No",
+            selector: (_, index) => index + 1,
+            sortable: true,
+        },
+        {
+            name: "Quantity (Pcs)",
+            selector: (row) => row.quantity.toLocaleString(),
+            sortable: true,
+        },
+
+        {
+            name: "Action",
+            cell: (row) => (
+                <>
+                    <Link
+                        href={route("admin.parcel.edit", row.id)}
+                        className="text-green-500 hover:text-green-900 duration-500 mr-5"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-6 h-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                            />
+                        </svg>
+                    </Link>
+                    <div onClick={() => handleDelete(row.id)}>
+                        <button type='button' className="w-6 h-6 text-red-500 hover:text-red-900 duration-500">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                        </svg>
+                        </button>
+                    </div>
+                </>
+            ),
+        },
+    ];
+
+    return (
+        <>
+            <Authenticated>
+                <Calendar/>
+                <div className="">
+                    {flashMessage?.message && (
+                        <FlashMessage message={flashMessage.message} type={flashMessage.type}/>
+                    )}
+                    {!flashMessage?.message && isLoading &&(
+                        <div className="fixed flex-col gap-3 top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                            <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-red-600"></div>
+                            <div className="text-white font-light">Menunggu data selesai diunggah...</div>
+                        </div>
+                    )}
+                    <div className="flex justify-end container mx-auto gap-3 ">
+                        <button onClick={handleModal} className="px-4 rounded flex items-center py-1 gap-2 shadow group text-emerald-600 justify-center bg-white hover:bg-emerald-600 hover:text-white">
+                            <span>Import</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="30" height="30">
+                                <path fill="#169154" d="M29,6H15.744C14.781,6,14,6.781,14,7.744v7.259h15V6z"/>
+                                <path fill="#18482a" d="M14,33.054v7.202C14,41.219,14.781,42,15.743,42H29v-8.946H14z"/>
+                                <path fill="#0c8045" d="M14 15.003H29V24.005000000000003H14z"/>
+                                <path fill="#17472a" d="M14 24.005H29V33.055H14z"/>
+                                <g>
+                                    <path fill="#29c27f" d="M42.256,6H29v9.003h15V7.744C44,6.781,43.219,6,42.256,6z"/>
+                                    <path fill="#27663f" d="M29,33.054V42h13.257C43.219,42,44,41.219,44,40.257v-7.202H29z"/>
+                                    <path fill="#19ac65" d="M29 15.003H44V24.005000000000003H29z"/>
+                                    <path fill="#129652" d="M29 24.005H44V33.055H29z"/>
+                                </g>
+                                <path fill="#0c7238" d="M22.319,34H5.681C4.753,34,4,33.247,4,32.319V15.681C4,14.753,4.753,14,5.681,14h16.638 C23.247,14,24,14.753,24,15.681v16.638C24,33.247,23.247,34,22.319,34z"/>
+                                <path fill="#fff" d="M9.807 19L12.193 19 14.129 22.754 16.175 19 18.404 19 15.333 24 18.474 29 16.123 29 14.013 25.07 11.912 29 9.526 29 12.719 23.982z"/>
+                            </svg>
+                        </button>
+                        <Link href={route("admin.parcel.create")}>
+                            <ButtonRed className="w-15 h-9">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                    className="h-6 w-6"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+                                        clipRule="evenodd"
+                                    />
+                                </svg>
+                                Add Parcel
+                            </ButtonRed>
+                        </Link>
+                    </div>
+                </div>
+                <div>
+                    <div id="printablediv">
+                        <div className="flex w-full container mx-auto py-3">
+                            <div className="inline-block min-w-full overflow-hidden align-middle border-b shadow sm:rounded-lg">
+                                <DataTable
+                                    title="List Parcel"
+                                    columns={columns}
+                                    data={filteredData}
+                                    pagination
+                                    dense
+                                    highlightOnHover
+                                    actions={
+                                        <label className="w-100 h-100 mx-3 my-5 relative text-gray-400 focus-within:text-gray-600 block duration-500">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                                className="w-5 h-5 posistion absolute pointer-events-none ml-3 mt-3"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                                                    clipRule="evenodd"
+                                                />
+                                            </svg>
+
+                                            <input
+                                                type="text"
+                                                placeholder="Search..."
+                                                onChange={handleFilter}
+                                                value={filterText}
+                                                className="  bg-white placeholder-gray-400 text-black border-2 border-gray-300 duration-500 appearance-none w-full block pl-10 focus:outline-none rounded-lg "
+                                            ></input>
+                                        </label>
+                                    }
+                                    className=""
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <Modal title="Import Data Qty Parcel" show={showModal} onClose={handleModal} maxWidth="2xl">
+                    <form onSubmit={submit} className="w-full">
+                        <div className="p-3">
+                            <InputLabel htmlFor="file" value="Import Excel" className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700"/>
+                            {data.file ? (
+                                <div>
+                                    <div className="flex items-center">
+                                        <span className="mr-2 text-gray-600 font-light text-sm">{data.file.name}</span>
+                                        <button
+                                            type="button"
+                                            className="text-red-600 underline"
+                                            onClick={() => handleRemoveFile()}
+                                        >
+                                            Hapus
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <input
+                                    name="file"
+                                    type="file"
+                                    className="block w-fit border-0 text-sm mt-2 text-slate-500 file:bg-rose-200 file:mr-4 file:py-2 file:px-4 file:cursor-pointer file:rounded-full file:border-0 file:text-sm file:font-semibold file:text-red-700 hover:file:bg-violet-200"
+                                    onChange={(e) => setData('file', e.target.files[0])}
+                                    accept=".xls, .xlsx"
+                                />
+                            )}
+                            <InputError message={errors.file} className="mt-2" />
+                        </div>
+                        <div className="flex items-start justify-start gap-3 md:items-center flex-col md:flex-row md:justify-between bg-gray-300 py-3 px-3 md:px-6">
+                            <div className="before:content-['*'] after:mr-0.5 before:text-red-500 block text-sm font-medium italic text-red-600"> Wajib diisi</div>
+                            <div className="flex gap-3 w-full md:w-fit">
+                                <button type="button" className="w-1/2 md:w-fit rounded px-6 bg-gray-500 hover:bg-gray-600 text-white py-2" onClick={handleModal}>
+                                    BATAL
+                                </button>
+                                <PrimaryButton type="submit" className="w-1/2 md:w-fit px-6 bg-red-600 hover:bg-red-700 text-white">
+                                    Upload
+                                </PrimaryButton>
+                            </div>
+                        </div>
+                    </form>
+                </Modal> 
+            </Authenticated>
+        </>
+    );
+}

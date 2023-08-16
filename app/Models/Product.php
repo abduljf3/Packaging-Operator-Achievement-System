@@ -13,15 +13,19 @@ class Product extends Model
         'drw_no',
         'product_name',
         'product_type',
-        'target',
-        'customer_id',
+        // 'customer_id',
     ];
     public function achievements()
     {
         return $this->hasMany(Achievement::class);
     }
     
-    public function customer(){
-        return $this->belongsto(Customer::class);
-    }
+    // public function customer(){
+    //     return $this->belongsto(Customer::class);
+    // }
+
+    public function parcels()
+{
+    return $this->belongsToMany(Parcel::class, 'product_parcels')->withPivot('quantity');
+}
 }

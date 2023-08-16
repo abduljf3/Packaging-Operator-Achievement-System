@@ -93,9 +93,6 @@ export default function Create({ auth,users }) {
         if (!data.npk) {
             newErrors.npk = "NPK harus diisi";
             isValid = false;
-        }else if (!/^(?:\d{4}|K\d{4})$/.test(data.npk)) {
-            newErrors.npk = "NPK harus terdiri dari 4 digit angka atau 5 digit dengan huruf 'K' di depan";
-            isValid = false;
         }else {
             const npkExist = users.some(item => item.npk === data.npk);
             if (npkExist) {
@@ -162,7 +159,7 @@ export default function Create({ auth,users }) {
                                                 name="npk"
                                                 value={data.npk ||''}
                                                 onChange={(e) => {
-                                                    setData('npk', e.target.value.slice(0, 5));
+                                                    setData('npk', e.target.value);
                                                 }}
                                             />
                                             <InputError message={errors.npk} />

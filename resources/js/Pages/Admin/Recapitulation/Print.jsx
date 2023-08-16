@@ -3,7 +3,6 @@ import { Head } from "@inertiajs/react";
 import { useEffect } from "react";
 
 export default function Print({ userAchievements,data}) {
-    console.log(data)
     useEffect(() => {
         window.document.title = "Data Achievement";
         window.print();
@@ -49,10 +48,10 @@ export default function Print({ userAchievements,data}) {
                         <td class="px-2 text-center border border-slate-400">{index+1}</td>
                         <td class="px-2 text-center border border-slate-400">{achievement.user.npk}</td>
                         <td class="px-2 text-center border border-slate-400">{achievement.user.fullname}</td>
-                        <td class="px-2 text-center border border-slate-400">{parseFloat(achievement.totalAchievement).toLocaleString("id-ID")}</td>
-                        <td class="px-2 text-center border border-slate-400">{parseFloat(achievement.totalTarget).toLocaleString("id-ID")}</td>
+                        <td class="px-2 text-center border border-slate-400">{parseFloat(achievement.totalQuantity).toLocaleString()}</td>
+                        <td class="px-2 text-center border border-slate-400">{parseFloat(achievement.totalTarget).toLocaleString()}</td>
                         <td class="px-2 text-center border border-slate-400">
-                            {achievement.achievementPercentage}
+                            {parseInt(achievement.achievementPercentage)}
                         </td>
                     </tr>
                 ))}

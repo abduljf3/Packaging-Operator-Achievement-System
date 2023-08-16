@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 
-export default function Calendar() {
+export default function Calendar({className}) {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
@@ -15,12 +15,12 @@ export default function Calendar() {
     };
   }, []);
 
-  const formattedDate = format(currentDate, "dd MMMM yyyy, HH:mm:ss a", {
+  const formattedDate = format(currentDate, "dd MMMM yyyy, HH:mm", {
     locale: id,
   });
 
   return (
-    <div className="w-full flex justify-end container mx-auto py-5">
+    <div className={`w-full flex justify-end py-5 ${className ? className : 'container mx-auto'} `}>
       <h1 className="font-semibold text-xl">
         {formattedDate}
       </h1>

@@ -24,13 +24,13 @@ class AchievementController extends Controller
         $from = $request->input('from_date');
         $to = $request->input('to_date');
         if ($from) {
-            $achievements = Achievement::with(['user', 'product'])
+            $achievements = Achievement::with(['user', 'product','target'])
             ->whereBetween('date', [$from, $to])
             ->get();
         } else {
             $from = date('Y-m-d');
             $to = date('Y-m-d');
-            $achievements = Achievement::with(['user', 'product'])
+            $achievements = Achievement::with(['user', 'product','target'])
                 ->whereDate('date', '=', $from)
                 ->get();
         }
@@ -134,7 +134,7 @@ class AchievementController extends Controller
     public function print(Request $request)
     {
         $data = $request->all();
-        $achievements = Achievement::with(['user','product'])
+        $achievements = Achievement::with(['user','product','target'])
             ->whereBetween('date', [$data['from_date'], $data['to_date']])
             ->get();
         return Inertia::render('Leader/Achievement/Print',[

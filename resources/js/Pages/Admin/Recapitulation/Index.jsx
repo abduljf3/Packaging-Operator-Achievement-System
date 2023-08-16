@@ -27,7 +27,7 @@ export default function Index({ achievements, userAchievements, from, to, auth,f
         .filter((row) =>
             row.user.fullname.toLowerCase().includes(filterText.toLowerCase()) ||
             row.user.npk.toLowerCase().includes(filterText.toLowerCase()) ||
-            row.totalAchievement.toString().toLowerCase().includes(filterText.toLowerCase())
+            row.totalQuantity.toString().toLowerCase().includes(filterText.toLowerCase())
     );
 
     const handleOnChange = (event) => {
@@ -140,12 +140,12 @@ export default function Index({ achievements, userAchievements, from, to, auth,f
               
         {
             name: "Total Achievement (pcs)",
-            selector: (row) => parseFloat(row.totalAchievement).toLocaleString("id-ID"),
+            selector: (row) => parseFloat(row.totalQuantity).toLocaleString("id-ID"),
             sortable: true,
         },
         {
             name: "Total Target (pcs)",
-            selector: (row) => parseFloat(row.totalTarget).toLocaleString("id-ID"),
+            selector: (row) => parseInt(row.totalTarget).toLocaleString("id-ID"),
             sortable: true,
         },
         {

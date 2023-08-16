@@ -6,6 +6,7 @@ use App\Exports\RecapitulationExport;
 use App\Http\Controllers\Controller;
 use App\Models\Achievement;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
@@ -21,37 +22,51 @@ class RecapitulationController extends Controller
     {
         $from = $request->input('from_date');
         $to = $request->input('to_date');
-    
         if ($from) {
-            $achievements = Achievement::with(['user', 'product'])
+            $achievements = Achievement::with(['user', 'product','target','target.parcel'])
                 ->whereBetween('date', [$from, $to])
                 ->get();
         } else {
             $from = date('Y-m-d');
             $to = date('Y-m-d');
-            $achievements = Achievement::with(['user', 'product'])
+            $achievements = Achievement::with(['user', 'product','target','target.parcel'])
                 ->whereDate('date', '=', $from)
                 ->get();
         }
 
-        // Menghitung total pencapaian dan total target per user
+       
+
         $userAchievements = $achievements->groupBy('user_id')->map(function ($achievementGroup) {
-            $user = $achievementGroup->first()->user; // Mendapatkan objek pengguna dari grup pencapaian
-            $totalAchievement = 0;
-            $totalTarget = 0;
-
+            $user = $achievementGroup->first()->user;
+            $totalQuantity = 0; // Set initial value for totalQuantity
+            $differenceInMinutes = 0; // Set initial value for totalQuantity
+            $parcelQuantity = 0;
+            $start = Carbon::parse($achievementGroup->first()->start);
+            $finish = Carbon::parse($achievementGroup->first()->finish);
+        
             foreach ($achievementGroup as $achievement) {
-                $totalAchievement += $achievement->qty;
-                $totalTarget += $achievement->product->target;
+                $totalQuantity += $achievement->qty;
+                $differenceInMinutes += $finish->diffInMinutes($start);
+                $parcelQuantity += $achievement->target->quantity;
             }
-
+        
+        
+            $totalAchievements = $achievementGroup->count(); // Count total rows in the achievement group
+        
+            $totalTarget = (int)(($parcelQuantity / (420 * $totalAchievements)) * $differenceInMinutes);
+        
             return [
-                'user' => $user, // Menyertakan data pengguna dalam hasil
-                'totalAchievement' => $totalAchievement,
+                'user' => $user,
+                'totalQuantity' => $totalQuantity,
+                'parcelQuantity' => $parcelQuantity,
+                'differenceInMinutes' => $differenceInMinutes,
+                'totalAchievements' => $totalAchievements,
                 'totalTarget' => $totalTarget,
-                'achievementPercentage' => ($totalAchievement / $totalTarget) * 100,
+                'achievementPercentage' => ($totalQuantity / $totalTarget) * 100,
             ];
         });
+        
+        
     
         return Inertia::render('Admin/Recapitulation/Index', [
             'achievements' => $achievements,
@@ -136,33 +151,41 @@ class RecapitulationController extends Controller
         $to = $data['to_date'];
     
         if ($from) {
-            $achievements = Achievement::with(['user', 'product'])
+            $achievements = Achievement::with(['user', 'product','target'])
                 ->whereBetween('date', [$from, $to])
                 ->get();
         } else {
             $from = date('Y-m-d');
             $to = date('Y-m-d');
-            $achievements = Achievement::with(['user', 'product'])
+            $achievements = Achievement::with(['user', 'product','target'])
                 ->whereDate('date', '=', $from)
                 ->get();
         }
 
-        // Menghitung total pencapaian dan total target per user
         $userAchievements = $achievements->groupBy('user_id')->map(function ($achievementGroup) {
-            $user = $achievementGroup->first()->user; // Mendapatkan objek pengguna dari grup pencapaian
-            $totalAchievement = 0;
-            $totalTarget = 0;
-
+            $user = $achievementGroup->first()->user;
+            $totalQuantity = 0; // Set initial value for totalQuantity
+            $differenceInMinutes = 0; // Set initial value for totalQuantity
+            $parcelQuantity = 0;
+            $start = Carbon::parse($achievementGroup->first()->start);
+            $finish = Carbon::parse($achievementGroup->first()->finish);
+        
             foreach ($achievementGroup as $achievement) {
-                $totalAchievement += $achievement->qty;
-                $totalTarget += $achievement->product->target;
+                $totalQuantity += $achievement->qty;
+                $differenceInMinutes += $finish->diffInMinutes($start);
+                $parcelQuantity += $achievement->target->quantity;
             }
-
+        
+        
+            $totalAchievements = $achievementGroup->count(); // Count total rows in the achievement group
+        
+            $totalTarget = (int)(($parcelQuantity / (420 * $totalAchievements)) * $differenceInMinutes);
+        
             return [
-                'user' => $user, // Menyertakan data pengguna dalam hasil
-                'totalAchievement' => $totalAchievement,
+                'user' => $user,
+                'totalQuantity' => $totalQuantity,
                 'totalTarget' => $totalTarget,
-                'achievementPercentage' => ($totalAchievement / $totalTarget) * 100,
+                'achievementPercentage' => ($totalQuantity / $totalTarget) * 100,
             ];
         });
     
@@ -179,35 +202,47 @@ class RecapitulationController extends Controller
         $to = $data['to_date'];
     
         if ($from) {
-            $achievements = Achievement::with(['user', 'product'])
+            $achievements = Achievement::with(['user', 'product','target'])
                 ->whereBetween('date', [$from, $to])
                 ->get();
         } else {
             $from = date('Y-m-d');
             $to = date('Y-m-d');
-            $achievements = Achievement::with(['user', 'product'])
+            $achievements = Achievement::with(['user', 'product','target'])
                 ->whereDate('date', '=', $from)
                 ->get();
         }
 
-        // Menghitung total pencapaian dan total target per user
         $userAchievements = $achievements->groupBy('user_id')->map(function ($achievementGroup) {
-            $user = $achievementGroup->first()->user; // Mendapatkan objek pengguna dari grup pencapaian
-            $totalAchievement = 0;
-            $totalTarget = 0;
-
+            $user = $achievementGroup->first()->user;
+            $totalQuantity = 0; // Set initial value for totalQuantity
+            $differenceInMinutes = 0; // Set initial value for totalQuantity
+            $parcelQuantity = 0;
+            $start = Carbon::parse($achievementGroup->first()->start);
+            $finish = Carbon::parse($achievementGroup->first()->finish);
+        
             foreach ($achievementGroup as $achievement) {
-                $totalAchievement += $achievement->qty;
-                $totalTarget += $achievement->product->target;
+                $totalQuantity += $achievement->qty;
+                $differenceInMinutes += $finish->diffInMinutes($start);
+                $parcelQuantity += $achievement->target->quantity;
             }
-
+        
+        
+            $totalAchievements = $achievementGroup->count(); // Count total rows in the achievement group
+        
+            $totalTarget = (int)(($parcelQuantity / (420 * $totalAchievements)) * $differenceInMinutes);
+        
             return [
-                'user' => $user, // Menyertakan data pengguna dalam hasil
-                'totalAchievement' => $totalAchievement,
+                'user' => $user,
+                'totalQuantity' => $totalQuantity,
+                'parcelQuantity' => $parcelQuantity,
+                'differenceInMinutes' => $differenceInMinutes,
+                'totalAchievements' => $totalAchievements,
                 'totalTarget' => $totalTarget,
-                'achievementPercentage' => ($totalAchievement / $totalTarget) * 100,
+                'achievementPercentage' => ($totalQuantity / $totalTarget) * 100,
             ];
         });
+        
         $pdf = Pdf::loadView('pdf.recapitulation', compact(['userAchievements','data']))->setPaper('A4', 'landscape');
         $filename = "Achievement_recapitulation_{$data['from_date']}-{$data['to_date']}.pdf";
         return $pdf->download($filename);
@@ -220,34 +255,42 @@ class RecapitulationController extends Controller
         $to = $data['to_date'];
         $filename = "Achievement_recapitulation_{$from}-{$to}.xlsx";
         if ($from) {
-            $achievements = Achievement::with(['user', 'product'])
+            $achievements = Achievement::with(['user', 'product','target'])
                 ->whereBetween('date', [$from, $to])
                 ->get();
         } else {
             $from = date('Y-m-d');
             $to = date('Y-m-d');
-            $achievements = Achievement::with(['user', 'product'])
+            $achievements = Achievement::with(['user', 'product','target'])
                 ->whereDate('date', '=', $from)
                 ->get();
         }
 
-        // Menghitung total pencapaian dan total target per user
         $userAchievements = $achievements->groupBy('user_id')->map(function ($achievementGroup) {
-            $user = $achievementGroup->first()->user; // Mendapatkan objek pengguna dari grup pencapaian
-            $totalAchievement = 0;
-            $totalTarget = 0;
-
+            $user = $achievementGroup->first()->user;
+            $totalQuantity = 0; // Set initial value for totalQuantity
+            $differenceInMinutes = 0; // Set initial value for totalQuantity
+            $parcelQuantity = 0;
+            $start = Carbon::parse($achievementGroup->first()->start);
+            $finish = Carbon::parse($achievementGroup->first()->finish);
+        
             foreach ($achievementGroup as $achievement) {
-                $totalAchievement += $achievement->qty;
-                $totalTarget += $achievement->product->target;
+                $totalQuantity += $achievement->qty;
+                $differenceInMinutes += $finish->diffInMinutes($start);
+                $parcelQuantity += $achievement->target->quantity;
             }
-
+        
+        
+            $totalAchievements = $achievementGroup->count(); // Count total rows in the achievement group
+        
+            $totalTarget = (int)(($parcelQuantity / (420 * $totalAchievements)) * $differenceInMinutes);
+        
             return [
                 'npk' => $user->npk,
                 'name' => $user->fullname,
-                'totalAchievement' => $totalAchievement,
+                'totalQuantity' => $totalQuantity,
                 'totalTarget' => $totalTarget,
-                'achievementPercentage' => ($totalAchievement / $totalTarget) * 100,
+                'achievementPercentage' => (int) (($totalQuantity / $totalTarget) * 100),
             ];
         });
         return Excel::download(new RecapitulationExport($userAchievements), $filename);

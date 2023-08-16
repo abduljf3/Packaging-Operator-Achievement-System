@@ -3,7 +3,6 @@ import { Head } from "@inertiajs/react";
 import { useEffect } from "react";
 
 export default function Print({ userAchievements,data}) {
-    console.log(data)
     useEffect(() => {
         window.document.title = "Data Achievement";
         window.print();
@@ -23,7 +22,6 @@ export default function Print({ userAchievements,data}) {
             </style>
             <div className="w-full flex justify-between">
                 <div className="flex w-fit items-center">
-                    {/* <img src="{{ asset('/arsi.png') }}" alt="logo ARSI" className="h-10"/> */}
                     <ApplicationLogo className="h-10"/>
                     <div className="flex flex-col gap-0">
                         <div className="font-semibold text-gray-800 text-sm">PT. Arai Rubeer Seal Indonesia</div>
@@ -50,10 +48,10 @@ export default function Print({ userAchievements,data}) {
                         <td class="px-2 text-center border border-slate-400">{index+1}</td>
                         <td class="px-2 text-center border border-slate-400">{achievement.user.npk}</td>
                         <td class="px-2 text-center border border-slate-400">{achievement.user.fullname}</td>
-                        <td class="px-2 text-center border border-slate-400">{parseFloat(achievement.totalAchievement).toLocaleString("id-ID")}</td>
-                        <td class="px-2 text-center border border-slate-400">{parseFloat(achievement.totalTarget).toLocaleString("id-ID")}</td>
+                        <td class="px-2 text-center border border-slate-400">{parseFloat(achievement.totalQuantity).toLocaleString()}</td>
+                        <td class="px-2 text-center border border-slate-400">{parseFloat(achievement.totalTarget).toLocaleString()}</td>
                         <td class="px-2 text-center border border-slate-400">
-                            {achievement.achievementPercentage}
+                            {parseInt(achievement.achievementPercentage)}
                         </td>
                     </tr>
                 ))}

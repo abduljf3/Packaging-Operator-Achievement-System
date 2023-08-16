@@ -9,7 +9,6 @@
         <div class="">
             <div class="row">
                 <div class="col-auto d-flex align-items-center">
-                    <img src="{{ asset('perusahaan.png') }}" alt="Logo ARSI" class="img-fluid" style="height: 40px;">
                     <div class="ml-2">
                         <div class="font-weight-bold text-sm">PT. Arai Rubeer Seal Indonesia</div>
                         <div class="text-xs">Packaging Section</div>
@@ -17,9 +16,9 @@
                 </div>
             </div>
             
-            <h3 class="text-center mt-3">Achievement Report</h3>
+            <h3 class="text-center mt-3">Detail Achievement Packaging</h3>
             <div class="font-weight-bold mb-3">Period: {{ $data['from_date'] }} - {{ $data['to_date'] }}</div>
-            <table class="table">
+            <table class="table text-sm">
                 <thead>
                     <tr>
                         <th scope="col">No</th>
@@ -30,7 +29,8 @@
                         <th scope="col">Drw. No.</th>
                         <th scope="col">Lot No.</th>
                         <th scope="col">Total Lot</th>
-                        <th scope="col">Achievement (pcs)</th>
+                        <th scope="col">Qty/parcel</th>
+                        <th scope="col">Qty (pcs)</th>
                         <th scope="col">Start</th>
                         <th scope="col">Finish</th>
                         <th scope="col">Target (pcs)</th>
@@ -39,6 +39,13 @@
                 </thead>
                 <tbody>
                     @foreach ($achievements as $index => $achievement)
+                        @php
+                            $start = new \Carbon\Carbon($achievement->start);
+                            $finish = new \Carbon\Carbon($achievement->finish);
+                            $diffInMinutes = $finish->diffInMinutes($start);
+                            $target = $achievement->target->quantity;
+                            $actualTarget = ($diffInMinutes/420) *$target;
+                        @endphp
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $achievement->date }}</td>
@@ -48,11 +55,12 @@
                             <td>{{ $achievement->product->drw_no }}</td>
                             <td>{{ $achievement->product_lot }}</td>
                             <td>{{ $achievement->total_lot }}</td>
+                            <td>{{ number_format($achievement->target->parcel->quantity, 0, ',', '.') }}</td>
                             <td>{{ number_format($achievement->qty, 0, ',', '.') }}</td>
                             <td>{{ $achievement->start}}</td>
                             <td>{{ $achievement->finish}}</td>
-                            <td>{{ number_format($achievement->product->target, 0, ',', '.') }}</td>
-                            <td>{{ ($achievement->qty / $achievement->product->target) * 100 }}</td>
+                            <td>{{ number_format($actualTarget, 0, ',', '.') }}</td>
+                            <td>{{ intval(($achievement->qty / $actualTarget) * 100) }}</td>
                         </tr>
                     @endforeach
                 </tbody>

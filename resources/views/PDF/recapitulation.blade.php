@@ -8,7 +8,7 @@
         <div class="">
             <div class="row">
                 <div class="col-auto d-flex align-items-center">
-                    <img src="{{ asset('perusahaan.png') }}" alt="Logo ARSI" class="img-fluid" style="height: 40px;">
+                    {{-- <img src="{{ asset('perusahaan.png') }}" alt="Logo ARSI" class="img-fluid" style="height: 40px;"> --}}
                     <div class="ml-2">
                         <div class="font-weight-bold text-sm">PT. Arai Rubeer Seal Indonesia</div>
                         <div class="text-xs">Packaging Section</div>
@@ -31,13 +31,16 @@
                 </thead>
                 <tbody>
                     @foreach ($userAchievements as $index => $achievement)
+                        @php
+                            $no=0;
+                        @endphp
                         <tr>
-                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $no + 1 }}</td>
                             <td>{{ $achievement['user']['npk'] }}</td>
                             <td>{{ $achievement['user']['fullname'] }}</td>
-                            <td>{{ number_format($achievement['totalAchievement'], 0, ',', '.') }}</td>
+                            <td>{{ number_format($achievement['totalQuantity'], 0, ',', '.') }}</td>
                             <td>{{ number_format($achievement['totalTarget'], 0, ',', '.') }}</td>
-                            <td>{{ $achievement['achievementPercentage'] }}</td>
+                            <td>{{ intval($achievement['achievementPercentage']) }}</td>
                         </tr>
                     @endforeach
 

@@ -11,7 +11,6 @@ import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 
 export default function index({ customers, flashMessage }) {
-    console.log(flashMessage);
     const [filterText, setFilterText] = useState("");
     const data = {};
     const handleFilter = (event) => {

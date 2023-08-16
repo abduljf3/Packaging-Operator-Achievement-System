@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminEmployeeController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ParcelController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\RecapitulationController;
 use App\Http\Controllers\Leader\AchievementController as LeaderAchievementController;
@@ -56,12 +57,18 @@ use Illuminate\Support\Facades\Route;
         Route::get('/employee/print/all', [AdminEmployeeController::class,'print'])->name('employee.print');
         Route::get('/employee/export/excel/', [AdminEmployeeController::class,'export_excel'])->name('employee.export.excel');
         Route::get('/employee/export/pdf/', [AdminEmployeeController::class,'export_pdf'])->name('employee.export.pdf');
+        Route::post('/employee/import', [AdminEmployeeController::class,'import'])->name('employee.import');
 
         //Admin Product
         Route::resource('products',ProductController::class);
         Route::get('/products/print/all', [ProductController::class,'print'])->name('product.print');
         Route::get('/products/export/excel/', [ProductController::class,'export_excel'])->name('product.export.excel');
         Route::get('/products/export/pdf/', [ProductController::class,'export_pdf'])->name('product.export.pdf');
+        Route::post('/products/import', [ProductController::class,'import'])->name('product.import');
+
+        //Admin Parcel
+        Route::resource('parcel', ParcelController::class);
+        Route::post('/parcel/import', [ParcelController::class,'import'])->name('parcel.import');
 
         //Admin Customer
         Route::resource('customers',CustomerController::class);

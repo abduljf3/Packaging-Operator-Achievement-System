@@ -1,5 +1,7 @@
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import { Head } from "@inertiajs/react";
+import { format } from "date-fns";
+import { id } from 'date-fns/locale';
 import { useEffect } from "react";
 
 export default function Print({ achievements,data}) {
@@ -7,9 +9,22 @@ export default function Print({ achievements,data}) {
         window.document.title = "Data Achievement";
         window.print();
     }, []);
+    
+    const formatDate = (date) => {
+        return format(new Date(date), 'dd-MM-yyyy', { locale: id });
+    }
+
+    const formatTime = (time) => {
+        const formatTime = new Date(`1970-01-01T${time}`);
+        return formatTime.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+        });
+    }
 
     const calculateTarget =(row) => {
-        let target = parseInt(row.product.target);
+        let target = parseInt(row.target.quantity);
         const startTime = new Date(`2023-07-22T${row.start}`);
         const finishTime = new Date(`2023-07-22T${row.finish}`);
         let differenceTime = (finishTime - startTime) / 60000;    
@@ -54,7 +69,7 @@ export default function Print({ achievements,data}) {
                 </div>
             </div>
             <h1 className="text-gray-800 text-3xl font-semibold text-center w-full">Detail Achievement Packaging</h1>  
-            <div className="text-gray-800 font-semibold w-full mb-3 text">Periode : {data.from_date} - {data.to_date}</div>  
+            <div className="text-gray-800 font-semibold w-full mb-3 text">Periode : {formatDate(data.from_date)} - {formatDate(data.to_date)}</div>  
             <table class="border-collapse border border-slate-400 table-auto w-full">
             <thead>
                 <tr>
@@ -77,16 +92,16 @@ export default function Print({ achievements,data}) {
                 {achievements.map((achievement,index) => (
                     <tr key={achievement.id}>
                         <td class="px-2 text-center border border-slate-400">{index+1}</td>
-                        <td class="px-2 text-center border border-slate-400">{achievement.date}</td>
+                        <td class="px-2 text-center border border-slate-400">{formatDate(achievement.date)}</td>
                         <td class="px-2 text-center border border-slate-400">{achievement.shift}</td>
                         <td class="px-2 text-center border border-slate-400">{achievement.user.npk}</td>
                         <td class="px-2 text-center border border-slate-400">{achievement.user.fullname}</td>
                         <td class="px-2 text-center border border-slate-400">{achievement.product.drw_no}</td>
                         <td class="px-2 text-center border border-slate-400">{achievement.product_lot}</td>
                         <td class="px-2 text-center border border-slate-400">{achievement.total_lot}</td>
-                        <td class="px-2 text-center border border-slate-400">{parseFloat(achievement.qty).toLocaleString()}</td>
-                        <td class="px-2 text-center border border-slate-400">{achievement.start}</td>
-                        <td class="px-2 text-center border border-slate-400">{achievement.finish}</td>
+                        <td class="px-2 text-center border border-slate-400">{parseInt(achievement.qty).toLocaleString()}</td>
+                        <td class="px-2 text-center border border-slate-400">{formatTime(achievement.start)}</td>
+                        <td class="px-2 text-center border border-slate-400">{formatTime(achievement.finish)}</td>
                         <td class="px-2 text-center border border-slate-400">{calculateTarget(achievement).toLocaleString()}</td>
                         <td class="px-2 text-center border border-slate-400">
                             {achievementPercents(achievement.qty, calculateTarget(achievement))}

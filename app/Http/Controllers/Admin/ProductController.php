@@ -12,6 +12,10 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AdminProductExport;
 use App\Exports\ProductExport;
+use App\Imports\ProductImport;
+use App\Imports\TargetImport;
+use App\Models\Parcel;
+use App\Models\ProductParcel;
 
 class ProductController extends Controller
 {
@@ -21,7 +25,7 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $products= Product::with('customer')->get();
+        $products= Product::with('parcels')->get();
         return Inertia::render('Admin/Products/Index',[
             'products'=>$products
         ]);
@@ -34,11 +38,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $customers = Customer::get();
         $products = Product::select('drw_no')->withTrashed()->get();
+        $parcels = Parcel::orderBy('quantity')->get();
         return Inertia::render('Admin/Products/Create',[
-            'customers'=>$customers,
             'products'=>$products,
+            'parcels'=>$parcels,
         ]);
     }
 
@@ -52,14 +56,20 @@ class ProductController extends Controller
      public function store(Request $request)
      {
         $data = $request->all();
-        Product::create([
+        $product = Product::create([
             'drw_no' => $data['drw_no'],
             'product_name' => $data['product_name'],
             'product_type' => $data['product_type'],
-            'target' => $data['target'],
-            'product_type' => $data['product_type'],
-            'customer_id' => $data['customer_id'],
         ]);
+
+        foreach ($data['targets'] as $targetData) {
+            ProductParcel::create([
+                'product_id' => $product->id,
+                'parcel_id' => $targetData['parcel_id'],
+                'quantity' => $targetData['quantity'],
+            ]);
+        }
+
         return redirect(route('admin.products.index'))->with([
             'message' => 'Data produk berhasil di simpan',
             'type' => 'success',
@@ -83,30 +93,55 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {   
-        $product = Product::with('customer')->findOrFail($id);
         $customers = Customer::all();
-        $products = Product::select('drw_no')->get();
+        $products = Product::select('drw_no')->withTrashed()->get();
+        $parcels = Parcel::orderBy('quantity')->get();
+        $productParcels = $product->parcels()->get();
         return Inertia::render('Admin/Products/Edit', [
             'product' => $product,
             'customers' => $customers,
             'products' => $products,
+            'parcels' => $parcels,
+            'productParcels' => $productParcels,
         ]);
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request,Product $product)
     {
         $data = $request->all();
-        $product = Product::findOrFail($id);
         $product->update([
             'drw_no' => $data['drw_no'],
             'product_name' => $data['product_name'],
             'product_type' => $data['product_type'],
-            'target' => $data['target'],
-            'product_type' => $data['product_type'],
-            'customer_id' => $data['customer_id'],
         ]);
+
+        foreach ($product->parcels as $existingTarget) {
+            $targetData = collect($data['targets'])->firstWhere('parcel_id', $existingTarget->id);
+        
+            if (!$targetData) {
+                // Hapus target jika id tidak ada dalam target terbaru
+                $product->parcels()->detach($existingTarget);
+            } elseif ($existingTarget->pivot->quantity !== $targetData['quantity']) {
+                // Update quantity jika berbeda
+                $existingTarget->pivot->update([
+                    'quantity' => $targetData['quantity'],
+                ]);
+            }
+        }
+        
+        foreach ($data['targets'] as $targetData) {
+            $existingTarget = $product->parcels->firstWhere('pivot.parcel_id', $targetData['parcel_id']);
+        
+            if (!$existingTarget) {
+                // Tambahkan target baru
+                $newTarget = Parcel::findOrFail($targetData['parcel_id']);
+                $product->parcels()->attach($newTarget, ['quantity' => $targetData['quantity']]);
+            }
+        }
+        
+        
         return redirect(route('admin.products.index'))->with([
             'message' => 'Data produk berhasil di update',
             'type' => 'success',
@@ -121,9 +156,10 @@ class ProductController extends Controller
             'products' => $products
         ]);
     }
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        Product::where('id', $id)->firstorfail()->delete();
+        $product->parcels()->detach();
+        $product->delete();
         return redirect(route('admin.products.index'))->with([
             'message' => 'Data produk berhasil di hapus',
             'type' => 'success',
@@ -154,5 +190,16 @@ class ProductController extends Controller
         ->get();
 
         return Excel::download(new ProductExport($products), $filename);
+    }
+
+    public function import(Request $request)
+    { 
+        $file = $request->file('file');
+        Excel::import(new ProductImport, $file, 'product');  
+        Excel::import(new TargetImport, $file, 'target');  
+        return redirect(route('admin.products.index'))->with([
+            'message' => 'Data product berhasil diimport',
+            'type' => 'success',
+        ]);
     }
 }

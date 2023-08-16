@@ -1,8 +1,12 @@
+import PrimaryButton from "@/Components/ButtonGray";
 import ButtonGreen from "@/Components/ButtonGreen";
 import ButtonOrange from "@/Components/ButtonOrange";
 import Calendar from "@/Components/Calendar";
 import Dropdown from "@/Components/Dropdown";
 import FlashMessage from "@/Components/FlashMessage";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
 import TextInput from "@/Components/TextInput";
 import Authenticated from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router, useForm } from "@inertiajs/react";
@@ -12,12 +16,24 @@ import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 
 export default function Index({ achievements, from, to, auth,flashMessage }) {
-    const [isLoading, setIsLoading] = useState(false);
     const {delete: destroy} = useForm();
+    const [errors, setErrors] = useState({});
+    const [showModal, setShowModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const { data, setData, get } = useForm({
         from_date: from,
         to_date: to,
+        file:''
     });
+    
+
+    const handleRemoveFile = () => {
+        setData('file', null);
+    };
+
+    const handleModal = () => {
+        setShowModal(!showModal);
+    };
 
     const [filterText, setFilterText] = useState("");
     const handleFilter = (event) => {
@@ -61,45 +77,54 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
         e.preventDefault();
         get(route("admin.achievement.index"));
     };
-    
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [fileInputKey, setFileInputKey] = useState(0);
 
-    const handleFileInput = (e) => {
-        setSelectedFile(e.target.files[0]);
-    };
+    const validateForm = () => {
+        let isValid = true;
+        const newErrors = {};
+        if (!data.file) {
+            newErrors.file = "File tidak boleh kosong";
+            isValid = false;
+        }else {
+            const allowedExtensions = [".xls", ".xlsx"];
+            const fileExtension = "." + data.file.name.split(".").pop();
+        
+            if (!allowedExtensions.includes(fileExtension)) {
+                newErrors.file = "File harus dalam format Excel (.xls, .xlsx)";
+                isValid = false;
+            }
+        }
+        setErrors(newErrors);
+        return isValid;
+    };   
 
     const handleImport = async (e) => {
         e.preventDefault();
-        Swal.fire({
-            text: 'Upload Data Ini?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Upload',
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                setIsLoading(true);
-                const formData = new FormData();
-                formData.append("file", selectedFile);
-                try {
-                    router.post(route('admin.achievement.import'), formData);
-                } catch (error) {
-                    Swal.fire({
-                        text: 'Upload file gagal',
-                        showConfirmButton: false,
-                        icon: 'error',
-                        timer: 3000,
-                    })
-                    setIsLoading(false);
+        if (validateForm()) {
+            Swal.fire({
+                text: 'Upload Data Ini?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Upload',
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    setIsLoading(true);
+                    const formData = new FormData();
+                    formData.append('file', data.file);
+                    try {
+                        router.post(route('admin.achievement.import'), formData);
+                    } catch (error) {
+                        Swal.fire({
+                            text: 'Upload file gagal',
+                            showConfirmButton: false,
+                            icon: 'error',
+                            timer: 3000,
+                        })
+                    }
                 }
-            }
-            setSelectedFile(null);
-        });
+                handleModal(!showModal);
+            });
+        }
     };   
-
-    const handleRemoveAttachment = () => {
-        setSelectedFile(null);
-    }
 
     const handlePrint = () => {
         Swal.fire({
@@ -166,13 +191,18 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
           }
         });
     };
-
     const calculateTarget =(row) => {
-        let target = parseInt(row.product.target);
+        let target = parseInt(row.target.quantity);
         const startTime = new Date(`2023-07-22T${row.start}`);
         const finishTime = new Date(`2023-07-22T${row.finish}`);
-        let differenceTime = (finishTime - startTime) / 60000;    
-        let targetActual = parseInt((differenceTime/420)*target);
+        let differenceTime = (finishTime - startTime) / 60000; 
+        let minutes = 0;
+        if(row.shift === 1){
+            minutes = 415;
+        }else if(row.shift === 2){
+            minutes = 395;
+        }
+        let targetActual = parseInt((differenceTime/minutes)*target);
         return targetActual;
     }
 
@@ -243,24 +273,45 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
             name: "Total Lot",
             width:'7%',
             selector: (row) =>
-                parseFloat(row.total_lot).toLocaleString("id-ID"),
+                parseFloat(row.total_lot).toLocaleString(),
             sortable: true,
         },
+
+        {
+            name: "Qty / Parcel (pcs)",
+            selector: (row) => parseFloat(row.target.parcel.quantity).toLocaleString(),
+            sortable: true,
+        },
+
         {
             name: "Qty (pcs)",
-            selector: (row) => parseFloat(row.qty).toLocaleString("id-ID"),
+            selector: (row) => parseFloat(row.qty).toLocaleString(),
             sortable: true,
         },
 
         {
             name: "Start",
-            selector: (row) => row.start,
+            selector: (row) => {
+                const startTime = new Date(`1970-01-01T${row.start}`);
+                return startTime.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                });
+            },
             sortable: true,
         },
 
         {
             name: "Finish",
-            selector: (row) => row.finish,
+            selector: (row) => {
+                const finishTime = new Date(`1970-01-01T${row.finish}`);
+                return finishTime.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                });
+            },
             sortable: true,
         },
 
@@ -275,6 +326,11 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
                 return achievementPercents(row.qty, calculateTarget(row));
             },
             selector: (row) => achievementSort(row.qty, calculateTarget(row)),
+            sortable: true,
+        },
+        {
+            name: "Remarks",
+            selector: (row) => row.remarks,
             sortable: true,
         },
         {
@@ -327,7 +383,7 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
         <>
             <Head title="Report Achievement" />
             <Authenticated>
-                <Calendar/>
+                <Calendar className="flex px-6"/>
                 {flashMessage?.message &&(
                     <FlashMessage message={flashMessage.message} type={flashMessage.type}/>
                 )}
@@ -340,7 +396,7 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
                 )}
 
                 <div className="w-screen">
-                    <div className="flex justify-between container mx-auto">
+                    <div className="flex justify-between px-6">
                         <form
                             className="flex items-center gap-2"
                             onSubmit={submit}
@@ -468,48 +524,28 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
-
-                                <div>
-                                    <form className="flex items-center">
-                                        {!selectedFile && (
-                                            <label className="relative overflow-hidden  bg-red-600 rounded-md cursor-pointer hover:bg-opacity-70 duration-500">
-                                                <input
-                                                    type="file"
-                                                    key={fileInputKey}
-                                                    className="absolute inset-0 w-full h-full opacity-0 file:cursor-pointer"
-                                                    onChange={handleFileInput}
-                                                />
-
-                                                <span className="inline-block px-6 py-1 text-white">
-                                                    IMPORT
-                                                </span>
-                                            </label>
-                                        )}
-
-                                        {selectedFile && (
-                                            <div className="relative">
-                                                <button
-                                                    type="submit"
-                                                    className="px-6 py-1 w-fit text-white bg-blue-500 rounded-md hover:bg-blue-600 duration-500"
-                                                    onClick={handleImport}
-                                                >
-                                                    UPLOAD
-                                                </button>
-                                                <div className="flex items-center justify-end gap-2 absolute w-56 right-0 mt-1">
-                                                    <span className="text-right block text-xs font-light text-gray-600">
-                                                        {selectedFile.name}
-                                                    </span>
-                                                    <div className="text-red-600 cursor-pointer" onClick={handleRemoveAttachment}>X</div>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </form>
-                                </div>
+                                <button onClick={handleModal} className="px-4 rounded flex items-center py-1 gap-2 shadow group text-emerald-600 justify-center bg-white hover:bg-emerald-600 hover:text-white">
+                                    <span>Import</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="30" height="30">
+                                        <path fill="#169154" d="M29,6H15.744C14.781,6,14,6.781,14,7.744v7.259h15V6z"/>
+                                        <path fill="#18482a" d="M14,33.054v7.202C14,41.219,14.781,42,15.743,42H29v-8.946H14z"/>
+                                        <path fill="#0c8045" d="M14 15.003H29V24.005000000000003H14z"/>
+                                        <path fill="#17472a" d="M14 24.005H29V33.055H14z"/>
+                                        <g>
+                                            <path fill="#29c27f" d="M42.256,6H29v9.003h15V7.744C44,6.781,43.219,6,42.256,6z"/>
+                                            <path fill="#27663f" d="M29,33.054V42h13.257C43.219,42,44,41.219,44,40.257v-7.202H29z"/>
+                                            <path fill="#19ac65" d="M29 15.003H44V24.005000000000003H29z"/>
+                                            <path fill="#129652" d="M29 24.005H44V33.055H29z"/>
+                                        </g>
+                                        <path fill="#0c7238" d="M22.319,34H5.681C4.753,34,4,33.247,4,32.319V15.681C4,14.753,4.753,14,5.681,14h16.638 C23.247,14,24,14.753,24,15.681v16.638C24,33.247,23.247,34,22.319,34z"/>
+                                        <path fill="#fff" d="M9.807 19L12.193 19 14.129 22.754 16.175 19 18.404 19 15.333 24 18.474 29 16.123 29 14.013 25.07 11.912 29 9.526 29 12.719 23.982z"/>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     </div>
 
-                    <div className="container mx-auto mt-6">
+                    <div className="w-full px-6 mt-6">
                         <div className="block min-w-full overflow-x-auto shadow rounded-md">
                             <DataTable
                                 title="Achievement"
@@ -547,7 +583,47 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
                         </div>
                     </div>
                 </div>
-                {/* content END */}
+                <Modal title="Import Data Achievements" show={showModal} onClose={handleModal} maxWidth="2xl">
+                    <form onSubmit={handleImport} className="w-full">
+                        <div className="p-3">
+                            <InputLabel htmlFor="file" value="Import Excel" className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700"/>
+                            {data.file ? (
+                                <div>
+                                    <div className="flex items-center">
+                                        <span className="mr-2 text-gray-600 font-light text-sm">{data.file.name}</span>
+                                        <button
+                                            type="button"
+                                            className="text-red-600 underline"
+                                            onClick={() => handleRemoveFile()}
+                                        >
+                                            Hapus
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <input
+                                    name="file"
+                                    type="file"
+                                    className="block w-fit border-0 text-sm mt-2 text-slate-500 file:bg-rose-200 file:mr-4 file:py-2 file:px-4 file:cursor-pointer file:rounded-full file:border-0 file:text-sm file:font-semibold file:text-red-700 hover:file:bg-violet-200"
+                                    onChange={(e) => setData('file', e.target.files[0])}
+                                    accept=".xls, .xlsx"
+                                />
+                            )}
+                            <InputError message={errors.file} className="mt-2" />
+                        </div>
+                        <div className="flex items-start justify-start gap-3 md:items-center flex-col md:flex-row md:justify-between bg-gray-300 py-3 px-3 md:px-6">
+                            <div className="before:content-['*'] after:mr-0.5 before:text-red-500 block text-sm font-medium italic text-red-600"> Wajib diisi</div>
+                            <div className="flex gap-3 w-full md:w-fit">
+                                <button type="button" className="w-1/2 md:w-fit rounded px-6 bg-gray-500 hover:bg-gray-600 text-white py-2" onClick={handleModal}>
+                                    BATAL
+                                </button>
+                                <PrimaryButton type="submit" className="w-1/2 md:w-fit px-6 bg-red-600 hover:bg-red-700 text-white">
+                                    Upload
+                                </PrimaryButton>
+                            </div>
+                        </div>
+                    </form>
+                </Modal>  
             </Authenticated>
         </>
     );
