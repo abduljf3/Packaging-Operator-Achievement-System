@@ -30,9 +30,9 @@
                         <th scope="col">Lot No.</th>
                         <th scope="col">Total Lot</th>
                         <th scope="col">Qty/parcel</th>
-                        <th scope="col">Qty (pcs)</th>
                         <th scope="col">Start</th>
                         <th scope="col">Finish</th>
+                        <th scope="col">Qty (pcs)</th>
                         <th scope="col">Target (pcs)</th>
                         <th scope="col">Achievement (%)</th>
                     </tr>
@@ -44,7 +44,13 @@
                             $finish = new \Carbon\Carbon($achievement->finish);
                             $diffInMinutes = $finish->diffInMinutes($start);
                             $target = $achievement->target->quantity;
-                            $actualTarget = ($diffInMinutes/420) *$target;
+                            $minutes =0;
+                            if($achievement->shift === 1){
+                                $minutes = 415;
+                            }else{
+                                $minutes = 395;
+                            }
+                            $actualTarget = ($diffInMinutes/$minutes) *$target;
                         @endphp
                         <tr>
                             <td>{{ $index + 1 }}</td>
@@ -55,12 +61,12 @@
                             <td>{{ $achievement->product->drw_no }}</td>
                             <td>{{ $achievement->product_lot }}</td>
                             <td>{{ $achievement->total_lot }}</td>
-                            <td>{{ number_format($achievement->target->parcel->quantity, 0, ',', '.') }}</td>
-                            <td>{{ number_format($achievement->qty, 0, ',', '.') }}</td>
-                            <td>{{ $achievement->start}}</td>
-                            <td>{{ $achievement->finish}}</td>
-                            <td>{{ number_format($actualTarget, 0, ',', '.') }}</td>
-                            <td>{{ intval(($achievement->qty / $actualTarget) * 100) }}</td>
+                            <td>{{ number_format($achievement->target->parcel->quantity, 0, ',', ',') }}</td>
+                            <td>{{ substr($achievement['start'], 0, 5)}}</td>
+                            <td>{{ substr($achievement['finish'], 0, 5)}}</td>
+                            <td>{{ number_format($achievement->qty, 0, ',', ',') }}</td>
+                            <td>{{ number_format($actualTarget, 0, ',', ',') }}</td>
+                            <td>{{ round(($achievement->qty / $actualTarget) * 100) }}%</td>
                         </tr>
                     @endforeach
                 </tbody>

@@ -106,7 +106,7 @@ export default function Index({ achievements, userAchievements, from, to, auth,f
     };
 
     const achievementPercents = (achievement) => {
-        let parseAchievement = parseInt(achievement);
+        let parseAchievement = Math.round(achievement);
         let progressWidth = achievement > 100 ? 100 : achievement;
         return (
             <div className="w-full h-4 rounded-full">
@@ -140,20 +140,16 @@ export default function Index({ achievements, userAchievements, from, to, auth,f
               
         {
             name: "Total Achievement (pcs)",
-            selector: (row) => parseFloat(row.totalAchievement).toLocaleString("id-ID"),
+            selector: (row) => parseFloat(row.totalQuantity).toLocaleString(),
             sortable: true,
         },
-        {
-            name: "Total Target (pcs)",
-            selector: (row) => parseFloat(row.totalTarget).toLocaleString("id-ID"),
-            sortable: true,
-        },
+
         {
             name: "Achievement (%)",
             cell: (row) => {
-                return achievementPercents(row.achievementPercentage);
+                return achievementPercents(row.average_achievement_percentage);
             },
-            selector: (row) => row.achievementPercentage,
+            selector: (row) => row.average_achievement_percentage,
             sortable: true,
         },
     ];

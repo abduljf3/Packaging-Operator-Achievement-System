@@ -27,7 +27,6 @@ class RecapitulationExport implements FromCollection, WithHeadings
             'NPK',
             'Name',
             'Total Achievement (pcs)',
-            'Total Target (pcs)',
             'Achievement (%)',
         ];
     }

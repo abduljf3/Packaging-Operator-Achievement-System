@@ -38,7 +38,6 @@ export default function Print({ userAchievements,data}) {
                     <th class="border border-slate-400">NPK</th>
                     <th class="border border-slate-400">Name</th>
                     <th class="border border-slate-400">Total Achievement (pcs)</th>
-                    <th class="border border-slate-400">Total Target (pcs)</th>
                     <th class="border border-slate-400">Achievement (%)</th>
                 </tr>
             </thead>
@@ -49,9 +48,8 @@ export default function Print({ userAchievements,data}) {
                         <td class="px-2 text-center border border-slate-400">{achievement.user.npk}</td>
                         <td class="px-2 text-center border border-slate-400">{achievement.user.fullname}</td>
                         <td class="px-2 text-center border border-slate-400">{parseFloat(achievement.totalQuantity).toLocaleString()}</td>
-                        <td class="px-2 text-center border border-slate-400">{parseFloat(achievement.totalTarget).toLocaleString()}</td>
                         <td class="px-2 text-center border border-slate-400">
-                            {parseInt(achievement.achievementPercentage)}
+                            {Math.round(achievement.average_achievement_percentage)}%
                         </td>
                     </tr>
                 ))}

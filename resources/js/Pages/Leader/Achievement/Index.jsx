@@ -111,19 +111,25 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
     };
 
     const calculateTarget =(row) => {
-        let target = parseInt(row.target.quantity);
+        let target = Math.round(row.target.quantity);
         const startTime = new Date(`2023-07-22T${row.start}`);
         const finishTime = new Date(`2023-07-22T${row.finish}`);
-        let differenceTime = (finishTime - startTime) / 60000;    
-        let targetActual = parseInt((differenceTime/420)*target);
+        let differenceTime = (finishTime - startTime) / 60000; 
+        let minutes = 0;
+        if(row.shift === 1){
+            minutes = 415;
+        }else if(row.shift === 2){
+            minutes = 395;
+        }
+        let targetActual = Math.round(differenceTime/minutes*target);
         return targetActual;
     }
 
     const achievementPercents = (rowQuantity, rowTarget) => {
-        let qty = parseInt(rowQuantity);
-        let target = parseInt(rowTarget);
-        let achievement = parseInt((qty / target)*100);
-        let progressWidth = achievement > 100 ? 100 : parseInt(achievement);
+        let qty = Math.round(rowQuantity);
+        let target = Math.round(rowTarget);
+        let achievement = Math.round((qty / target)*100);
+        let progressWidth = achievement > 100 ? 100 : Math.round(achievement);
         return (
             <div className="w-full h-4 rounded-full">
                 <div
@@ -135,9 +141,9 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
     }
 
     const achievementSort = (rowQuantity, rowTarget) => {
-        let qty = parseInt(rowQuantity);
-        let target = parseInt(rowTarget);
-        let achievement = parseInt((qty / target)*100);
+        let qty = Math.round(rowQuantity);
+        let target = Math.round(rowTarget);
+        let achievement = Math.round((qty / target)*100);
         return achievement;
     }
 
@@ -189,11 +195,6 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
                 parseFloat(row.total_lot).toLocaleString("id-ID"),
             sortable: true,
         },
-        {
-            name: "Qty (pcs)",
-            selector: (row) => parseFloat(row.qty).toLocaleString("id-ID"),
-            sortable: true,
-        },
 
         {
             name: "Start",
@@ -218,6 +219,12 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
                     hour12: false,
                 });
             },
+            sortable: true,
+        },
+
+        {
+            name: "Qty (pcs)",
+            selector: (row) => parseFloat(row.qty).toLocaleString(),
             sortable: true,
         },
 

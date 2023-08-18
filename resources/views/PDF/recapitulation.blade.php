@@ -25,7 +25,6 @@
                         <th scope="col">NPK</th>
                         <th scope="col">Name</th>
                         <th scope="col">Total Achievement (pcs)</th>
-                        <th scope="col">Total Target (pcs)</th>
                         <th scope="col">Achievement (%)</th>
                     </tr>
                 </thead>
@@ -38,9 +37,8 @@
                             <td>{{ $no + 1 }}</td>
                             <td>{{ $achievement['user']['npk'] }}</td>
                             <td>{{ $achievement['user']['fullname'] }}</td>
-                            <td>{{ number_format($achievement['totalQuantity'], 0, ',', '.') }}</td>
-                            <td>{{ number_format($achievement['totalTarget'], 0, ',', '.') }}</td>
-                            <td>{{ intval($achievement['achievementPercentage']) }}</td>
+                            <td>{{ number_format($achievement['totalQuantity'], 0, ',', ',') }}</td>
+                            <td>{{ round($achievement['average_achievement_percentage']) }}%</td>
                         </tr>
                     @endforeach
 

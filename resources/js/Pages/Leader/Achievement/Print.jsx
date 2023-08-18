@@ -28,15 +28,21 @@ export default function Print({ achievements,data}) {
         const startTime = new Date(`2023-07-22T${row.start}`);
         const finishTime = new Date(`2023-07-22T${row.finish}`);
         let differenceTime = (finishTime - startTime) / 60000;    
-        let targetActual = parseInt((differenceTime/420)*target);
+        let minutes = 0;
+        if(row.shift === 1){
+            minutes = 415;
+        }else if(row.shift === 2){
+            minutes = 395;
+        }
+        let targetActual = Math.round((differenceTime/minutes)*target);
         return targetActual;
     }
 
     const achievementPercents = (rowQuantity, rowTarget) => {
-        let qty = parseInt(rowQuantity);
-        let target = parseInt(rowTarget);
-        let achievement = parseInt((qty / target)*100);
-        let progressWidth = achievement > 100 ? 100 : parseInt(achievement);
+        let qty = Math.round(rowQuantity);
+        let target = Math.round(rowTarget);
+        let achievement = Math.round((qty / target)*100);
+        let progressWidth = achievement > 100 ? 100 : Math.round(achievement);
         return (
             <div className="w-full h-4 rounded-full">
                 <div
@@ -81,8 +87,8 @@ export default function Print({ achievements,data}) {
                     <th class="border border-slate-400">Drw. No.</th>
                     <th class="border border-slate-400">Lot No.</th>
                     <th class="border border-slate-400">Total Lot</th>
-                    <th class="border border-slate-400">Qty (pcs)</th>
                     <th class="border border-slate-400">Start</th>
+                    <th class="border border-slate-400">Qty (pcs)</th>
                     <th class="border border-slate-400">Finish</th>
                     <th class="border border-slate-400">Target (pcs)</th>
                     <th class="border border-slate-400">Achievement (%)</th>
@@ -99,9 +105,9 @@ export default function Print({ achievements,data}) {
                         <td class="px-2 text-center border border-slate-400">{achievement.product.drw_no}</td>
                         <td class="px-2 text-center border border-slate-400">{achievement.product_lot}</td>
                         <td class="px-2 text-center border border-slate-400">{achievement.total_lot}</td>
-                        <td class="px-2 text-center border border-slate-400">{parseInt(achievement.qty).toLocaleString()}</td>
                         <td class="px-2 text-center border border-slate-400">{formatTime(achievement.start)}</td>
                         <td class="px-2 text-center border border-slate-400">{formatTime(achievement.finish)}</td>
+                        <td class="px-2 text-center border border-slate-400">{Math.round(achievement.qty).toLocaleString()}</td>
                         <td class="px-2 text-center border border-slate-400">{calculateTarget(achievement).toLocaleString()}</td>
                         <td class="px-2 text-center border border-slate-400">
                             {achievementPercents(achievement.qty, calculateTarget(achievement))}

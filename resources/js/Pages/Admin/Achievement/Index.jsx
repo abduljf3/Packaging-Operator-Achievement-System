@@ -192,7 +192,7 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
         });
     };
     const calculateTarget =(row) => {
-        let target = parseInt(row.target.quantity);
+        let target = Math.round(row.target.quantity);
         const startTime = new Date(`2023-07-22T${row.start}`);
         const finishTime = new Date(`2023-07-22T${row.finish}`);
         let differenceTime = (finishTime - startTime) / 60000; 
@@ -202,15 +202,15 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
         }else if(row.shift === 2){
             minutes = 395;
         }
-        let targetActual = parseInt((differenceTime/minutes)*target);
+        let targetActual = Math.round(differenceTime/minutes*target);
         return targetActual;
     }
 
     const achievementPercents = (rowQuantity, rowTarget) => {
-        let qty = parseInt(rowQuantity);
-        let target = parseInt(rowTarget);
-        let achievement = parseInt((qty / target)*100);
-        let progressWidth = achievement > 100 ? 100 : parseInt(achievement);
+        let qty = Math.round(rowQuantity);
+        let target = Math.round(rowTarget);
+        let achievement = Math.round((qty / target)*100);
+        let progressWidth = achievement > 100 ? 100 : Math.round(achievement);
         return (
             <div className="w-full h-4 rounded-full">
                 <div
@@ -222,9 +222,9 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
     }
 
     const achievementSort = (rowQuantity, rowTarget) => {
-        let qty = parseInt(rowQuantity);
-        let target = parseInt(rowTarget);
-        let achievement = parseInt((qty / target)*100);
+        let qty = Math.round(rowQuantity);
+        let target = Math.round(rowTarget);
+        let achievement = Math.round((qty / target)*100);
         return achievement;
     }
 
@@ -284,12 +284,6 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
         },
 
         {
-            name: "Qty (pcs)",
-            selector: (row) => parseFloat(row.qty).toLocaleString(),
-            sortable: true,
-        },
-
-        {
             name: "Start",
             selector: (row) => {
                 const startTime = new Date(`1970-01-01T${row.start}`);
@@ -315,6 +309,12 @@ export default function Index({ achievements, from, to, auth,flashMessage }) {
             sortable: true,
         },
 
+        {
+            name: "Qty (pcs)",
+            selector: (row) => parseFloat(row.qty).toLocaleString(),
+            sortable: true,
+        },
+        
         {
             name: "Target (pcs)",
             selector: (row) => calculateTarget(row).toLocaleString(),
